@@ -4,79 +4,93 @@ import (
 	"fmt"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/mlctrez/goapp-mdc/pkg/base"
 	"github.com/mlctrez/goapp-mdc/pkg/button"
 	"github.com/mlctrez/goapp-mdc/pkg/checkbox"
+	"github.com/mlctrez/goapp-mdc/pkg/layout"
 )
 
 type Demo struct {
 	app.Compo
-	banner   *Banner
-	open     *button.Button
-	close    *button.Button
-	centered *checkbox.Checkbox
-	fixed    *checkbox.Checkbox
+	base.JsUtil
+	floating *Banner
+	fixed    *Banner
+	message  *Message
 }
 
-func buildButton(action string, callback func(ctx app.Context, e app.Event)) *button.Button {
-	return &button.Button{
-		Id: action, Label: action, Raised: true, Callback: func(button app.HTMLButton) {
-			button.OnClick(callback)
-		},
-	}
+type Message struct {
+	app.Compo
+	Text string
 }
 
-func buildBannerButton(action string, callback func(ctx app.Context, e app.Event)) *button.Button {
-	return &button.Button{
-		Id: "bannerButton-" + action, Label: action, Banner: true, BannerAction: action, Callback: func(button app.HTMLButton) {
-			button.OnClick(callback)
-		},
-	}
-}
-
-func buildCheckbox(action string, onChange func(bool)) *checkbox.Checkbox {
-	return &checkbox.Checkbox{Id: action, Label: action, Callback: func(input app.HTMLInput) {
-		input.OnChange(func(ctx app.Context, e app.Event) {
-			onChange(ctx.JSSrc().Get("checked").Bool())
-		})
-	}}
+func (c *Message) Render() app.UI {
+	return app.Code().Text(c.Text)
 }
 
 func (c *Demo) Render() app.UI {
 
-	if c.banner == nil {
-		c.banner = &Banner{Id: "demoBanner", Text: "banner text goes here",
-			OnClosed: func(s string) {
-				fmt.Println("banner was closed with reason", s)
-			},
+	if c.floating == nil {
+		c.floating = &Banner{
+			Id: c.UUID(), Text: "This is the banner text for a normal banner",
 			Buttons: []app.UI{
-				buildBannerButton("primary", func(ctx app.Context, e app.Event) {
-					fmt.Println("you clicked the primary action")
-				}),
-				buildBannerButton("secondary", func(ctx app.Context, e app.Event) {
-					fmt.Println("you clicked the secondary action")
-				}),
-			}}
-		c.open = buildButton("open", func(ctx app.Context, e app.Event) { c.banner.Open() })
-		c.close = buildButton("close", func(ctx app.Context, e app.Event) { c.banner.Close() })
-
-		c.centered = buildCheckbox("centered", func(b bool) {
-			fmt.Println("setting centered to", b)
-			c.banner.Centered = b
-			c.banner.Update()
-		})
-		c.fixed = buildCheckbox("fixed", func(b bool) {
-			fmt.Println("setting fixed to", b)
-			c.banner.Fixed = b
-			c.banner.Update()
-		})
-
+				&button.Button{Id: c.UUID(), Label: "Primary", Banner: true, BannerAction: "primary"},
+				&button.Button{Id: c.UUID(), Label: "Secondary", Banner: true, BannerAction: "secondary"},
+			},
+		}
+		c.fixed = &Banner{
+			Id: c.UUID(), Text: "This is the banner text for a fixed banner", Fixed: true,
+			Buttons: []app.UI{
+				&button.Button{Id: c.UUID(), Label: "Primary", Banner: true, BannerAction: "primary"},
+				&button.Button{Id: c.UUID(), Label: "Secondary", Banner: true, BannerAction: "secondary"},
+			},
+		}
+		c.message = &Message{Text: "banner events will appear here"}
 	}
+	openFloating := &button.Button{Id: c.UUID(), Label: "floating", Callback: func(button app.HTMLButton) {
+		button.OnClick(func(ctx app.Context, e app.Event) {
+			c.floating.Open()
+		})
+	}}
+	openFixed := &button.Button{Id: c.UUID(), Label: "fixed", Callback: func(button app.HTMLButton) {
+		button.OnClick(func(ctx app.Context, e app.Event) {
+			c.fixed.Open()
+		})
+	}}
+	centered := &checkbox.Checkbox{Id: c.UUID(), Label: "centered", Callback: func(input app.HTMLInput) {
+		input.OnClick(func(ctx app.Context, e app.Event) {
+			centeredValue := ctx.JSSrc().Get("checked").Bool()
+			c.floating.Centered = centeredValue
+			c.floating.Update()
+			c.fixed.Centered = centeredValue
+			c.fixed.Update()
+		})
+	}}
 
 	return app.Div().Body(
-		c.banner,
-		app.Hr(),
-		app.Div().Text("banner controls"),
-		app.Br(),
-		c.open, c.close, c.centered, c.fixed)
+		c.floating, c.fixed,
+		layout.Grid().Body(layout.Inner().Body(
+			layout.Cell().Body(openFloating, openFixed, centered),
+			layout.CellModified("middle", 12).Body(c.message),
+			layout.CellModified("top", 12).Body(&Code{}),
+		)))
 
+}
+
+func (c *Demo) OnMount(ctx app.Context) {
+	for _, n := range []EventType{Opening, Opened, Closing, Closed} {
+		ctx.Handle(string(n), c.actionHandler)
+	}
+}
+
+func (c *Demo) actionHandler(ctx app.Context, action app.Action) {
+	v := action.Value
+	whichBanner := "unknown"
+	if v == c.floating {
+		whichBanner = "floating"
+	}
+	if v == c.fixed {
+		whichBanner = "fixed"
+	}
+	c.message.Text = fmt.Sprintf("message from banner %q: Event=%25s Tags=%v", whichBanner, action.Name, action.Tags)
+	c.message.Update()
 }

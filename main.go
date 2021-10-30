@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"image"
 	"math/big"
-	"os"
 	"sort"
 	"sync"
 	"time"
@@ -163,7 +162,7 @@ type Demo struct {
 }
 
 func (d *Demo) OnAppUpdate(ctx app.Context) {
-	if os.Getenv("VERSION") == "dynamic" && ctx.AppUpdateAvailable() {
+	if ctx.AppUpdateAvailable() {
 		ctx.Reload()
 	}
 }

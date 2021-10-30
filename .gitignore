@@ -3,3 +3,4 @@ static/
 bin/
 web/app.wasm
 web/app.wasm.br
+recapapi/

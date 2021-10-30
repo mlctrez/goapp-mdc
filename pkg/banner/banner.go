@@ -19,15 +19,22 @@ type Banner struct {
 
 func (b *Banner) Render() app.UI {
 
-	wrapper := app.Div().Class("mdc-banner__graphic-text-wrapper").Body(
+	content := app.Div().Class("mdc-banner__content").
+		Attr("role", "alertdialog").Aria("live", "assertlive")
+
+	textWrapper := app.Div().Class("mdc-banner__graphic-text-wrapper").Body(
 		app.Div().Class("mdc-banner__text").Text(b.Text),
 	)
 	actions := app.Div().Class("mdc-banner__actions").Body(b.Buttons...)
 
-	content := app.Div().Class("mdc-banner__content").Attr("role", "alertdialog").Aria("live", "assertlive")
-	content.Body(wrapper, actions)
+	content.Body(textWrapper, actions)
+
+	if b.Fixed {
+		content = app.Div().Class("mdc-banner__fixed").Body(content)
+	}
 
 	banner := app.Div().Class("mdc-banner").ID(b.Id).Body(content)
+
 	if b.Centered {
 		banner.Class("mdc-banner--centered")
 	}
@@ -47,51 +54,33 @@ func (b *Banner) Close() {
 	}
 }
 
-func (b *Banner) OnMount(_ app.Context) {
-	element := app.Window().GetElementByID(b.Id)
-	b.jsApi = b.JsNewAtPath("mdc.banner.MDCBanner", element)
+func (b *Banner) OnMount(ctx app.Context) {
+	e := b.JSValue()
+	b.jsApi = b.JsNewAtPath("mdc.banner.MDCBanner", e)
+	e.Call("addEventListener", string(Opening), app.FuncOf(b.event(ctx, Opening)))
+	e.Call("addEventListener", string(Opened), app.FuncOf(b.event(ctx, Opened)))
+	e.Call("addEventListener", string(Closing), app.FuncOf(b.event(ctx, Closing)))
+	e.Call("addEventListener", string(Closed), app.FuncOf(b.event(ctx, Closed)))
+}
 
-	element.Call("addEventListener", "MDCBanner:closed", app.FuncOf(func(this app.Value, args []app.Value) interface{} {
-		if b.OnClosed != nil {
-			closeReason := args[0].Get("detail").Get("reason")
-			closeReasonInt := -1
-			if !closeReason.IsUndefined() {
-				closeReasonInt = closeReason.Int()
-			}
-			switch closeReasonInt {
-			case 0:
-				b.OnClosed("primary")
-			case 1:
-				b.OnClosed("secondary")
-			default:
-				b.OnClosed("undefined")
+type EventType string
+
+const Opening EventType = "MDCBanner:opening"
+const Opened EventType = "MDCBanner:opened"
+const Closing EventType = "MDCBanner:closing"
+const Closed EventType = "MDCBanner:closed"
+
+func (b *Banner) event(ctx app.Context, event EventType) func(this app.Value, args []app.Value) interface{} {
+	return func(this app.Value, args []app.Value) interface{} {
+		// determine what button was clicked if any from the event args
+		reason := -1
+		if len(args) > 0 {
+			detailReason := b.JsValueAt(args[0], "detail.reason", false)
+			if !detailReason.IsUndefined() {
+				reason = detailReason.Int()
 			}
 		}
+		ctx.NewActionWithValue(string(event), b, app.T("reason", reason))
 		return nil
-	}))
-
-}
-
-type Fixed struct {
-	Banner
-}
-
-func (f *Fixed) Render() app.UI {
-
-	wrapper := app.Div().Class("mdc-banner__graphic-text-wrapper").Body(
-		app.Div().Class("mdc-banner__text").Text(f.Text),
-	)
-	actions := app.Div().Class("mdc-banner__actions").Body(f.Buttons...)
-
-	content := app.Div().Class("mdc-banner__content").Attr("role", "alertdialog").Aria("live", "assertlive")
-	content.Body(wrapper, actions)
-
-	content = app.Div().Class("mdc-banner__fixed").Body(content)
-
-	banner := app.Div().Class("mdc-banner").ID(f.Id).Body(content)
-	if f.Centered {
-		banner.Class("mdc-banner--centered")
 	}
-
-	return banner
 }

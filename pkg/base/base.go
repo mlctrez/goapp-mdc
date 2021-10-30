@@ -11,11 +11,20 @@ import (
 type JsUtil struct{}
 
 func (b *JsUtil) JsValueAtPath(path string) app.Value {
-	var current app.Value = app.Window()
+	return b.JsValueAt(app.Window(), path, true)
+}
+
+func (b *JsUtil) JsValueAt(root app.Value, path string, warn bool) app.Value {
+	if root == nil || root.IsUndefined() {
+		return app.Undefined()
+	}
+	var current = root
 	for _, part := range strings.Split(path, ".") {
 		current = current.Get(part)
 		if current.IsUndefined() {
-			fmt.Printf("jsutil.getValue(%q) : undefined at %q\n", path, part)
+			if warn {
+				fmt.Printf("jsutil.getValue(%q) : undefined at %q\n", path, part)
+			}
 			break
 		}
 	}

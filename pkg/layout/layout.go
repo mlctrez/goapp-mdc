@@ -32,7 +32,7 @@ func Cell() app.HTMLDiv {
 
 // CellModified is the mandatory innermost layout div with class mdc-layout-grid__cell.
 // It allows optional classes for alignment ( top, middle, bottom ) and span width ( 1-12 ).
-// If align and span values are out of range, no additional classes are not added.
+// If align and span values are out of range, no additional classes are added.
 func CellModified(align string, span int) app.HTMLDiv {
 	classes := []string{"mdc-layout-grid__cell"}
 	switch align {
