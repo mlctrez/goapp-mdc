@@ -8,10 +8,10 @@ import (
 
 type Tab struct {
 	app.Compo
-	index                int
-	active               bool
-	label                string
-	icon                 string
+	index  int
+	active bool
+	label  string
+	icon   string
 }
 
 func NewTab(label string, index int) *Tab {

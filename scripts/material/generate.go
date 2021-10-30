@@ -187,7 +187,7 @@ func main() {
 	w.Println("func AllGroupFunctions() map[string]func() []MaterialIcon {")
 	w.Println("\t return map[string]func() []MaterialIcon{")
 	for _, g := range sortedGroups {
-		w.Println(fmt.Sprintf("\t%q: All%s,",g, snakeToCamelCase(g)))
+		w.Println(fmt.Sprintf("\t%q: All%s,", g, snakeToCamelCase(g)))
 	}
 	w.Println("\t}")
 	w.Println("}")

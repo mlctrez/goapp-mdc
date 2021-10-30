@@ -62,11 +62,11 @@ func buildHandler() (h *app.Handler, err error) {
 	h.Resources = &resourceProvider{}
 
 	h = &app.Handler{
-		Author:          "mlctrez",
-		Description:     "Material Design Components for go-app",
-		Icon:            app.Icon{Default: "/web/logo-192.png", Large: "/web/logo-512.png"},
-		Resources:       &resourceProvider{},
-		Name:         "MDC for go-app",
+		Author:      "mlctrez",
+		Description: "Material Design Components for go-app",
+		Icon:        app.Icon{Default: "/web/logo-192.png", Large: "/web/logo-512.png"},
+		Resources:   &resourceProvider{},
+		Name:        "MDC for go-app",
 		Scripts: []string{
 			//"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js",
 			"/web/material-components-web.min.js",
@@ -81,7 +81,7 @@ func buildHandler() (h *app.Handler, err error) {
 			"/web/prism.css",
 			"https://fonts.googleapis.com/icon?family=Material+Icons"},
 		//ThemeColor: "#4d60b8",
-		Title:      "Material Design Components for go-app",
+		Title: "Material Design Components for go-app",
 	}
 
 	return

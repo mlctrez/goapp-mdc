@@ -7,10 +7,10 @@ import (
 )
 
 type Svg struct {
-	XMLName struct{} `xml:"svg"`
-	Namespace string `xml:"namespace,attr"`
-	Class   string   `xml:"class,attr"`
-	ViewBox string   `xml:"viewBox,attr"`
+	XMLName   struct{} `xml:"svg"`
+	Namespace string   `xml:"namespace,attr"`
+	Class     string   `xml:"class,attr"`
+	ViewBox   string   `xml:"viewBox,attr"`
 }
 
 /*
@@ -29,8 +29,8 @@ func main() {
 	encoder := xml.NewEncoder(output)
 	encoder.Indent("", "  ")
 	err := encoder.Encode(&Svg{
-		Class: "mdc-circular-progress__determinate-circle-graphic",
-		ViewBox: "0 0 48 48",
+		Class:     "mdc-circular-progress__determinate-circle-graphic",
+		ViewBox:   "0 0 48 48",
 		Namespace: "http://www.w3.org/2000/svg",
 	})
 	if err != nil {

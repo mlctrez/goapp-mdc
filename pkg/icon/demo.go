@@ -21,12 +21,8 @@ func (d *Demo) Render() app.UI {
 		d.counterOne = &base.Counter{Label: "bookmark"}
 		d.toggleOne = &Button{Id: d.UUID(), Icon: MIFavorite, IconOff: MIFavoriteBorder, AriaOn: "remove from favorites", AriaOff: "add to favorites"}
 		d.toggleTwo = &Button{Id: d.UUID(), Icon: MIFavorite, IconOff: MIFavoriteBorder, AriaOn: "remove from favorites", AriaOff: "add to favorites"}
-		d.toggleOne.ButtonToggleChange = func(isOn bool) {
-			d.toggleTwo.SetState(isOn)
-		}
-		d.toggleTwo.ButtonToggleChange = func(isOn bool) {
-			d.toggleOne.SetState(isOn)
-		}
+		d.toggleOne.ButtonToggleChange = func(isOn bool) { d.toggleTwo.SetState(isOn) }
+		d.toggleTwo.ButtonToggleChange = func(isOn bool) { d.toggleOne.SetState(isOn) }
 	}
 	return app.Div().Body(layout.Grid().Body(layout.Inner().Body(
 		layout.Cell().Body(

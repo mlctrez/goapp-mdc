@@ -51,7 +51,7 @@ func main() {
 			log.Fatalln(err)
 		}
 		t := &bytes.Buffer{}
-		t.WriteString(fmt.Sprintf(TestSource,name,strings.Title(name),strings.Title(name)))
+		t.WriteString(fmt.Sprintf(TestSource, name, strings.Title(name), strings.Title(name)))
 
 		err = WriteSource(filepath.Join(packageDir, fmt.Sprintf("%s_test.go", name)), t)
 		if err != nil {

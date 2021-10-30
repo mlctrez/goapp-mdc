@@ -15,4 +15,3 @@ func TestCard_Render(t *testing.T) {
 
 	ct.At(0).Match(app.Div().ID(compo.Id).Class("mdc-card"))
 }
-

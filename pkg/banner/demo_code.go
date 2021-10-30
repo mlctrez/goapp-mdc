@@ -28,4 +28,3 @@ func (c *Code) OnUpdate(ctx app.Context) {
 func (c *Code) highlightCode(ctx app.Context) {
 	app.Window().Get("Prism").Call("highlightAll")
 }
-

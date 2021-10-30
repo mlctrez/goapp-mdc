@@ -32,7 +32,6 @@ func main() {
 			panic(err)
 		}
 
-
 		if stat.IsDir() {
 
 			mdcPkg := filepath.Base(s)
@@ -48,8 +47,6 @@ func main() {
 			}
 
 			create.WriteString("| " + mdcCol + " | " + goappCol + " | - |\n")
-
-
 
 		}
 

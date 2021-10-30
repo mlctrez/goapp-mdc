@@ -1,8 +1,6 @@
 package text
 
 import (
-
-
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
 )
