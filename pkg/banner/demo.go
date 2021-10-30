@@ -77,20 +77,20 @@ func (c *Demo) Render() app.UI {
 }
 
 func (c *Demo) OnMount(ctx app.Context) {
+	// handle all banner events
 	for _, n := range []EventType{Opening, Opened, Closing, Closed} {
 		ctx.Handle(string(n), c.actionHandler)
 	}
 }
 
 func (c *Demo) actionHandler(ctx app.Context, action app.Action) {
-	v := action.Value
-	whichBanner := "unknown"
-	if v == c.floating {
-		whichBanner = "floating"
+	banner := "unknown"
+	switch action.Value {
+	case c.floating:
+		banner = "floating"
+	case c.fixed:
+		banner = "fixed"
 	}
-	if v == c.fixed {
-		whichBanner = "fixed"
-	}
-	c.message.Text = fmt.Sprintf("message from banner %q: Event=%25s Tags=%v", whichBanner, action.Name, action.Tags)
+	c.message.Text = fmt.Sprintf("message from banner %q: Event=%25s Tags=%v", banner, action.Name, action.Tags)
 	c.message.Update()
 }
