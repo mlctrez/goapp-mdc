@@ -1,0 +1,19 @@
+{
+  "Description": "Material Design Components for go-app",
+  "Icon": {
+    "Default": "/web/logo-192.png",
+    "Large": "/web/logo-512.png"
+  },
+  "Name": "goapp-mdc",
+  "Scripts": [
+    "/web/material-components-web.min.js",
+    "/web/app.js",
+    "/web/prism.js"
+  ],
+  "Styles": [
+    "/web/material-components-web.min.css",
+    "/web/style.css",
+    "/web/prism.css",
+    "https://fonts.googleapis.com/icon?family=Material+Icons"
+  ]
+}

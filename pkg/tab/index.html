@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@v13.0.0/dist/material-components-web.css" type="text/css">
+    <script src="https://unpkg.com/material-components-web@13.0.0/dist/material-components-web.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css">
+
+</head>
+<body>
+
+<div class="mdc-tab-bar" role="tablist" id="tabBar">
+    <div class="mdc-tab-scroller">
+        <div class="mdc-tab-scroller__scroll-area">
+            <div class="mdc-tab-scroller__scroll-content">
+                <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0" id="mdc-tab-0">
+                    <span class="mdc-tab__content">
+                        <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
+                        <span class="mdc-tab__text-label">Favorites</span>
+                    </span>
+                    <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                        <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                    </span>
+                    <span class="mdc-tab__ripple"></span>
+                </button>
+                <button class="mdc-tab" role="tab" tabindex="1" id="mdc-tab-1">
+                    <span class="mdc-tab__content">
+                        <span class="mdc-tab__icon material-icons" aria-hidden="true">bookmark</span>
+                        <span class="mdc-tab__text-label">Bookmark</span>
+                    </span>
+                    <span class="mdc-tab-indicator">
+                        <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                    </span>
+                    <span class="mdc-tab__ripple"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    new mdc.tab.MDCTab(document.getElementById("mdc-tab-0"));
+    new mdc.tab.MDCTab(document.getElementById("mdc-tab-1"));
+    let tabBarElement = document.getElementById("tabBar");
+    let mdcTabBar = new mdc.tabBar.MDCTabBar(tabBarElement);
+    tabBarElement.addEventListener("MDCTabBar:activated", evt => {
+        console.log(evt)
+    })
+
+    mdcTabBar.activateTab(1)
+
+
+</script>
+
+</body>
+</html>

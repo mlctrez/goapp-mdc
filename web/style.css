@@ -1,0 +1,19 @@
+
+body {
+    background-image: url("/web/Google_Material_Design_Logo.svg");
+    background-size: cover;
+    background-color: #000000;
+    color: #4d60b8;
+    font-family: Roboto, sans-serif;
+}
+
+.goapp-mdc-coming-soon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.coming-soon-buttons {
+    text-align: center;
+}
