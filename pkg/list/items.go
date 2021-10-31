@@ -1,0 +1,47 @@
+package list
+
+import "github.com/maxence-charriere/go-app/v9/pkg/app"
+
+// Items allows setting up the state of a list of items before the first render. Setting the tab index
+// or pre-selected item and associated attributes of the items in the list.
+type Items []*Item
+
+func (items Items) UIList() (uis []app.UI) {
+	for _, item := range items {
+		uis = append(uis, item)
+	}
+	return
+}
+
+func (items Items) Select(index int) Items {
+	if items == nil {
+		return items
+	}
+	for i, item := range items {
+		item.state = determineSelectState(i, index)
+	}
+	return items
+}
+
+func determineSelectState(listIndex, selectedIndex int) ItemSelectState {
+	if selectedIndex < 0 {
+		if listIndex == 0 {
+			return ItemSelectStateTabZero
+		}
+		return ItemSelectStateNone
+	} else {
+		if listIndex == selectedIndex {
+			return ItemSelectStateSelected
+		}
+		return ItemSelectStateNotSelected
+	}
+}
+
+type ItemSelectState int
+
+const (
+	ItemSelectStateNone ItemSelectState = iota
+	ItemSelectStateTabZero
+	ItemSelectStateSelected
+	ItemSelectStateNotSelected
+)

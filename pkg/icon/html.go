@@ -9,5 +9,13 @@ func (m MaterialIcon) Span() app.HTMLSpan {
 }
 
 func (m MaterialIcon) I() app.HTMLI {
-	return app.I().Class(MaterialIconsClass).Text(m)
+	return m.IClasses(MaterialIconsClass)
+}
+
+func (m MaterialIcon) IClasses(classes ...string) app.HTMLI {
+	return app.I().Class(classes...).Text(m)
+}
+
+func (m MaterialIcon) IItemGraphic() app.HTMLI {
+	return m.IClasses(MaterialIconsClass, "mdc-deprecated-list-item__graphic").Aria("hidden", "true")
 }

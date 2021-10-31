@@ -59,27 +59,28 @@ func buildHandler() (h *app.Handler, err error) {
 	defer open.Close()
 	h = &app.Handler{}
 	err = json.NewDecoder(open).Decode(h)
-	h.Resources = &resourceProvider{}
+	//h.Resources = &resourceProvider{}
 
 	h = &app.Handler{
 		Author:      "mlctrez",
 		Description: "Material Design Components for go-app",
 		Icon:        app.Icon{Default: "/web/logo-192.png", Large: "/web/logo-512.png"},
-		Resources:   &resourceProvider{},
+		//Resources:   &resourceProvider{},
 		Name:        "MDC for go-app",
+		BackgroundColor: "#202020",
 		Scripts: []string{
 			//"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js",
 			"/web/material-components-web.min.js",
-			//"/web/app.js",
 			"/web/prism.js",
 		},
 		ShortName: "goapp-mdc",
 		Styles: []string{
+			"https://fonts.googleapis.com/icon?family=Material+Icons",
 			//"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css",
 			"/web/material-components-web.min.css",
 			"/web/style.css",
 			"/web/prism.css",
-			"https://fonts.googleapis.com/icon?family=Material+Icons"},
+		},
 		//ThemeColor: "#4d60b8",
 		Title: "Material Design Components for go-app",
 	}

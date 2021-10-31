@@ -37,16 +37,18 @@ func (c *Checkbox) Render() app.UI {
 	return formField.Body(
 		app.Div().Class(checkboxClass).ID(c.Id).Body(
 			input,
-			app.Div().Class("mdc-checkbox__background").Body(
-				app.Raw(SVG),
-				app.Div().Class("mdc-checkbox__mixedmark"),
-			),
+			MDCCheckboxBackground(),
 			app.Div().Class("mdc-checkbox__ripple"),
 		),
 		app.If(c.Label == "").Else(
 			app.Label().ID(c.Id+"-label").For(c.Id+"-input").Text(c.Label),
 		),
 	)
+}
+
+func MDCCheckboxBackground() app.HTMLDiv {
+	return app.Div().Class("mdc-checkbox__background").Body(
+		app.Raw(SVG), app.Div().Class("mdc-checkbox__mixedmark"))
 }
 
 func (c *Checkbox) OnMount(ctx app.Context) {

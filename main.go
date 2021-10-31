@@ -4,9 +4,9 @@ import (
 	"crypto/rand"
 	"fmt"
 	"image"
+	"log"
 	"math/big"
 	"sort"
-	"sync"
 	"time"
 
 	"github.com/mlctrez/goapp-mdc/pkg/banner"
@@ -15,9 +15,11 @@ import (
 	"github.com/mlctrez/goapp-mdc/pkg/card"
 	"github.com/mlctrez/goapp-mdc/pkg/checkbox"
 	"github.com/mlctrez/goapp-mdc/pkg/dialog"
+	"github.com/mlctrez/goapp-mdc/pkg/drawer"
 	"github.com/mlctrez/goapp-mdc/pkg/example"
 	"github.com/mlctrez/goapp-mdc/pkg/fab"
 	"github.com/mlctrez/goapp-mdc/pkg/icon"
+	"github.com/mlctrez/goapp-mdc/pkg/list"
 	"github.com/mlctrez/goapp-mdc/pkg/tab"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
@@ -147,6 +149,8 @@ func buildDemoMap() map[string]app.UI {
 		"button":   &button.Demo{},
 		"card":     &card.Demo{},
 		"icon":     &icon.Demo{},
+		"drawer":   &drawer.Demo{},
+		"list":     &list.Demo{},
 		"checkbox": &checkbox.Demo{},
 		"dialog":   &dialog.Demo{},
 		"form":     &example.Example{},
@@ -156,15 +160,10 @@ func buildDemoMap() map[string]app.UI {
 
 type Demo struct {
 	app.Compo
-	bar         *tab.Bar
-	ActiveIndex int
-	DemoMap     map[string]app.UI
-}
-
-func (d *Demo) OnAppUpdate(ctx app.Context) {
-	if ctx.AppUpdateAvailable() {
-		ctx.Reload()
-	}
+	updateBanner *banner.Banner
+	bar          *tab.Bar
+	ActiveIndex  int
+	DemoMap      map[string]app.UI
 }
 
 func (d *Demo) sortedDemoNames() []string {
@@ -178,8 +177,8 @@ func (d *Demo) sortedDemoNames() []string {
 
 func (d *Demo) Render() app.UI {
 
-	once := sync.Once{}
-	once.Do(func() {
+	if d.updateBanner == nil {
+		d.updateBanner = d.buildUpdateBanner()
 		d.DemoMap = buildDemoMap()
 		var tabs []*tab.Tab
 		var index int
@@ -196,11 +195,43 @@ func (d *Demo) Render() app.UI {
 			d.ActiveIndex = index
 			d.Update()
 		})
+	}
+
+	return app.Div().Body(
+		d.updateBanner, d.bar,
+		d.DemoMap[d.sortedDemoNames()[d.ActiveIndex]],
+	)
+}
+
+func (d *Demo) buildUpdateBanner() *banner.Banner {
+	primary := &button.Button{Id: "updateBannerYes", Label: "yes",
+		Icon: string(icon.MIUpdate), Banner: true, BannerAction: "primary"}
+	secondary := &button.Button{Id: "updateBannerNo", Label: "later",
+		Icon: string(icon.MIWatchLater), Banner: true, BannerAction: "secondary"}
+	return &banner.Banner{Id: "updateBanner", Centered: true, Fixed: true,
+		Text:    "A new version is available, would you like to install?",
+		Buttons: []app.UI{primary, secondary},
+	}
+}
+
+func (d *Demo) OnMount(ctx app.Context) {
+	ctx.Handle(string(banner.Closed), func(context app.Context, action app.Action) {
+		if action.Value == d.updateBanner {
+			if r, ok := action.Tags["reason"]; ok {
+				if r == "0" {
+					log.Println("reloading for yes clicked on banner update")
+					ctx.Reload()
+				}
+			}
+		}
 	})
+}
 
-	var content []app.UI
-	content = append(content, d.bar)
-	content = append(content, d.DemoMap[d.sortedDemoNames()[d.ActiveIndex]])
-
-	return app.Div().Body(content...)
+func (d *Demo) OnAppUpdate(ctx app.Context) {
+	if ctx.AppUpdateAvailable() {
+		ctx.After(1*time.Second, func(context app.Context) {
+			log.Println("opening updateBanner", ctx.AppUpdateAvailable())
+			context.NewActionWithValue(string(banner.Open), d.updateBanner)
+		})
+	}
 }

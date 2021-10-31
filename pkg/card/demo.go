@@ -26,16 +26,16 @@ func (d Demo) Render() app.UI {
 	return layout.Grid().Body(
 		layout.Inner().Body(
 			layout.Cell().Body(
-				&Card{Id: uuid.New().String(), Padding: 16, Height: 100,
-					PrimaryAction: []app.UI{app.Div().Text("Primary action card 100px height no outline")}},
+				&Card{Id: uuid.New().String(), Padding: 16,
+					PrimaryAction: []app.UI{app.Div().Text("Primary action card no outline")}},
 			),
 			layout.Cell().Body(
-				&Card{Id: uuid.New().String(), Width: 100, Height: 100, Outlined: true,
-					PrimaryAction: []app.UI{app.Div().Text("Primary action card 100x100px with outline")}},
+				&Card{Id: uuid.New().String(), Width: 200, Height: 200, Outlined: true,
+					PrimaryAction: []app.UI{app.Div().Text("Primary action card 200x200px with outline")}},
 			),
 			layout.Cell().Body(
-				&Card{Id: uuid.New().String(), Outlined: true, Height: 100, Padding: 16,
-					PrimaryAction: []app.UI{app.Div().Text("Primary action card card with buttons, 100px height")},
+				&Card{Id: uuid.New().String(), Outlined: true, Padding: 16,
+					PrimaryAction: []app.UI{app.Div().Text("Primary action card card with buttons")},
 					ActionButtons: []app.UI{
 						&button.Button{Id: uuid.New().String(), CardAction: true, Label: "Button One", Callback: buttonCallback("one")},
 						&button.Button{Id: uuid.New().String(), CardAction: true, Label: "Button Two", Callback: buttonCallback("two")},

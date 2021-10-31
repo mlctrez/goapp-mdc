@@ -39,10 +39,17 @@ func (b *JsUtil) JsNewAtPath(path string, args ...interface{}) app.Value {
 	return app.Undefined()
 }
 
-// MDCRipple constructs a new mdc.ripple.MDCRipple with the element
+// MDCRipple constructs a new mdc.ripple.MDCRipple from a provided element id
 func (b *JsUtil) MDCRipple(id string) app.Value {
-	elemId := app.Window().GetElementByID(id)
-	return b.JsNewAtPath("mdc.ripple.MDCRipple", elemId)
+	return b.MDCRippleVal(app.Window().GetElementByID(id))
+}
+
+// MDCRippleVal constructs a new mdc.ripple.MDCRipple from a provided app.Value
+func (b *JsUtil) MDCRippleVal(val app.Value) app.Value {
+	if val == nil || val.IsUndefined() {
+		return app.Undefined()
+	}
+	return b.JsNewAtPath("mdc.ripple.MDCRipple", val)
 }
 
 // UUID generates a new uuid string for testing and demo purposes

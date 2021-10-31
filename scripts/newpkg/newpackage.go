@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"go/format"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -29,7 +30,6 @@ func main() {
 		}
 		s := &bytes.Buffer{}
 		imports := []string{
-			//"github.com/mlctrez/goapp-mdc/pkg/jsutil",
 			"github.com/maxence-charriere/go-app/v9/pkg/app",
 		}
 
@@ -57,6 +57,12 @@ func main() {
 		if err != nil {
 			log.Fatalln(err)
 		}
+		create, err := os.Create(filepath.Join(packageDir, "index.html"))
+		if err != nil {
+			panic(err)
+		}
+		io.Copy(create, bytes.NewBufferString(IndexSource))
+		create.Close()
 
 	} else {
 		log.Fatalln(packageDir, "exists already")
@@ -75,16 +81,38 @@ const TestSource = `
 package %s
 
 import (
-	"github.com/mlctrez/goapp-mdc/pkg/internal/componenttest"
 	"testing"
+
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/mlctrez/goapp-mdc/pkg/base"
 )
 
 func Test%s_Render(t *testing.T) {
 	id := "testID"
 	compo := &%s{Id: id}
-	ct := componenttest.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
+	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
 	defer ct.Close()
 
 }
 `
+
+const IndexSource = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@v13.0.0/dist/material-components-web.css"
+          type="text/css">
+    <script src="https://unpkg.com/material-components-web@13.0.0/dist/material-components-web.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css">
+
+</head>
+<body>
+
+
+<script>
+
+</script>
+
+</body>
+</html>`

@@ -30,7 +30,7 @@ func (d *Demo) Render() app.UI {
 		),
 		layout.Cell().Body(d.toggleOne, d.toggleTwo),
 	),
-	), app.Hr(), &Code{})
+	))
 }
 
 func (d *Demo) IconButtonClicked(button app.HTMLButton) {

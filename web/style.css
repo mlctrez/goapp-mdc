@@ -2,9 +2,9 @@
 body {
     background-image: url("/web/Google_Material_Design_Logo.svg");
     background-size: cover;
-    background-color: #000000;
-    color: #4d60b8;
-    font-family: Roboto, sans-serif;
+    background-color: #2d2c2c;
+    color: var(--mdc-theme-text-primary-on-background, white);
+    font-family: Roboto, monospace;
 }
 
 .goapp-mdc-coming-soon {

@@ -31,14 +31,14 @@ func (c *Demo) Render() app.UI {
 
 	if c.floating == nil {
 		c.floating = &Banner{
-			Id: c.UUID(), Text: "This is the banner text for a normal banner",
+			Id: "normalBanner", Text: "This is the banner text for a normal banner",
 			Buttons: []app.UI{
 				&button.Button{Id: c.UUID(), Label: "Primary", Banner: true, BannerAction: "primary"},
 				&button.Button{Id: c.UUID(), Label: "Secondary", Banner: true, BannerAction: "secondary"},
 			},
 		}
 		c.fixed = &Banner{
-			Id: c.UUID(), Text: "This is the banner text for a fixed banner", Fixed: true,
+			Id: "fixedBanner", Text: "This is the banner text for a fixed banner", Fixed: true,
 			Buttons: []app.UI{
 				&button.Button{Id: c.UUID(), Label: "Primary", Banner: true, BannerAction: "primary"},
 				&button.Button{Id: c.UUID(), Label: "Secondary", Banner: true, BannerAction: "secondary"},
@@ -48,12 +48,12 @@ func (c *Demo) Render() app.UI {
 	}
 	openFloating := &button.Button{Id: c.UUID(), Label: "floating", Callback: func(button app.HTMLButton) {
 		button.OnClick(func(ctx app.Context, e app.Event) {
-			c.floating.Open()
+			ctx.NewActionWithValue(string(Open), c.floating)
 		})
 	}}
 	openFixed := &button.Button{Id: c.UUID(), Label: "fixed", Callback: func(button app.HTMLButton) {
 		button.OnClick(func(ctx app.Context, e app.Event) {
-			c.fixed.Open()
+			ctx.NewActionWithValue(string(Open), c.fixed)
 		})
 	}}
 	centered := &checkbox.Checkbox{Id: c.UUID(), Label: "centered", Callback: func(input app.HTMLInput) {
@@ -71,7 +71,6 @@ func (c *Demo) Render() app.UI {
 		layout.Grid().Body(layout.Inner().Body(
 			layout.Cell().Body(openFloating, openFixed, centered),
 			layout.CellModified("middle", 12).Body(c.message),
-			layout.CellModified("top", 12).Body(&Code{}),
 		)))
 
 }
@@ -84,13 +83,11 @@ func (c *Demo) OnMount(ctx app.Context) {
 }
 
 func (c *Demo) actionHandler(ctx app.Context, action app.Action) {
-	banner := "unknown"
-	switch action.Value {
-	case c.floating:
-		banner = "floating"
-	case c.fixed:
-		banner = "fixed"
+
+	if action.Value == c.fixed || action.Value == c.floating {
+		if b, ok := action.Value.(*Banner); ok {
+			c.message.Text = fmt.Sprintf("message from banner %q: Event=%25s Tags=%v", b.Id, action.Name, action.Tags)
+			c.message.Update()
+		}
 	}
-	c.message.Text = fmt.Sprintf("message from banner %q: Event=%25s Tags=%v", banner, action.Name, action.Tags)
-	c.message.Update()
 }

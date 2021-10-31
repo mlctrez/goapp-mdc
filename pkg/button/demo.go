@@ -48,6 +48,5 @@ func (d *Demo) Render() app.UI {
 				Callback: handleCheckboxChange(func(checkVal bool) { d.button.Raised = checkVal })},
 			&checkbox.Checkbox{Id: "toggleUnelevated", Label: "unelevated",
 				Callback: handleCheckboxChange(func(checkVal bool) { d.button.Unelevated = checkVal })}),
-		layout.CellModified("top", 12).Body(&Code{}),
 	))
 }
