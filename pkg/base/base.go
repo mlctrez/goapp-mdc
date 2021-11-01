@@ -2,6 +2,8 @@ package base
 
 import (
 	"fmt"
+	"log"
+	"reflect"
 	"strings"
 
 	"github.com/google/uuid"
@@ -10,11 +12,11 @@ import (
 
 type JsUtil struct{}
 
-func (b *JsUtil) JsValueAtPath(path string) app.Value {
-	return b.JsValueAt(app.Window(), path, true)
+func (j *JsUtil) JsValueAtPath(path string) app.Value {
+	return j.JsValueAt(app.Window(), path, true)
 }
 
-func (b *JsUtil) JsValueAt(root app.Value, path string, warn bool) app.Value {
+func (j *JsUtil) JsValueAt(root app.Value, path string, warn bool) app.Value {
 	if root == nil || root.IsUndefined() {
 		return app.Undefined()
 	}
@@ -31,8 +33,8 @@ func (b *JsUtil) JsValueAt(root app.Value, path string, warn bool) app.Value {
 	return current
 }
 
-func (b *JsUtil) JsNewAtPath(path string, args ...interface{}) app.Value {
-	v := b.JsValueAtPath(path)
+func (j *JsUtil) JsNewAtPath(path string, args ...interface{}) app.Value {
+	v := j.JsValueAtPath(path)
 	if v.Truthy() {
 		return v.New(args...)
 	}
@@ -40,20 +42,20 @@ func (b *JsUtil) JsNewAtPath(path string, args ...interface{}) app.Value {
 }
 
 // MDCRipple constructs a new mdc.ripple.MDCRipple from a provided element id
-func (b *JsUtil) MDCRipple(id string) app.Value {
-	return b.MDCRippleVal(app.Window().GetElementByID(id))
+func (j *JsUtil) MDCRipple(id string) app.Value {
+	return j.MDCRippleVal(app.Window().GetElementByID(id))
 }
 
 // MDCRippleVal constructs a new mdc.ripple.MDCRipple from a provided app.Value
-func (b *JsUtil) MDCRippleVal(val app.Value) app.Value {
+func (j *JsUtil) MDCRippleVal(val app.Value) app.Value {
 	if val == nil || val.IsUndefined() {
 		return app.Undefined()
 	}
-	return b.JsNewAtPath("mdc.ripple.MDCRipple", val)
+	return j.JsNewAtPath("mdc.ripple.MDCRipple", val)
 }
 
 // UUID generates a new uuid string for testing and demo purposes
-func (b *JsUtil) UUID() string {
+func (j *JsUtil) UUID() string {
 	return uuid.New().String()
 }
 
@@ -65,4 +67,14 @@ type Counter struct {
 
 func (c *Counter) Render() app.UI {
 	return app.Span().Text(fmt.Sprintf("counter %q is currently %d", c.Label, c.Count))
+}
+
+func (j *JsUtil) LogWithP(o interface{}, msg string) {
+	ptr := reflect.ValueOf(o).Pointer()
+	typ := reflect.TypeOf(o)
+	log.Printf("%s(%d) %s\n", typ, ptr, msg)
+}
+
+func (j *JsUtil) LogWithPf(o interface{}, msg string, args ...interface{}) {
+	j.LogWithP(o, fmt.Sprintf(msg, args))
 }

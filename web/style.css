@@ -7,13 +7,13 @@ body {
     font-family: Roboto, monospace;
 }
 
-.goapp-mdc-coming-soon {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
+/*.goapp-mdc-coming-soon {*/
+/*    position: absolute;*/
+/*    left: 50%;*/
+/*    top: 50%;*/
+/*    transform: translate(-50%, -50%);*/
+/*}*/
 
-.coming-soon-buttons {
-    text-align: center;
-}
+/*.coming-soon-buttons {*/
+/*    text-align: center;*/
+/*}*/

@@ -3,7 +3,6 @@ package drawer
 import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
-	"github.com/mlctrez/goapp-mdc/pkg/icon"
 	"github.com/mlctrez/goapp-mdc/pkg/list"
 )
 
@@ -56,10 +55,10 @@ func (d *Drawer) OnMount(context app.Context) {
 func Scrim() app.UI {
 	return app.Div().Class("mdc-drawer-scrim")
 }
-
-type NavLink struct {
-	Icon   icon.MaterialIcon
-	Active bool
-	Href   string
-	Text   string
-}
+//
+//type NavLink struct {
+//	Icon   icon.MaterialIcon
+//	Active bool
+//	Href   string
+//	Text   string
+//}

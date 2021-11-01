@@ -22,6 +22,18 @@ func (items Items) Select(index int) Items {
 	}
 	return items
 }
+func (items Items) SelectHref(href string) Items {
+	if items == nil {
+		return items
+	}
+	index := -1
+	for i, item := range items {
+		if item.Href == href {
+			index = i
+		}
+	}
+	return items.Select(index)
+}
 
 func determineSelectState(listIndex, selectedIndex int) ItemSelectState {
 	if selectedIndex < 0 {

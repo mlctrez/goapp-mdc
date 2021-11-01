@@ -1,23 +1,23 @@
 
 GIT_COMMIT := $(shell git describe --long --always 2> /dev/null)
+SCR := scripts
+PROG := bin/goappmdc
 
 build: icons wasm binary
 
 run: build
-	VERSION=dynamic ./bin/example
+	VERSION=dynamic $(PROG)
 
 static: build
 	rm -rf static
-	GEN_STATIC="true" ./bin/example
+	go run scripts/genstatic/genstatic.go
 	cp -a web/* static/web
 
-icons:
-	go run scripts/material/generate.go -output pkg/icon/material.go -package icon
+icons: bin/material
+	bin/material -output pkg/icon/material.go -package icon
 
-upload: static
-	aws s3 sync --delete ./static/ s3://mlctrez-goapp-mdc/
-	#aws s3 sync --delete --exclude web/app.wasm ./static/ s3://mlctrez-goapp-mdc/
-	#aws s3 cp ./static/web/app.wasm s3://mlctrez-goapp-mdc/web/app.wasm --content-encoding br
+upload: static bin/upload
+	bin/upload static mlctrez-goapp-mdc
 
 wasm:
 	GOARCH=wasm GOOS=js go build -ldflags="-s -w" -o web/app.wasm
@@ -26,7 +26,17 @@ wasm:
 #	brotli -q 6 -j web/app.wasm
 #	mv web/app.wasm.br web/app.wasm
 
-binary:
-	mkdir -p bin
-	go build -ldflags "-X main.GitCommit=$(GIT_COMMIT)" -o bin/example
+binary: bin
+	go build -ldflags "-X main.GitCommit=$(GIT_COMMIT)" -o $(PROG)
 
+bin:
+	mkdir -p bin
+
+bin/material: $(SCR)/material/*.go
+	cd $(SCR) && go build -o ../$@ ../$<
+
+bin/newpkg: $(SCR)/newpkg/*.go
+	cd $(SCR) && go build -o ../$@ ../$<
+
+bin/upload: $(SCR)/upload/*.go
+	cd $(SCR) && go build -o ../$@ ../$<

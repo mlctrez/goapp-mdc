@@ -14,6 +14,7 @@ type Item struct {
 	Graphic   icon.MaterialIcon
 	Text      string
 	Secondary string
+	Href      string
 	state     ItemSelectState
 	// for testing only
 	id string
@@ -37,7 +38,7 @@ func (i *Item) Render() app.UI {
 	switch i.Type {
 	case ItemTypeDivider:
 		return app.Li().Attr("role", "separator").Class("mdc-deprecated-list-divider")
-	case ItemTypeNone, ItemTypeOption:
+	case ItemTypeNone, ItemTypeOption, ItemTypeAnchor:
 		if i.Secondary == "" {
 			content = append(content, app.Text(i.Text))
 		} else {
@@ -68,6 +69,11 @@ func (i *Item) Render() app.UI {
 	}
 
 	root := i.adapt()
+
+	if i.Href != "" {
+		root.Href(i.Href)
+	}
+
 	root.Class("mdc-deprecated-list-item")
 
 	switch i.state {
@@ -96,7 +102,7 @@ func (i *Item) Render() app.UI {
 	default:
 		root.Body(
 			app.Span().Class("mdc-deprecated-list-item__ripple"),
-			app.If(i.Graphic!="",i.Graphic.IItemGraphic()).Else(),
+			app.If(i.Graphic != "", i.Graphic.IItemGraphic()).Else(),
 			app.Span().Class("mdc-deprecated-list-item__text").Body(content...),
 		)
 	}

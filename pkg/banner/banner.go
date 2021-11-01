@@ -87,3 +87,20 @@ func (b *Banner) handleOpenClose(ctx app.Context, action app.Action) {
 		}
 	}
 }
+
+func (b *Banner) ActionOpen(ctx app.Context) {
+	ctx.NewActionWithValue(string(Open), b)
+}
+
+func (b *Banner) ActionClose(ctx app.Context, onClose func(ctx app.Context, reason string)) {
+	ctx.Handle(string(Closed), func(context app.Context, action app.Action) {
+		if action.Value == b {
+			switch action.Tags["reason"] {
+			case "0":
+				onClose(context, "primary")
+			case "1":
+				onClose(context, "secondary")
+			}
+		}
+	})
+}

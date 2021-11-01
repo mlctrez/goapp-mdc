@@ -63,11 +63,22 @@ func TestItem_Render_Checkbox(t *testing.T) {
 	ct.At(0).Match(app.Li().Class("mdc-deprecated-list-item").Attr("role", "checkbox"))
 	ct.At(0, 0).Match(app.Span().Class("mdc-deprecated-list-item__ripple"))
 	ct.At(0, 1).Match(app.Span().Class("mdc-deprecated-list-item__graphic"))
-	ct.At(0, 1,0).Match(app.Div().Class("mdc-checkbox"))
-	ct.At(0, 1,0,0).Match(app.Input().Type("checkbox").Class("mdc-checkbox__native-control").ID(compo.id))
-	ct.At(0, 1,0,1).Match(checkbox.MDCCheckboxBackground())
+	ct.At(0, 1, 0).Match(app.Div().Class("mdc-checkbox"))
+	ct.At(0, 1, 0, 0).Match(app.Input().Type("checkbox").Class("mdc-checkbox__native-control").ID(compo.id))
+	ct.At(0, 1, 0, 1).Match(checkbox.MDCCheckboxBackground())
 	ct.At(0, 2).Match(app.Label().Class("mdc-deprecated-list-item__text").For(compo.id).Text(compo.Text))
 
+}
+
+func TestItem_Render_Anchor(t *testing.T) {
+	compo := &Item{Text: "anchor", Type: ItemTypeAnchor, Href: "/index.html"}
+	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
+	defer ct.Close()
+
+	ct.At(0).Match(app.A().Href(compo.Href).Class("mdc-deprecated-list-item"))
+	ct.At(0, 0).Match(app.Span().Class("mdc-deprecated-list-item__ripple"))
+	ct.At(0, 1).Match(app.Span().Class("mdc-deprecated-list-item__text"))
+	ct.At(0, 1, 0).Match(app.Text(compo.Text))
 }
 
 func TestItem_Render_ItemSelectStateTabZero(t *testing.T) {
