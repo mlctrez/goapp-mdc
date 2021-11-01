@@ -74,9 +74,6 @@ func (l *List) event(ctx app.Context, action EventType) func(this app.Value, arg
 	}
 }
 
-
-
-
 /*
 //if l.SingleSelection {
 //	l.jsApi.Set("selectedIndex", idx.Int())

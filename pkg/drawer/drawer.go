@@ -55,6 +55,7 @@ func (d *Drawer) OnMount(context app.Context) {
 func Scrim() app.UI {
 	return app.Div().Class("mdc-drawer-scrim")
 }
+
 //
 //type NavLink struct {
 //	Icon   icon.MaterialIcon

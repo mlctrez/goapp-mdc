@@ -16,7 +16,4 @@ func TestDrawer_Render(t *testing.T) {
 	ct.At(0).Match(app.Aside().ID(compo.Id).Class("mdc-drawer"))
 	ct.At(0, 0).Match(app.Div().Class("mdc-drawer__content"))
 
-
-
-
 }

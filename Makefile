@@ -6,11 +6,11 @@ PROG := bin/goappmdc
 build: icons wasm binary
 
 run: build
-	VERSION=dynamic $(PROG)
+	$(PROG) dev
 
-static: build
+static: build bin/genstatic
 	rm -rf static
-	go run scripts/genstatic/genstatic.go
+	bin/genstatic
 	cp -a web/* static/web
 
 icons: bin/material
@@ -29,6 +29,9 @@ wasm:
 binary: bin
 	go build -ldflags "-X main.GitCommit=$(GIT_COMMIT)" -o $(PROG)
 
+fmt:
+	go fmt ./...
+
 bin:
 	mkdir -p bin
 
@@ -39,4 +42,7 @@ bin/newpkg: $(SCR)/newpkg/*.go
 	cd $(SCR) && go build -o ../$@ ../$<
 
 bin/upload: $(SCR)/upload/*.go
+	cd $(SCR) && go build -o ../$@ ../$<
+
+bin/genstatic: $(SCR)/genstatic/*.go ./demo/*.go
 	cd $(SCR) && go build -o ../$@ ../$<

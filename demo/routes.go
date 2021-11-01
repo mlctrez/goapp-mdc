@@ -10,4 +10,3 @@ func Routes() {
 	app.Route("/ramen", &Ramen{})
 	app.Route("/demo", &older.Demo{})
 }
-

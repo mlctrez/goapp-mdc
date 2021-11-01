@@ -10,4 +10,3 @@ func main() {
 	app.RunWhenOnBrowser()
 	httpServer()
 }
-

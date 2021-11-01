@@ -34,9 +34,9 @@ func buildDemoMap() map[string]app.UI {
 
 type Demo struct {
 	app.Compo
-	bar          *tab.Bar
-	ActiveIndex  int
-	DemoMap      map[string]app.UI
+	bar         *tab.Bar
+	ActiveIndex int
+	DemoMap     map[string]app.UI
 }
 
 func (d *Demo) sortedDemoNames() []string {
@@ -75,6 +75,3 @@ func (d *Demo) Render() app.UI {
 		d.DemoMap[d.sortedDemoNames()[d.ActiveIndex]],
 	)
 }
-
-
-
