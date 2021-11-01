@@ -1,21 +1,22 @@
-package button
+package demo
 
 import (
 	"time"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	button2 "github.com/mlctrez/goapp-mdc/pkg/button"
 	"github.com/mlctrez/goapp-mdc/pkg/checkbox"
 	"github.com/mlctrez/goapp-mdc/pkg/layout"
 )
 
-type Demo struct {
+type ButtonDemo struct {
 	app.Compo
-	button *Button
+	button *button2.Button
 }
 
-func (d *Demo) Render() app.UI {
+func (d *ButtonDemo) Render() app.UI {
 	if d.button == nil {
-		d.button = &Button{Id: "subjectButton", Label: "a button"}
+		d.button = &button2.Button{Id: "subjectButton", Label: "a button"}
 	}
 	handleCheckboxChange := func(before func(checkVal bool)) func(input app.HTMLInput) {
 		return func(input app.HTMLInput) {
@@ -30,7 +31,7 @@ func (d *Demo) Render() app.UI {
 		}
 	}
 
-	return layout.Grid().Body(layout.Inner().Body(
+	body := layout.Grid().Body(layout.Inner().Body(
 		layout.CellModified("middle", 12).Body(d.button),
 		layout.Cell().Body(
 			&checkbox.Checkbox{Id: "toggleIcon", Label: "has icon", Callback: handleCheckboxChange(func(checkVal bool) {
@@ -49,4 +50,5 @@ func (d *Demo) Render() app.UI {
 			&checkbox.Checkbox{Id: "toggleUnelevated", Label: "unelevated",
 				Callback: handleCheckboxChange(func(checkVal bool) { d.button.Unelevated = checkVal })}),
 	))
+	return PageBody(body)
 }

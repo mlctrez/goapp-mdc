@@ -1,43 +1,17 @@
-package example
+package demo
 
 import (
-	"fmt"
-
 	"github.com/mlctrez/goapp-mdc/pkg/fab"
 	"github.com/mlctrez/goapp-mdc/pkg/helperline"
 	"github.com/mlctrez/goapp-mdc/pkg/layout"
-	"github.com/mlctrez/goapp-mdc/pkg/recaptcha"
 	"github.com/mlctrez/goapp-mdc/pkg/textarea"
 	"github.com/mlctrez/goapp-mdc/pkg/textfield"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	fetch "github.com/mlctrez/wasm-fetch"
 )
 
-type Index struct {
-	app.Compo
-}
-
-func (i *Index) Render() app.UI {
-
-	return app.Div().ID("indexPage").Body(
-		app.Div().Text("nothing to see here, version is "+app.Getenv("GOAPP_VERSION")).OnClick(func(ctx app.Context, e app.Event) {
-
-			var response, err = fetch.Fetch("https://httpbin.org/json", &fetch.Opts{Method: fetch.MethodGet})
-			if err != nil {
-				panic(err)
-			}
-			if response.Status == 200 {
-				fmt.Println(string(response.Body))
-			}
-
-		}),
-		recaptcha.New("homeRecaptcha", "homepage"),
-	)
-}
-
-type Example struct {
+type FormDemo struct {
 	app.Compo
 }
 
@@ -86,12 +60,13 @@ func textAreaExample() []app.UI {
 
 }
 
-func (e *Example) Render() app.UI {
+func (e *FormDemo) Render() app.UI {
 
-	return layout.Grid().Body(layout.Inner().Body(
+	body := layout.Grid().Body(layout.Inner().Body(
 		cell("Fab", fabExamples()...),
 		cell("Text Field", textFieldExamples()...),
 		cell("Text Area", textAreaExample()...),
 	))
+	return PageBody(body)
 
 }

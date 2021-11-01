@@ -6,9 +6,10 @@ import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
 	"github.com/mlctrez/goapp-mdc/pkg/drawer"
-	"github.com/mlctrez/goapp-mdc/pkg/icon"
 	"github.com/mlctrez/goapp-mdc/pkg/list"
 )
+
+var navigationItems list.Items
 
 type Navigation struct {
 	app.Compo
@@ -23,12 +24,8 @@ func (n *Navigation) Render() app.UI {
 
 func (n *Navigation) OnMount(ctx app.Context) {
 	if n.items == nil {
-		n.items = list.Items{
-			&list.Item{Text: "Home", Graphic: icon.MIHome, Type: list.ItemTypeAnchor, Href: "/"},
-			&list.Item{Text: "Ramen", Graphic: icon.MIRamenDining, Type: list.ItemTypeAnchor, Href: "/ramen"},
-		}
+		n.items = navigationItems
 		n.items.SelectHref(ctx.Page().URL().Path)
-
 		n.list = &list.List{Type: list.Navigation, Id: "navigationList", Items: n.items.UIList()}
 	}
 	ctx.Handle(string(list.Select), n.eventHandler)

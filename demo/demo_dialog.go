@@ -1,21 +1,23 @@
-package dialog
+package demo
 
 import (
 	"fmt"
+
 	"github.com/mlctrez/goapp-mdc/pkg/button"
+	"github.com/mlctrez/goapp-mdc/pkg/dialog"
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type Demo struct {
+type DialogDemo struct {
 	app.Compo
 }
 
-func (d *Demo) Render() app.UI {
+func (d *DialogDemo) Render() app.UI {
 	diagId := uuid.New().String()
 
-	diag := &Dialog{Id: diagId}
+	diag := &dialog.Dialog{Id: diagId}
 	diag.Title = []app.UI{app.Div().Text("Dialog Title")}
 	diag.Content = []app.UI{app.Div().Text("This is the content section of the dialog. There is quite a bit of text here to demonstrate how the dialog renders with this amount of text.")}
 
@@ -35,5 +37,5 @@ func (d *Demo) Render() app.UI {
 		})
 	}
 
-	return app.Div().Body(openDialog, diag)
+	return PageBody(openDialog, diag)
 }

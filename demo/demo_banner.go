@@ -67,12 +67,13 @@ func (c *BannerDemo) Render() app.UI {
 		})
 	}}
 
-	return app.Div().Body(
+	body := app.Div().Body(
 		c.floating, c.fixed,
 		layout.Grid().Body(layout.Inner().Body(
 			layout.Cell().Body(openFloating, openFixed, centered),
 			layout.CellModified("middle", 12).Body(c.message),
 		)))
+	return PageBody(body)
 
 }
 

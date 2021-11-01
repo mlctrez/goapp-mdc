@@ -1,20 +1,21 @@
-package drawer
+package demo
 
 import (
 	"log"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
+	"github.com/mlctrez/goapp-mdc/pkg/drawer"
 	"github.com/mlctrez/goapp-mdc/pkg/icon"
 	"github.com/mlctrez/goapp-mdc/pkg/list"
 )
 
-type Demo struct {
+type DrawerDemo struct {
 	app.Compo
 	base.JsUtil
 }
 
-func (d *Demo) Render() app.UI {
+func (d *DrawerDemo) Render() app.UI {
 
 	navItems := list.Items{
 		&list.Item{Text: "Inbox", Graphic: icon.MIInbox},
@@ -26,13 +27,14 @@ func (d *Demo) Render() app.UI {
 	}
 	navItems.Select(0)
 
-	return &Drawer{Id: d.UUID(), Type: Standard, List: &list.List{Id: "navigation", Type: list.Navigation, Items: navItems.UIList()}}
+	body := &drawer.Drawer{Id: d.UUID(), Type: drawer.Standard, List: &list.List{Id: "navigation", Type: list.Navigation, Items: navItems.UIList()}}
+	return PageBody(body)
 }
 
-func (d *Demo) OnMount(ctx app.Context) {
+func (d *DrawerDemo) OnMount(ctx app.Context) {
 	ctx.Handle(string(list.Select), d.eventHandler)
 }
 
-func (d *Demo) eventHandler(ctx app.Context, action app.Action) {
+func (d *DrawerDemo) eventHandler(ctx app.Context, action app.Action) {
 	log.Println("you clicked on item", action.Tags.Get("index"))
 }

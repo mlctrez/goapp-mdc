@@ -1,20 +1,21 @@
-package fab
+package demo
 
 import (
 	"sort"
 
+	"github.com/mlctrez/goapp-mdc/pkg/fab"
 	"github.com/mlctrez/goapp-mdc/pkg/icon"
 	"github.com/mlctrez/goapp-mdc/pkg/tab"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 )
 
-type Demo struct {
+type FabDemo struct {
 	app.Compo
 	activeIndex int
 }
 
-func (d *Demo) Render() app.UI {
+func (d *FabDemo) Render() app.UI {
 	var tabs []*tab.Tab
 
 	sortedGroupNames := sortedGroupNames()
@@ -38,10 +39,10 @@ func (d *Demo) Render() app.UI {
 	groupName := sortedGroupNames[d.activeIndex]
 	iconNames := icon.AllGroupFunctions()[groupName]()
 	for _, n := range iconNames {
-		content = append(content, &Fab{Id: "fab_" + string(n), Icon: n})
+		content = append(content, &fab.Fab{Id: "fab_" + string(n), Icon: n})
 	}
 
-	return app.Div().Body(content...)
+	return PageBody(app.Div().Body(content...))
 }
 
 func sortedGroupNames() []string {

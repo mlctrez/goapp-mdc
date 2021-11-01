@@ -18,19 +18,22 @@ type AppUpdateBanner struct {
 
 func (d *AppUpdateBanner) Render() app.UI {
 	if d.bnr == nil {
-		primary := &button.Button{Id: "updateBannerYes", Label: "yes",
-			Icon: string(icon.MIUpdate), Banner: true, BannerAction: "primary"}
-		secondary := &button.Button{Id: "updateBannerNo", Label: "later",
-			Icon: string(icon.MIWatchLater), Banner: true, BannerAction: "secondary"}
-
 		d.bnr = &banner.Banner{
 			Id: "appUpdateBanner", Fixed: true, Centered: true,
-			Text:    "A new version is available, would you like to install?",
-			Buttons: []app.UI{primary, secondary},
+			Text: "A new version is available, would you like to install?",
 		}
+		d.bnr.Buttons = d.bannerButtons()
 	}
 
 	return d.bnr
+}
+
+func (d *AppUpdateBanner) bannerButtons() []app.UI {
+	primary := &button.Button{Id: "updateBannerYes", Label: "yes",
+		Icon: string(icon.MIUpdate), Banner: true, BannerAction: "primary"}
+	secondary := &button.Button{Id: "updateBannerNo", Label: "later",
+		Icon: string(icon.MIWatchLater), Banner: true, BannerAction: "secondary"}
+	return []app.UI{primary, secondary}
 }
 
 func (d *AppUpdateBanner) onBannerClose(ctx app.Context, reason string) {
