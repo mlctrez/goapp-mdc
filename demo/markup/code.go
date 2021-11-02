@@ -1,10 +1,12 @@
 package markup
+
 type CodeDetails struct {
 	Name string
 	Code string
 }
+
 var Code = []CodeDetails{
-    CodeDetails{Name:"index.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "index.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -19,7 +21,7 @@ func (i *Index) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"banner.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "banner.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -116,7 +118,7 @@ func (c *BannerDemo) actionHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"button.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "button.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;time&quot;
@@ -173,7 +175,7 @@ func (d *ButtonDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"card.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "card.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -243,7 +245,7 @@ func GopherCard(title string) app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"checkbox.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "checkbox.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -299,7 +301,7 @@ func (d *CheckboxDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"dialog.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "dialog.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -344,7 +346,7 @@ func (d *DialogDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"drawer.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "drawer.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;log&quot;
@@ -387,7 +389,7 @@ func (d *DrawerDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"fab.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "fab.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;sort&quot;
@@ -444,7 +446,7 @@ func sortedGroupNames() []string {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"form.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "form.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/mlctrez/goapp-mdc/pkg/fab&quot;
@@ -518,7 +520,7 @@ func (e *FormDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"icon.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "icon.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -568,7 +570,7 @@ func (d *IconDemo) IconButtonClicked(button app.HTMLButton) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"list.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "list.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -643,7 +645,7 @@ func (d *ListDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"tab.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "tab.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -674,7 +676,7 @@ func (d *TabDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"code.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "code.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -752,7 +754,7 @@ func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"appupdate.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "appupdate.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -808,7 +810,59 @@ func (d *AppUpdateBanner) OnAppUpdate(ctx app.Context) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "handler.go", Code: `<pre><code class="language-go">package demo
+
+import &quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+
+func BuildHandler() *app.Handler {
+	return &amp;app.Handler{
+		Author:          &quot;mlctrez&quot;,
+		Description:     &quot;Material Design Components for go-app&quot;,
+		Icon:            app.Icon{Default: &quot;/web/logo-192.png&quot;, Large: &quot;/web/logo-512.png&quot;},
+		Name:            &quot;MDC for go-app&quot;,
+		BackgroundColor: &quot;#111&quot;,
+		Scripts: []string{
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js&quot;,
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js&quot;,
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-go.min.js&quot;,
+		},
+		Env: map[string]string{
+			&quot;RECAPTCHA_SITE_KEY&quot;: &quot;6Ldt8sgcAAAAACwJjJMaRH3b31xDXBB6IYvBpLmc&quot;,
+		},
+		ShortName: &quot;goapp-mdc&quot;,
+		Styles: []string{
+			&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot;,
+			&quot;https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap&quot;,
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.css&quot;,
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-material-light.min.css&quot;,
+			&quot;/web/style.css&quot;,
+		},
+		Title: &quot;Material Design Components for go-app&quot;,
+	}
+}
+</code></pre>
+`},
+	CodeDetails{Name: "page.go", Code: `<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+)
+
+// PageBody applies the navigation, update banner, and demo page layout to the provided pageContent.
+func PageBody(pageContent ...app.UI) app.UI {
+
+	content := []app.UI{&amp;Navigation{}}
+	content = append(content, pageContent...)
+
+	return app.Div().Body(
+		&amp;AppUpdateBanner{},
+
+		app.Div().Style(&quot;display&quot;, &quot;flex&quot;).Body(content...),
+	)
+}
+</code></pre>
+`},
+	CodeDetails{Name: "routes.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -840,65 +894,7 @@ func Routes() {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"handler.go",Code:`<pre><code class="language-go">package demo
-
-import &quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-
-func BuildHandler() *app.Handler {
-	return &amp;app.Handler{
-		Author:          &quot;mlctrez&quot;,
-		Description:     &quot;Material Design Components for go-app&quot;,
-		Icon:            app.Icon{Default: &quot;/web/logo-192.png&quot;, Large: &quot;/web/logo-512.png&quot;},
-		Name:            &quot;MDC for go-app&quot;,
-		BackgroundColor: &quot;#111&quot;,
-		Scripts: []string{
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js&quot;,
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js&quot;,
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-go.min.js&quot;,
-			//&quot;https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js&quot;,
-			//&quot;/web/material-components-web.min.js&quot;,
-			//&quot;/web/prism.js&quot;,
-		},
-		Env: map[string]string{
-			&quot;RECAPTCHA_SITE_KEY&quot;: &quot;6Ldt8sgcAAAAACwJjJMaRH3b31xDXBB6IYvBpLmc&quot;,
-		},
-		ShortName: &quot;goapp-mdc&quot;,
-		Styles: []string{
-			&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot;,
-			&quot;https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap&quot;,
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.css&quot;,
-			//&quot;https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css&quot;,
-			//&quot;/web/material-components-web.min.css&quot;,
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-material-light.min.css&quot;,
-			//&quot;/web/prism.css&quot;,
-			&quot;/web/style.css&quot;,
-		},
-		Title: &quot;Material Design Components for go-app&quot;,
-	}
-}
-</code></pre>
-`},
-    CodeDetails{Name:"page.go",Code:`<pre><code class="language-go">package demo
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-)
-
-// PageBody applies the navigation, update banner, and demo page layout to the provided pageContent.
-func PageBody(pageContent ...app.UI) app.UI {
-
-	content := []app.UI{&amp;Navigation{}}
-	content = append(content, pageContent...)
-
-	return app.Div().Body(
-		&amp;AppUpdateBanner{},
-
-		app.Div().Style(&quot;display&quot;, &quot;flex&quot;).Body(content...),
-	)
-}
-</code></pre>
-`},
-    CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "navigation.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -929,7 +925,21 @@ func (n *Navigation) OnMount(ctx app.Context) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"server.go",Code:`<pre><code class="language-go">//go:build !wasm
+	CodeDetails{Name: "main.go", Code: `<pre><code class="language-go">package main
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/demo&quot;
+)
+
+func main() {
+	demo.Routes()
+	app.RunWhenOnBrowser()
+	httpServer()
+}
+</code></pre>
+`},
+	CodeDetails{Name: "server.go", Code: `<pre><code class="language-go">//go:build !wasm
 
 package main
 
@@ -965,21 +975,7 @@ func setupVersion(handler *app.Handler) *app.Handler {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"main.go",Code:`<pre><code class="language-go">package main
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/demo&quot;
-)
-
-func main() {
-	demo.Routes()
-	app.RunWhenOnBrowser()
-	httpServer()
-}
-</code></pre>
-`},
-    CodeDetails{Name:"wasm_server.go",Code:`<pre><code class="language-go">//go:build wasm
+	CodeDetails{Name: "wasm_server.go", Code: `<pre><code class="language-go">//go:build wasm
 
 package main
 
