@@ -16,7 +16,7 @@ static: build bin/genstatic
 icons: bin/material
 	bin/material -output pkg/icon/material.go -package icon
 
-upload: bin/upload
+upload: bin/upload static
 	bin/upload static mlctrez-goapp-mdc
 
 markup: bin/markup ./*.go demo/*.go

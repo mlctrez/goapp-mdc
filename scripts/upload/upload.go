@@ -70,6 +70,10 @@ func (sf *SourceFile) Open() (io.Reader, error) {
 
 func getSourceFiles(src string) (result []*SourceFile, err error) {
 	err = filepath.Walk(src, func(path string, info fs.FileInfo, err error) error {
+		if err != nil{
+			return err
+		}
+
 		if !info.IsDir() {
 			var rp string
 			rp, err = filepath.Rel(src, path)
