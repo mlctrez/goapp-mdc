@@ -22,6 +22,7 @@ func (items Items) Select(index int) Items {
 	}
 	return items
 }
+
 func (items Items) SelectHref(href string) Items {
 	if items == nil {
 		return items

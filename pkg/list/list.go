@@ -61,6 +61,10 @@ func (l *List) OnMount(ctx app.Context) {
 	e.Call("addEventListener", string(Action), app.FuncOf(l.event(ctx, Action)))
 }
 
+func (l *List) Select(idx int) {
+	l.jsApi.Set("selectedIndex", idx)
+}
+
 func (l *List) event(ctx app.Context, action EventType) func(this app.Value, args []app.Value) interface{} {
 	return func(this app.Value, args []app.Value) interface{} {
 		if len(args) < 1 {

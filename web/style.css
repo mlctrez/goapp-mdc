@@ -5,3 +5,24 @@ body {
     color: var(--mdc-theme-text-primary-on-background, white);
     font-family: Roboto, monospace;
 }
+
+pre,
+pre[class*="language-"] {
+    /*display: block;*/
+    /*margin: 18px 0 0;*/
+    /*padding: 18px 30px;*/
+    /*border-radius: 18px;*/
+    width: available;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    overflow: auto;
+    font-family: monospace;
+    tab-size: 4;
+}
+
+pre[class*="language-"] code {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    font-family: monospace;
+}

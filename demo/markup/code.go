@@ -339,6 +339,7 @@ func (d *CheckboxDemo) Render() app.UI {
 "demo/demo_code.go":`<pre><code class="language-go">package demo
 
 import (
+	&quot;fmt&quot;
 	&quot;sort&quot;
 	&quot;strconv&quot;
 
@@ -353,6 +354,8 @@ type CodeDemo struct {
 	app.Compo
 	base.JsUtil
 	Content string
+	Active  int
+	list *list.List
 }
 
 func sortedNames() []string {
@@ -360,31 +363,50 @@ func sortedNames() []string {
 	for n := range markup.Code {
 		sortedNames = append(sortedNames, n)
 	}
+	// reverse sort here
 	sort.Slice(sortedNames, func(i, j int) bool { return sortedNames[i] &gt; sortedNames[j] })
 	return sortedNames
 }
 
+func (d *CodeDemo) OnNav(ctx app.Context) {
+	d.LogWithP(d, &quot;OnNav&quot;)
+	url := ctx.Page().URL()
+	idx, err := strconv.Atoi(url.Fragment)
+	if err != nil {
+		idx = 0
+	}
+	d.Active = idx
+	d.Content = markup.Code[sortedNames()[d.Active]]
+	d.list.Select(d.Active)
+	d.Update()
+	ctx.Defer(func(context app.Context) {
+		app.Window().Get(&quot;Prism&quot;).Call(&quot;highlightAll&quot;)
+	})
+}
+
 func (d *CodeDemo) Render() app.UI {
-
-	navItems := list.Items{}
-
-	for _, name := range sortedNames() {
-		navItems = append(navItems, &amp;list.Item{Text: name})
+	d.LogWithPf(d, &quot;Render active=%d&quot;, d.Active)
+	if d.list == nil {
+		d.LogWithP(d, &quot;new list&quot;)
+		items := list.Items{}
+		for i, name := range sortedNames() {
+			items = append(items, &amp;list.Item{Text: name,
+				Type: list.ItemTypeAnchor, Href: fmt.Sprintf(&quot;/code#%d&quot;, i)})
+		}
+		d.list = &amp;list.List{Id: &quot;codeNav&quot;, Type: list.Navigation, Items: items.UIList()}
 	}
 
-	navItems.Select(0)
+	body := &amp;drawer.Drawer{Id: &quot;codeNavigation&quot;, Type: drawer.Standard, List: d.list}
 
-	body := &amp;drawer.Drawer{Id: d.UUID(), Type: drawer.Standard, List: &amp;list.List{Id: &quot;codeNav&quot;, Type: list.Navigation, Items: navItems.UIList()}}
-
-	if d.Content ==&quot;&quot; {
+	if d.Content == &quot;&quot; {
 		d.Content = markup.Code[sortedNames()[0]]
 	}
-
 
 	return PageBody(body, app.Raw(d.Content))
 }
 
 func (d *CodeDemo) OnMount(ctx app.Context) {
+	d.LogWithPf(d, &quot;OnMount active=%d&quot;, d.Active)
 	ctx.Handle(string(list.Select), d.eventHandler)
 	app.Window().Get(&quot;Prism&quot;).Call(&quot;highlightAll&quot;)
 }
@@ -393,11 +415,7 @@ func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {
 	if selectedIndex, err := strconv.Atoi(action.Tags.Get(&quot;index&quot;)); err != nil {
 		return
 	} else {
-		d.Content = markup.Code[sortedNames()[selectedIndex]]
-		d.Update()
-		ctx.Defer(func(context app.Context) {
-			app.Window().Get(&quot;Prism&quot;).Call(&quot;highlightAll&quot;)
-		})
+		ctx.Navigate(fmt.Sprintf(&quot;/code#%d&quot;, selectedIndex))
 	}
 }
 </code></pre>
@@ -476,7 +494,8 @@ func (d *DrawerDemo) Render() app.UI {
 	}
 	navItems.Select(0)
 
-	body := &amp;drawer.Drawer{Id: d.UUID(), Type: drawer.Standard, List: &amp;list.List{Id: &quot;navigation&quot;, Type: list.Navigation, Items: navItems.UIList()}}
+	body := &amp;drawer.Drawer{Id: d.UUID(), Type: drawer.Standard,
+		List: &amp;list.List{Id: &quot;navigation&quot;, Type: list.Navigation, Items: navItems.UIList()}}
 	return PageBody(body)
 }
 

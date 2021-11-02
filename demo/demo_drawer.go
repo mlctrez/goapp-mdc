@@ -27,7 +27,8 @@ func (d *DrawerDemo) Render() app.UI {
 	}
 	navItems.Select(0)
 
-	body := &drawer.Drawer{Id: d.UUID(), Type: drawer.Standard, List: &list.List{Id: "navigation", Type: list.Navigation, Items: navItems.UIList()}}
+	body := &drawer.Drawer{Id: d.UUID(), Type: drawer.Standard,
+		List: &list.List{Id: "navigation", Type: list.Navigation, Items: navItems.UIList()}}
 	return PageBody(body)
 }
 
