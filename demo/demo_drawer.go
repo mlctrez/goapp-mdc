@@ -20,7 +20,7 @@ func (d *DrawerDemo) Render() app.UI {
 	navItems := list.Items{
 		&list.Item{Text: "Inbox", Graphic: icon.MIInbox},
 		&list.Item{Text: "Outgoing", Graphic: icon.MISend},
-		//&list.Item{Type: list.ItemTypeDivider},
+		&list.Item{Type: list.ItemTypeDivider},
 		&list.Item{Text: "Drafts", Graphic: icon.MIDrafts},
 		&list.Item{Text: "Settings", Graphic: icon.MISettings},
 		&list.Item{Text: "Ramen", Graphic: icon.MIRamenDining},

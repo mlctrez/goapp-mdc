@@ -1,4 +1,3 @@
-
 body {
     background-image: url("/web/Google_Material_Design_Logo.svg");
     background-size: cover;
@@ -6,14 +5,3 @@ body {
     color: var(--mdc-theme-text-primary-on-background, white);
     font-family: Roboto, monospace;
 }
-
-/*.goapp-mdc-coming-soon {*/
-/*    position: absolute;*/
-/*    left: 50%;*/
-/*    top: 50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*}*/
-
-/*.coming-soon-buttons {*/
-/*    text-align: center;*/
-/*}*/

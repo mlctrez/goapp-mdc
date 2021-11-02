@@ -22,6 +22,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.5.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.8.0 // indirect
 	github.com/aws/smithy-go v1.8.1 // indirect
+	github.com/gomarkdown/markdown v0.0.0-20210918233619-6c1113f12c4a // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/mlctrez/wasm-fetch v0.2.0 // indirect
 )

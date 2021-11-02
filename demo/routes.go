@@ -13,7 +13,6 @@ func addRoute(nav *list.Item, compo app.Composer) {
 }
 
 func Routes() {
-	//&list.Item{Text: "Ramen", Graphic: icon.MIRamenDining, Type: list.ItemTypeAnchor, Href: "/ramen"},
 	addRoute(&list.Item{Text: "Home", Graphic: icon.MIHome, Href: "/"}, &Index{})
 	addRoute(&list.Item{Text: "Banner", Graphic: icon.MIVoicemail, Href: "/banner"}, &BannerDemo{})
 	addRoute(&list.Item{Text: "Button", Graphic: icon.MISmartButton, Href: "/button"}, &ButtonDemo{})
@@ -26,4 +25,6 @@ func Routes() {
 	addRoute(&list.Item{Text: "Icon", Graphic: icon.MIIcecream, Href: "/icon"}, &IconDemo{})
 	addRoute(&list.Item{Text: "List", Graphic: icon.MIList, Href: "/list"}, &ListDemo{})
 	addRoute(&list.Item{Text: "Tab", Graphic: icon.MITab, Href: "/tab"}, &TabDemo{})
+	navigationItems = append(navigationItems, &list.Item{Type: list.ItemTypeDivider})
+	addRoute(&list.Item{Text: "Code", Graphic: icon.MICode, Href: "/code"}, &CodeDemo{})
 }

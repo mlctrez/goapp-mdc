@@ -19,14 +19,16 @@ func (d *DialogDemo) Render() app.UI {
 
 	diag := &dialog.Dialog{Id: diagId}
 	diag.Title = []app.UI{app.Div().Text("Dialog Title")}
-	diag.Content = []app.UI{app.Div().Text("This is the content section of the dialog. There is quite a bit of text here to demonstrate how the dialog renders with this amount of text.")}
+	diag.Content = []app.UI{app.Div().Text("This is the content section of the dialog. There is quite " +
+		"a bit of text here to demonstrate how the dialog renders with this amount of text.")}
 
 	diag.Buttons = []app.UI{
-		&button.Button{Id: diagId + "-cancel", Dialog: true, DialogAction: "cancel", Label: "cancel", Callback: func(button app.HTMLButton) {
-			button.OnClick(func(ctx app.Context, e app.Event) {
-				fmt.Println("you clicked on the cancel button")
-			})
-		}},
+		&button.Button{Id: diagId + "-cancel", Dialog: true, DialogAction: "cancel", Label: "cancel",
+			Callback: func(button app.HTMLButton) {
+				button.OnClick(func(ctx app.Context, e app.Event) {
+					fmt.Println("you clicked on the cancel button")
+				})
+			}},
 		&button.Button{Id: diagId + "-dismiss", Dialog: true, DialogAction: "dismiss", Label: "dismiss"},
 	}
 

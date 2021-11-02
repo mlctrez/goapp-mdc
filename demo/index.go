@@ -9,5 +9,5 @@ type Index struct {
 }
 
 func (i *Index) Render() app.UI {
-	return PageBody(app.Div().Text("content goes here!!"))
+	return PageBody(app.Div().Text(""))
 }

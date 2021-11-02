@@ -12,12 +12,14 @@ func BuildHandler() *app.Handler {
 		Scripts: []string{
 			//"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js",
 			"/web/material-components-web.min.js",
+			"/web/prism.js",
 		},
 		ShortName: "goapp-mdc",
 		Styles: []string{
 			"https://fonts.googleapis.com/icon?family=Material+Icons",
 			//"https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css",
 			"/web/material-components-web.min.css",
+			"/web/prism.css",
 			"/web/style.css",
 		},
 		Title: "Material Design Components for go-app",

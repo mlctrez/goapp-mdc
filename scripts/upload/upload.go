@@ -35,7 +35,7 @@ func main() {
 var msnMap = make(map[string]bool)
 
 var msn = func(src string) string {
-	if strings.HasSuffix(src, ".html") && src != "index.html" {
+	if strings.HasSuffix(src, ".html") && src != "index.html" && !strings.HasPrefix(src, "markup") {
 		wasHtml := strings.TrimSuffix(src, ".html")
 		msnMap[wasHtml] = true
 		return wasHtml
