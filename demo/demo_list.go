@@ -29,7 +29,8 @@ func (d *ListDemo) Render() app.UI {
 	singleSelectionList := list.Items{&list.Item{Text: "item one"}, &list.Item{Text: "item two"},
 		&list.Item{Text: "item three"}, &list.Item{Text: "item four"}}.Select(2)
 
-	dividedList := list.Items{&list.Item{Text: "item one"}, &list.Item{Text: "item two before divider"},
+	dividedList := list.Items{
+		&list.Item{Text: "item one"}, &list.Item{Text: "item two before divider"},
 		&list.Item{Type: list.ItemTypeDivider},
 		&list.Item{Text: "item three after divider"}, &list.Item{Text: "item four"}}
 	dividedList.Select(0)

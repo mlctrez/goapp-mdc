@@ -1,12 +1,10 @@
 package markup
-
 type CodeDetails struct {
 	Name string
 	Code string
 }
-
 var Code = []CodeDetails{
-	CodeDetails{Name: "index.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"index.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -21,7 +19,7 @@ func (i *Index) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "banner.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"banner.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -118,7 +116,7 @@ func (c *BannerDemo) actionHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "button.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"button.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;time&quot;
@@ -175,7 +173,7 @@ func (d *ButtonDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "card.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"card.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -245,7 +243,7 @@ func GopherCard(title string) app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "checkbox.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"checkbox.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -301,7 +299,7 @@ func (d *CheckboxDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "dialog.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"dialog.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -346,7 +344,7 @@ func (d *DialogDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "drawer.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"drawer.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;log&quot;
@@ -389,7 +387,7 @@ func (d *DrawerDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "fab.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"fab.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;sort&quot;
@@ -446,7 +444,7 @@ func sortedGroupNames() []string {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "form.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"form.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/mlctrez/goapp-mdc/pkg/fab&quot;
@@ -520,7 +518,7 @@ func (e *FormDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "icon.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"icon.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -570,7 +568,7 @@ func (d *IconDemo) IconButtonClicked(button app.HTMLButton) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "list.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"list.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -588,25 +586,23 @@ type ListDemo struct {
 
 func (d *ListDemo) Render() app.UI {
 
-	regularList := list.Items{&amp;list.Item{Text: &quot;item one&quot;}, &amp;list.Item{Text: &quot;item two&quot;}, &amp;list.Item{Text: &quot;item three&quot;}}.Select(-1)
+	regularList := list.Items{&amp;list.Item{Text: &quot;item one&quot;}, &amp;list.Item{Text: &quot;item two&quot;},
+		&amp;list.Item{Text: &quot;item three&quot;}}.Select(-1)
 	twoLineList := list.Items{
 		&amp;list.Item{Text: &quot;item one&quot;, Secondary: &quot;item one subtext&quot;},
 		&amp;list.Item{Text: &quot;item two&quot;, Secondary: &quot;item two subtext&quot;},
 		&amp;list.Item{Text: &quot;item three&quot;, Secondary: &quot;item three subtext&quot;}}.Select(-1)
 
-	groupedListOne := list.Items{&amp;list.Item{Text: &quot;group 1-1&quot;}, &amp;list.Item{Text: &quot;group 2-2&quot;}}.Select(0)
+	groupedListOne := list.Items{&amp;list.Item{Text: &quot;group 1-1&quot;}, &amp;list.Item{Text: &quot;group 1-2&quot;}}.Select(0)
 	groupedListTwo := list.Items{&amp;list.Item{Text: &quot;group 2-1&quot;}, &amp;list.Item{Text: &quot;group 2-2&quot;}}.Select(1)
 
 	singleSelectionList := list.Items{&amp;list.Item{Text: &quot;item one&quot;}, &amp;list.Item{Text: &quot;item two&quot;},
 		&amp;list.Item{Text: &quot;item three&quot;}, &amp;list.Item{Text: &quot;item four&quot;}}.Select(2)
 
 	dividedList := list.Items{&amp;list.Item{Text: &quot;item one&quot;}, &amp;list.Item{Text: &quot;item two before divider&quot;},
-		&amp;list.Item{Type: list.ItemTypeDivider}, &amp;list.Item{Text: &quot;item three after divider&quot;}, &amp;list.Item{Text: &quot;item four&quot;}}
+		&amp;list.Item{Type: list.ItemTypeDivider},
+		&amp;list.Item{Text: &quot;item three after divider&quot;}, &amp;list.Item{Text: &quot;item four&quot;}}
 	dividedList.Select(0)
-
-	// TODO: build out radio button component first
-	//radioGroupList := Items{&amp;Item{Text: &quot;item one&quot;}, &amp;Item{Text: &quot;item two&quot;},
-	//	&amp;Item{Text: &quot;item three&quot;}, &amp;Item{Text: &quot;item four&quot;}}.Select(2)
 
 	checkboxGroupList := make(list.Items, 4)
 	for i := range checkboxGroupList {
@@ -614,38 +610,35 @@ func (d *ListDemo) Render() app.UI {
 	}
 	checkboxGroupList.Select(-1)
 
-	body := layout.Grid().Body(layout.Inner().Body(
-		layout.Cell().Body(
-			app.P().Text(&quot;regular&quot;), &amp;list.List{Id: &quot;regularList&quot;, Items: regularList.UIList()}),
-		layout.Cell().Body(
-			app.P().Text(&quot;two line&quot;), &amp;list.List{Id: &quot;twoLineList&quot;, TwoLine: true, Items: twoLineList.UIList()}),
-		layout.Cell().Body(
-			app.P().Text(&quot;grouped&quot;),
-			&amp;list.Group{Items: []*list.GroupItem{
-				{SubHeader: &quot;group 1&quot;, List: &amp;list.List{Id: &quot;groupedList1&quot;, Items: groupedListOne.UIList()}},
-				{SubHeader: &quot;group 2&quot;, List: &amp;list.List{Id: &quot;groupedList2&quot;, Items: groupedListTwo.UIList()}},
-			}},
-		),
-		layout.Cell().Body(app.P().Text(&quot;divided List&quot;), &amp;list.List{Id: &quot;dividedList&quot;, Items: dividedList.UIList()}),
-		layout.Cell().Body(
-			app.P().Text(&quot;single select&quot;),
-			&amp;list.List{Id: &quot;singleSelectionList&quot;, Type: list.SingleSelection, Items: singleSelectionList.UIList()},
-		),
-		//layout.Cell().Body(
-		//	app.P().Text(&quot;radio group&quot;),
-		//	&amp;List{Id: &quot;radioGroupList&quot;, Type: RadioGroup, Items: radioGroupList.UIList()},
-		//),
-		layout.Cell().Body(
-			app.P().Text(&quot;checkbox group&quot;),
-			&amp;list.List{Id: &quot;checkboxGroupList&quot;, Type: list.CheckBox, Items: checkboxGroupList.UIList()},
-		),
-	))
+	body := layout.Grid().Body(
+		layout.Inner().Body(
+			layout.Cell().Body(
+				app.P().Text(&quot;regular&quot;), &amp;list.List{Id: &quot;regularList&quot;, Items: regularList.UIList()}),
+			layout.Cell().Body(
+				app.P().Text(&quot;two line&quot;), &amp;list.List{Id: &quot;twoLineList&quot;, TwoLine: true, Items: twoLineList.UIList()}),
+			layout.Cell().Body(
+				app.P().Text(&quot;grouped&quot;),
+				&amp;list.Group{Items: []*list.GroupItem{
+					{SubHeader: &quot;group 1&quot;, List: &amp;list.List{Id: &quot;groupedList1&quot;, Items: groupedListOne.UIList()}},
+					{SubHeader: &quot;group 2&quot;, List: &amp;list.List{Id: &quot;groupedList2&quot;, Items: groupedListTwo.UIList()}},
+				}},
+			),
+			layout.Cell().Body(app.P().Text(&quot;divided&quot;), &amp;list.List{Id: &quot;dividedList&quot;, Items: dividedList.UIList()}),
+			layout.Cell().Body(
+				app.P().Text(&quot;single select&quot;),
+				&amp;list.List{Id: &quot;singleSelectionList&quot;, Type: list.SingleSelection, Items: singleSelectionList.UIList()},
+			),
+			layout.Cell().Body(
+				app.P().Text(&quot;checkbox group&quot;),
+				&amp;list.List{Id: &quot;checkboxGroupList&quot;, Type: list.CheckBox, Items: checkboxGroupList.UIList()},
+			),
+		))
 	return PageBody(body)
 
 }
 </code></pre>
 `},
-	CodeDetails{Name: "tab.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"tab.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -676,7 +669,7 @@ func (d *TabDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "code.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"code.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -754,7 +747,27 @@ func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "appupdate.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"page.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+)
+
+// PageBody applies the navigation, update banner, and demo page layout to the provided pageContent.
+func PageBody(pageContent ...app.UI) app.UI {
+
+	content := []app.UI{&amp;Navigation{}}
+	content = append(content, pageContent...)
+
+	return app.Div().Body(
+		&amp;AppUpdateBanner{},
+
+		app.Div().Style(&quot;display&quot;, &quot;flex&quot;).Body(content...),
+	)
+}
+</code></pre>
+`},
+    CodeDetails{Name:"appupdate.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -810,59 +823,38 @@ func (d *AppUpdateBanner) OnAppUpdate(ctx app.Context) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "handler.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
 
-import &quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/drawer&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
+)
 
-func BuildHandler() *app.Handler {
-	return &amp;app.Handler{
-		Author:          &quot;mlctrez&quot;,
-		Description:     &quot;Material Design Components for go-app&quot;,
-		Icon:            app.Icon{Default: &quot;/web/logo-192.png&quot;, Large: &quot;/web/logo-512.png&quot;},
-		Name:            &quot;MDC for go-app&quot;,
-		BackgroundColor: &quot;#111&quot;,
-		Scripts: []string{
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js&quot;,
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js&quot;,
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-go.min.js&quot;,
-		},
-		Env: map[string]string{
-			&quot;RECAPTCHA_SITE_KEY&quot;: &quot;6Ldt8sgcAAAAACwJjJMaRH3b31xDXBB6IYvBpLmc&quot;,
-		},
-		ShortName: &quot;goapp-mdc&quot;,
-		Styles: []string{
-			&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot;,
-			&quot;https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap&quot;,
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.css&quot;,
-			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-material-light.min.css&quot;,
-			&quot;/web/style.css&quot;,
-		},
-		Title: &quot;Material Design Components for go-app&quot;,
+var NavigationItems list.Items
+
+type Navigation struct {
+	app.Compo
+	base.JsUtil
+	items list.Items
+	list  *list.List
+}
+
+func (n *Navigation) Render() app.UI {
+	return &amp;drawer.Drawer{Type: drawer.Standard, Id: &quot;navigationDrawer&quot;, List: n.list}
+}
+
+func (n *Navigation) OnMount(ctx app.Context) {
+	if n.items == nil {
+		n.items = NavigationItems
+		n.items.SelectHref(ctx.Page().URL().Path)
+		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
 	}
 }
 </code></pre>
 `},
-	CodeDetails{Name: "page.go", Code: `<pre><code class="language-go">package demo
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-)
-
-// PageBody applies the navigation, update banner, and demo page layout to the provided pageContent.
-func PageBody(pageContent ...app.UI) app.UI {
-
-	content := []app.UI{&amp;Navigation{}}
-	content = append(content, pageContent...)
-
-	return app.Div().Body(
-		&amp;AppUpdateBanner{},
-
-		app.Div().Style(&quot;display&quot;, &quot;flex&quot;).Body(content...),
-	)
-}
-</code></pre>
-`},
-	CodeDetails{Name: "routes.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -894,38 +886,39 @@ func Routes() {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "navigation.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"handler.go",Code:`<pre><code class="language-go">package demo
 
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/drawer&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
-)
+import &quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
 
-var NavigationItems list.Items
-
-type Navigation struct {
-	app.Compo
-	base.JsUtil
-	items list.Items
-	list  *list.List
-}
-
-func (n *Navigation) Render() app.UI {
-	return &amp;drawer.Drawer{Type: drawer.Standard, Id: &quot;navigationDrawer&quot;, List: n.list}
-}
-
-func (n *Navigation) OnMount(ctx app.Context) {
-	if n.items == nil {
-		n.items = NavigationItems
-		n.items.SelectHref(ctx.Page().URL().Path)
-		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
+func BuildHandler() *app.Handler {
+	return &amp;app.Handler{
+		Author:          &quot;mlctrez&quot;,
+		Description:     &quot;Material Design Components for go-app&quot;,
+		Icon:            app.Icon{Default: &quot;/web/logo-192.png&quot;, Large: &quot;/web/logo-512.png&quot;},
+		Name:            &quot;MDC for go-app&quot;,
+		BackgroundColor: &quot;#111&quot;,
+		Scripts: []string{
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js&quot;,
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js&quot;,
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-go.min.js&quot;,
+		},
+		Env: map[string]string{
+			&quot;RECAPTCHA_SITE_KEY&quot;: &quot;6Ldt8sgcAAAAACwJjJMaRH3b31xDXBB6IYvBpLmc&quot;,
+		},
+		ShortName: &quot;goapp-mdc&quot;,
+		Styles: []string{
+			&quot;https://fonts.googleapis.com/icon?family=Material+Icons&quot;,
+			&quot;https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap&quot;,
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.css&quot;,
+			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-material-light.min.css&quot;,
+			&quot;/web/style.css&quot;,
+		},
+		Title: &quot;Material Design Components for go-app&quot;,
 	}
 }
 </code></pre>
 `},
-	CodeDetails{Name: "main.go", Code: `<pre><code class="language-go">package main
+    CodeDetails{Name:"main.go",Code:`<pre><code class="language-go">package main
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -939,7 +932,7 @@ func main() {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "server.go", Code: `<pre><code class="language-go">//go:build !wasm
+    CodeDetails{Name:"server.go",Code:`<pre><code class="language-go">//go:build !wasm
 
 package main
 
@@ -975,7 +968,7 @@ func setupVersion(handler *app.Handler) *app.Handler {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "wasm_server.go", Code: `<pre><code class="language-go">//go:build wasm
+    CodeDetails{Name:"wasm_server.go",Code:`<pre><code class="language-go">//go:build wasm
 
 package main
 
