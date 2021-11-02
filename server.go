@@ -12,6 +12,7 @@ import (
 	"github.com/mlctrez/goapp-mdc/demo"
 )
 
+// GitCommit is set using : go build -ldflags "-X main.GitCommit=$(GIT_COMMIT)"
 var GitCommit string
 
 func httpServer() {
