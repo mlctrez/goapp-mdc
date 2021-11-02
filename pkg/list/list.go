@@ -62,7 +62,14 @@ func (l *List) OnMount(ctx app.Context) {
 }
 
 func (l *List) Select(idx int) {
+	for _, item := range l.Items {
+		value := item.JSValue()
+		if value.Truthy() {
+			value.Call("blur")
+		}
+	}
 	l.jsApi.Set("selectedIndex", idx)
+
 }
 
 func (l *List) event(ctx app.Context, action EventType) func(this app.Value, args []app.Value) interface{} {

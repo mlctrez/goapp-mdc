@@ -25,7 +25,7 @@ func (d CardDemo) Render() app.UI {
 	}
 
 	body := layout.Grid().Body(
-		layout.Inner().Body(
+		layout.Inner().Style("display", "flex").Body(
 			layout.Cell().Body(
 				&card.Card{Id: uuid.New().String(), Padding: 16,
 					PrimaryAction: []app.UI{app.Div().Text("Primary action card no outline")}},
@@ -38,26 +38,31 @@ func (d CardDemo) Render() app.UI {
 				&card.Card{Id: uuid.New().String(), Outlined: true, Padding: 16,
 					PrimaryAction: []app.UI{app.Div().Text("Primary action card card with buttons")},
 					ActionButtons: []app.UI{
-						&button.Button{Id: uuid.New().String(), CardAction: true, Label: "Button One", Callback: buttonCallback("one")},
-						&button.Button{Id: uuid.New().String(), CardAction: true, Label: "Button Two", Callback: buttonCallback("two")},
+						&button.Button{Id: uuid.New().String(), CardAction: true,
+							Label: "Button One", Callback: buttonCallback("one")},
+						&button.Button{Id: uuid.New().String(), CardAction: true,
+							Label: "Button Two", Callback: buttonCallback("two")},
 					},
 				},
 			),
-			layout.Cell().Body(
-				// an example media card with title
-				&card.Card{Id: uuid.New().String(), Height: 100, Width: 100,
-					PrimaryAction: []app.UI{
-						&card.Media{Width: 100, Height: 100, Image: "/web/logo-192.png", Title: "Media"},
-					}},
-			),
-			layout.Cell().Body(
-				// an example media card with title
-				&card.Card{Id: uuid.New().String(), Height: 100, Width: 100,
-					PrimaryAction: []app.UI{
-						&card.Media{Width: 100, Height: 100, Image: "/web/logo-192.png"},
-					}},
-			),
+			layout.Cell().Body(GopherCard("Media")),
+			layout.Cell().Body(GopherCard("")),
+			gopherAttribution(),
 		),
 	)
 	return PageBody(body)
+}
+
+func gopherAttribution() app.HTMLDiv {
+	return layout.CellModified("bottom", 12).Body(
+		app.Text("Gopher images courtesy of "),
+		app.A().Href("https://github.com/golang-samples/gopher-vector").Text("gopher-vector"),
+		app.Br(),
+		app.Text("Licensed under the Creative Commons 3.0 Attributions license."))
+}
+
+func GopherCard(title string) app.UI {
+	return &card.Card{Id: uuid.New().String(), Width: 202, Height: 259,
+		PrimaryAction: []app.UI{&card.Media{
+			Width: 202, Height: 259, Image: "/web/gopher-front.png", Title: title}}}
 }

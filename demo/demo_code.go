@@ -2,7 +2,6 @@ package demo
 
 import (
 	"fmt"
-	"sort"
 	"strconv"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
@@ -17,60 +16,55 @@ type CodeDemo struct {
 	base.JsUtil
 	Content string
 	Active  int
-	list *list.List
-}
-
-func sortedNames() []string {
-	var sortedNames []string
-	for n := range markup.Code {
-		sortedNames = append(sortedNames, n)
-	}
-	// reverse sort here
-	sort.Slice(sortedNames, func(i, j int) bool { return sortedNames[i] > sortedNames[j] })
-	return sortedNames
+	list    *list.List
 }
 
 func (d *CodeDemo) OnNav(ctx app.Context) {
-	d.LogWithP(d, "OnNav")
-	url := ctx.Page().URL()
-	idx, err := strconv.Atoi(url.Fragment)
-	if err != nil {
-		idx = 0
-	}
-	d.Active = idx
-	d.Content = markup.Code[sortedNames()[d.Active]]
+	d.SetActive(urlFragmentToInt(ctx))
 	d.list.Select(d.Active)
 	d.Update()
-	ctx.Defer(func(context app.Context) {
-		app.Window().Get("Prism").Call("highlightAll")
-	})
+	ctx.Defer(prismHiglightAll)
+}
+
+func (d *CodeDemo) SetActive(index int) {
+	if index < 0 || index > len(markup.Code)-1 {
+		d.Active = 0
+	} else {
+		d.Active = index
+	}
+}
+
+func urlFragmentToInt(ctx app.Context) (result int) {
+	if idx, err := strconv.Atoi(ctx.Page().URL().Fragment); err == nil {
+		result = idx
+	}
+	return
 }
 
 func (d *CodeDemo) Render() app.UI {
-	d.LogWithPf(d, "Render active=%d", d.Active)
 	if d.list == nil {
-		d.LogWithP(d, "new list")
 		items := list.Items{}
-		for i, name := range sortedNames() {
-			items = append(items, &list.Item{Text: name,
+		for i, c := range markup.Code {
+			items = append(items, &list.Item{Text: c.Name,
 				Type: list.ItemTypeAnchor, Href: fmt.Sprintf("/code#%d", i)})
 		}
 		d.list = &list.List{Id: "codeNav", Type: list.Navigation, Items: items.UIList()}
 	}
 
 	body := &drawer.Drawer{Id: "codeNavigation", Type: drawer.Standard, List: d.list}
-
-	if d.Content == "" {
-		d.Content = markup.Code[sortedNames()[0]]
-	}
-
+	d.Content = markup.Code[d.Active].Code
 	return PageBody(body, app.Raw(d.Content))
 }
 
+func prismHiglightAll(ctx app.Context) {
+	prism := app.Window().Get("Prism")
+	if prism.Truthy() {
+		prism.Call("highlightAll")
+	}
+}
+
 func (d *CodeDemo) OnMount(ctx app.Context) {
-	d.LogWithPf(d, "OnMount active=%d", d.Active)
-	ctx.Handle(string(list.Select), d.eventHandler)
-	app.Window().Get("Prism").Call("highlightAll")
+	ctx.Defer(prismHiglightAll)
 }
 
 func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {

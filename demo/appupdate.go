@@ -1,8 +1,6 @@
 package demo
 
 import (
-	"log"
-
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/banner"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
@@ -10,6 +8,7 @@ import (
 	"github.com/mlctrez/goapp-mdc/pkg/icon"
 )
 
+// AppUpdateBanner demonstrates how to wrap banner.Banner to handle go-app OnAppUpdate.
 type AppUpdateBanner struct {
 	app.Compo
 	base.JsUtil
@@ -24,7 +23,6 @@ func (d *AppUpdateBanner) Render() app.UI {
 		}
 		d.bnr.Buttons = d.bannerButtons()
 	}
-
 	return d.bnr
 }
 
@@ -37,12 +35,11 @@ func (d *AppUpdateBanner) bannerButtons() []app.UI {
 }
 
 func (d *AppUpdateBanner) onBannerClose(ctx app.Context, reason string) {
-	log.Println("banner was closed with reason", reason)
 	switch reason {
-	case "primary":
+	case "primary": // Yes button
 		ctx.Reload()
-	case "secondary":
-		// set a timer to open again in X hours?
+	case "secondary": // Later button
+		// This could SetState for a future time to ask
 	}
 }
 

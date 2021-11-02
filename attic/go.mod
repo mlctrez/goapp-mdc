@@ -5,6 +5,7 @@ go 1.17
 require (
 	cloud.google.com/go/recaptchaenterprise v1.0.0
 	github.com/maxence-charriere/go-app/v9 v9.1.2
+	github.com/mlctrez/wasm-fetch v0.2.0
 	google.golang.org/api v0.60.0
 	google.golang.org/genproto v0.0.0-20211029142109-e255c875f7c7
 )

@@ -44,11 +44,11 @@ func (d *ListDemo) Render() app.UI {
 
 	body := layout.Grid().Body(layout.Inner().Body(
 		layout.Cell().Body(
-			app.P().Text("regular list"), &list.List{Id: "regularList", Items: regularList.UIList()}),
+			app.P().Text("regular"), &list.List{Id: "regularList", Items: regularList.UIList()}),
 		layout.Cell().Body(
-			app.P().Text("two line list"), &list.List{Id: "twoLineList", TwoLine: true, Items: twoLineList.UIList()}),
+			app.P().Text("two line"), &list.List{Id: "twoLineList", TwoLine: true, Items: twoLineList.UIList()}),
 		layout.Cell().Body(
-			app.P().Text("grouped List"),
+			app.P().Text("grouped"),
 			&list.Group{Items: []*list.GroupItem{
 				{SubHeader: "group 1", List: &list.List{Id: "groupedList1", Items: groupedListOne.UIList()}},
 				{SubHeader: "group 2", List: &list.List{Id: "groupedList2", Items: groupedListTwo.UIList()}},
@@ -56,7 +56,7 @@ func (d *ListDemo) Render() app.UI {
 		),
 		layout.Cell().Body(app.P().Text("divided List"), &list.List{Id: "dividedList", Items: dividedList.UIList()}),
 		layout.Cell().Body(
-			app.P().Text("single selection"),
+			app.P().Text("single select"),
 			&list.List{Id: "singleSelectionList", Type: list.SingleSelection, Items: singleSelectionList.UIList()},
 		),
 		//layout.Cell().Body(

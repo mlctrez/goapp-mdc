@@ -11,6 +11,7 @@ import (
 
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/parser"
+	"github.com/mlctrez/goapp-mdc/demo"
 )
 
 func main() {
@@ -24,7 +25,7 @@ func main() {
 		panic(err)
 	}
 
-	var paths []string
+	paths := make(map[string]bool)
 
 	err = filepath.Walk(getwd, func(path string, info fs.FileInfo, err error) error {
 		if strings.HasSuffix(info.Name(), ".go") {
@@ -35,12 +36,12 @@ func main() {
 			}
 			// add root files
 			if !strings.Contains(rel, "/") {
-				paths = append(paths, rel)
+				paths[rel] = true
 			}
 			if strings.HasPrefix(rel, "demo/") &&
 				!strings.HasPrefix(rel, "demo/older") &&
 				!strings.HasPrefix(rel, "demo/markup") {
-				paths = append(paths, rel)
+				paths[rel] = true
 			}
 		}
 		return nil
@@ -55,6 +56,37 @@ func main() {
 		panic(err)
 	}
 
+
+	var orderedPaths []string
+
+	demo.Routes()
+	// navigation items as they appear on the page, match these
+	// with the demo code path based on demo/demo_<name>.go
+	// where <name> will be the href
+	for _, item := range demo.NavigationItems {
+		cp := strings.TrimPrefix(item.Href, "/")
+		if cp == "" {
+			cp = "index"
+		}
+		codePath := fmt.Sprintf("demo/demo_%s.go", cp)
+		if paths[codePath] {
+			delete(paths, codePath)
+			orderedPaths = append(orderedPaths, codePath)
+		}
+	}
+	for k := range paths {
+		if strings.HasPrefix(k, "demo/") {
+			delete(paths, k)
+			orderedPaths = append(orderedPaths, k)
+		}
+	}
+
+	var mainPackage []string
+	for k := range paths {
+		mainPackage = append(mainPackage, k)
+	}
+	orderedPaths = append(orderedPaths, mainPackage...)
+
 	open, err := os.Create(output)
 	if err != nil {
 		panic(err)
@@ -63,9 +95,15 @@ func main() {
 	buff := bytes.Buffer{}
 	buff.WriteString("package markup\n")
 
-	buff.WriteString("var Code = map[string]string{\n")
 
-	for _, path := range paths {
+	buff.WriteString("type CodeDetails struct {\n")
+	buff.WriteString("	Name string\n")
+	buff.WriteString("	Code string\n")
+	buff.WriteString("}\n")
+
+	buff.WriteString("var Code = []CodeDetails{\n")
+
+	for _, path := range orderedPaths {
 		buf := bytes.Buffer{}
 		buf.WriteString("```go\n")
 		file, err := os.ReadFile(path)
@@ -77,8 +115,10 @@ func main() {
 		p := parser.NewWithExtensions(parser.CommonExtensions | parser.AutoHeadingIDs)
 		html := markdown.ToHTML(buf.Bytes(), p, nil)
 
-		buff.WriteString(fmt.Sprintf("%q:%s", path, "`"+string(html)+"`,\n"))
-		_ = html
+		path = strings.Replace(path, "demo/", "", 1)
+		path = strings.Replace(path, "demo_", "", 1)
+
+		buff.WriteString(fmt.Sprintf("    CodeDetails{Name:%q,Code:`%s`},\n", path, string(html)))
 	}
 	buff.WriteString("}\n")
 

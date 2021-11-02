@@ -8,7 +8,7 @@ import (
 
 func addRoute(nav *list.Item, compo app.Composer) {
 	nav.Type = list.ItemTypeAnchor
-	navigationItems = append(navigationItems, nav)
+	NavigationItems = append(NavigationItems, nav)
 	app.Route(nav.Href, compo)
 }
 
@@ -25,6 +25,6 @@ func Routes() {
 	addRoute(&list.Item{Text: "Icon", Graphic: icon.MIIcecream, Href: "/icon"}, &IconDemo{})
 	addRoute(&list.Item{Text: "List", Graphic: icon.MIList, Href: "/list"}, &ListDemo{})
 	addRoute(&list.Item{Text: "Tab", Graphic: icon.MITab, Href: "/tab"}, &TabDemo{})
-	navigationItems = append(navigationItems, &list.Item{Type: list.ItemTypeDivider})
+	NavigationItems = append(NavigationItems, &list.Item{Type: list.ItemTypeDivider})
 	addRoute(&list.Item{Text: "Code", Graphic: icon.MICode, Href: "/code"}, &CodeDemo{})
 }

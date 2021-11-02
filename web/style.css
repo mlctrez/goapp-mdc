@@ -1,23 +1,13 @@
 body {
-    background-image: url("/web/Google_Material_Design_Logo.svg");
-    background-size: cover;
-    background-color: #2d2c2c;
-    color: var(--mdc-theme-text-primary-on-background, white);
     font-family: Roboto, monospace;
 }
 
 pre,
 pre[class*="language-"] {
-    /*display: block;*/
-    /*margin: 18px 0 0;*/
-    /*padding: 18px 30px;*/
-    /*border-radius: 18px;*/
-    width: available;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.0);
     font-size: 14px;
-    overflow: auto;
     font-family: monospace;
-    tab-size: 4;
+    tab-size: 2;
 }
 
 pre[class*="language-"] code {
