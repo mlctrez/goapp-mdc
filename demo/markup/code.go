@@ -200,7 +200,7 @@ func (d CardDemo) Render() app.UI {
 	}
 
 	body := layout.Grid().Body(
-		layout.Inner().Style(&quot;display&quot;,&quot;flex&quot;).Body(
+		layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(
 			layout.Cell().Body(
 				&amp;card.Card{Id: uuid.New().String(), Padding: 16,
 					PrimaryAction: []app.UI{app.Div().Text(&quot;Primary action card no outline&quot;)}},
@@ -213,27 +213,33 @@ func (d CardDemo) Render() app.UI {
 				&amp;card.Card{Id: uuid.New().String(), Outlined: true, Padding: 16,
 					PrimaryAction: []app.UI{app.Div().Text(&quot;Primary action card card with buttons&quot;)},
 					ActionButtons: []app.UI{
-						&amp;button.Button{Id: uuid.New().String(), CardAction: true, Label: &quot;Button One&quot;, Callback: buttonCallback(&quot;one&quot;)},
-						&amp;button.Button{Id: uuid.New().String(), CardAction: true, Label: &quot;Button Two&quot;, Callback: buttonCallback(&quot;two&quot;)},
+						&amp;button.Button{Id: uuid.New().String(), CardAction: true,
+							Label: &quot;Button One&quot;, Callback: buttonCallback(&quot;one&quot;)},
+						&amp;button.Button{Id: uuid.New().String(), CardAction: true,
+							Label: &quot;Button Two&quot;, Callback: buttonCallback(&quot;two&quot;)},
 					},
 				},
 			),
 			layout.Cell().Body(GopherCard(&quot;Media&quot;)),
 			layout.Cell().Body(GopherCard(&quot;&quot;)),
-			layout.CellModified(&quot;bottom&quot;, 12).Body(app.Text(&quot;Gopher images courtesy of &quot;),
-				app.A().Href(&quot;https://github.com/golang-samples/gopher-vector&quot;).Text(&quot;gopher-vector&quot;),
-				app.Br(),
-				app.Text(&quot;Licensed under the Creative Commons 3.0 Attributions license.&quot;)),
+			gopherAttribution(),
 		),
 	)
 	return PageBody(body)
 }
 
+func gopherAttribution() app.HTMLDiv {
+	return layout.CellModified(&quot;bottom&quot;, 12).Body(
+		app.Text(&quot;Gopher images courtesy of &quot;),
+		app.A().Href(&quot;https://github.com/golang-samples/gopher-vector&quot;).Text(&quot;gopher-vector&quot;),
+		app.Br(),
+		app.Text(&quot;Licensed under the Creative Commons 3.0 Attributions license.&quot;))
+}
+
 func GopherCard(title string) app.UI {
 	return &amp;card.Card{Id: uuid.New().String(), Width: 202, Height: 259,
-		PrimaryAction: []app.UI{
-			&amp;card.Media{Width: 202, Height: 259, Image: &quot;/web/gopher-front.png&quot;, Title: title},
-		}}
+		PrimaryAction: []app.UI{&amp;card.Media{
+			Width: 202, Height: 259, Image: &quot;/web/gopher-front.png&quot;, Title: title}}}
 }
 </code></pre>
 `},
@@ -746,6 +752,94 @@ func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
+    CodeDetails{Name:"appupdate.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/banner&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/button&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
+)
+
+// AppUpdateBanner demonstrates how to wrap banner.Banner to handle go-app OnAppUpdate.
+type AppUpdateBanner struct {
+	app.Compo
+	base.JsUtil
+	bnr *banner.Banner
+}
+
+func (d *AppUpdateBanner) Render() app.UI {
+	if d.bnr == nil {
+		d.bnr = &amp;banner.Banner{
+			Id: &quot;appUpdateBanner&quot;, Fixed: true, Centered: true,
+			Text: &quot;A new version is available, would you like to install?&quot;,
+		}
+		d.bnr.Buttons = d.bannerButtons()
+	}
+	return d.bnr
+}
+
+func (d *AppUpdateBanner) bannerButtons() []app.UI {
+	primary := &amp;button.Button{Id: &quot;updateBannerYes&quot;, Label: &quot;yes&quot;,
+		Icon: string(icon.MIUpdate), Banner: true, BannerAction: &quot;primary&quot;}
+	secondary := &amp;button.Button{Id: &quot;updateBannerNo&quot;, Label: &quot;later&quot;,
+		Icon: string(icon.MIWatchLater), Banner: true, BannerAction: &quot;secondary&quot;}
+	return []app.UI{primary, secondary}
+}
+
+func (d *AppUpdateBanner) onBannerClose(ctx app.Context, reason string) {
+	switch reason {
+	case &quot;primary&quot;: // Yes button
+		ctx.Reload()
+	case &quot;secondary&quot;: // Later button
+		// This could SetState for a future time to ask
+	}
+}
+
+func (d *AppUpdateBanner) OnMount(ctx app.Context) {
+	d.bnr.ActionClose(ctx, d.onBannerClose)
+}
+
+func (d *AppUpdateBanner) OnAppUpdate(ctx app.Context) {
+	if ctx.AppUpdateAvailable() {
+		d.bnr.ActionOpen(ctx)
+	}
+}
+</code></pre>
+`},
+    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
+)
+
+func addRoute(nav *list.Item, compo app.Composer) {
+	nav.Type = list.ItemTypeAnchor
+	NavigationItems = append(NavigationItems, nav)
+	app.Route(nav.Href, compo)
+}
+
+func Routes() {
+	addRoute(&amp;list.Item{Text: &quot;Home&quot;, Graphic: icon.MIHome, Href: &quot;/&quot;}, &amp;Index{})
+	addRoute(&amp;list.Item{Text: &quot;Banner&quot;, Graphic: icon.MIVoicemail, Href: &quot;/banner&quot;}, &amp;BannerDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Button&quot;, Graphic: icon.MISmartButton, Href: &quot;/button&quot;}, &amp;ButtonDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Card&quot;, Graphic: icon.MICreditCard, Href: &quot;/card&quot;}, &amp;CardDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Checkbox&quot;, Graphic: icon.MICheckBox, Href: &quot;/checkbox&quot;}, &amp;CheckboxDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Dialog&quot;, Graphic: icon.MISpeaker, Href: &quot;/dialog&quot;}, &amp;DialogDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Drawer&quot;, Graphic: icon.MIDashboard, Href: &quot;/drawer&quot;}, &amp;DrawerDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Fab&quot;, Graphic: icon.MIFavorite, Href: &quot;/fab&quot;}, &amp;FabDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Form&quot;, Graphic: icon.MIInput, Href: &quot;/form&quot;}, &amp;FormDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Icon&quot;, Graphic: icon.MIIcecream, Href: &quot;/icon&quot;}, &amp;IconDemo{})
+	addRoute(&amp;list.Item{Text: &quot;List&quot;, Graphic: icon.MIList, Href: &quot;/list&quot;}, &amp;ListDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Tab&quot;, Graphic: icon.MITab, Href: &quot;/tab&quot;}, &amp;TabDemo{})
+	NavigationItems = append(NavigationItems, &amp;list.Item{Type: list.ItemTypeDivider})
+	addRoute(&amp;list.Item{Text: &quot;Code&quot;, Graphic: icon.MICode, Href: &quot;/code&quot;}, &amp;CodeDemo{})
+}
+</code></pre>
+`},
     CodeDetails{Name:"handler.go",Code:`<pre><code class="language-go">package demo
 
 import &quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -804,94 +898,6 @@ func PageBody(pageContent ...app.UI) app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
-)
-
-func addRoute(nav *list.Item, compo app.Composer) {
-	nav.Type = list.ItemTypeAnchor
-	NavigationItems = append(NavigationItems, nav)
-	app.Route(nav.Href, compo)
-}
-
-func Routes() {
-	addRoute(&amp;list.Item{Text: &quot;Home&quot;, Graphic: icon.MIHome, Href: &quot;/&quot;}, &amp;Index{})
-	addRoute(&amp;list.Item{Text: &quot;Banner&quot;, Graphic: icon.MIVoicemail, Href: &quot;/banner&quot;}, &amp;BannerDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Button&quot;, Graphic: icon.MISmartButton, Href: &quot;/button&quot;}, &amp;ButtonDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Card&quot;, Graphic: icon.MICreditCard, Href: &quot;/card&quot;}, &amp;CardDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Checkbox&quot;, Graphic: icon.MICheckBox, Href: &quot;/checkbox&quot;}, &amp;CheckboxDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Dialog&quot;, Graphic: icon.MISpeaker, Href: &quot;/dialog&quot;}, &amp;DialogDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Drawer&quot;, Graphic: icon.MIDashboard, Href: &quot;/drawer&quot;}, &amp;DrawerDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Fab&quot;, Graphic: icon.MIFavorite, Href: &quot;/fab&quot;}, &amp;FabDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Form&quot;, Graphic: icon.MIInput, Href: &quot;/form&quot;}, &amp;FormDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Icon&quot;, Graphic: icon.MIIcecream, Href: &quot;/icon&quot;}, &amp;IconDemo{})
-	addRoute(&amp;list.Item{Text: &quot;List&quot;, Graphic: icon.MIList, Href: &quot;/list&quot;}, &amp;ListDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Tab&quot;, Graphic: icon.MITab, Href: &quot;/tab&quot;}, &amp;TabDemo{})
-	NavigationItems = append(NavigationItems, &amp;list.Item{Type: list.ItemTypeDivider})
-	addRoute(&amp;list.Item{Text: &quot;Code&quot;, Graphic: icon.MICode, Href: &quot;/code&quot;}, &amp;CodeDemo{})
-}
-</code></pre>
-`},
-    CodeDetails{Name:"appupdate.go",Code:`<pre><code class="language-go">package demo
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/banner&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/button&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
-)
-
-// AppUpdateBanner demonstrates how to wrap banner.Banner to handle go-app OnAppUpdate.
-type AppUpdateBanner struct {
-	app.Compo
-	base.JsUtil
-	bnr *banner.Banner
-}
-
-func (d *AppUpdateBanner) Render() app.UI {
-	if d.bnr == nil {
-		d.bnr = &amp;banner.Banner{
-			Id: &quot;appUpdateBanner&quot;, Fixed: true, Centered: true,
-			Text: &quot;A new version is available, would you like to install?&quot;,
-		}
-		d.bnr.Buttons = d.bannerButtons()
-	}
-	return d.bnr
-}
-
-func (d *AppUpdateBanner) bannerButtons() []app.UI {
-	primary := &amp;button.Button{Id: &quot;updateBannerYes&quot;, Label: &quot;yes&quot;,
-		Icon: string(icon.MIUpdate), Banner: true, BannerAction: &quot;primary&quot;}
-	secondary := &amp;button.Button{Id: &quot;updateBannerNo&quot;, Label: &quot;later&quot;,
-		Icon: string(icon.MIWatchLater), Banner: true, BannerAction: &quot;secondary&quot;}
-	return []app.UI{primary, secondary}
-}
-
-func (d *AppUpdateBanner) onBannerClose(ctx app.Context, reason string) {
-	switch reason {
-	case &quot;primary&quot;: // Yes button
-		ctx.Reload()
-	case &quot;secondary&quot;: // Later button
-		// This could SetState for a future time to ask
-	}
-}
-
-func (d *AppUpdateBanner) OnMount(ctx app.Context) {
-	d.bnr.ActionClose(ctx, d.onBannerClose)
-}
-
-func (d *AppUpdateBanner) OnAppUpdate(ctx app.Context) {
-	if ctx.AppUpdateAvailable() {
-		d.bnr.ActionOpen(ctx)
-	}
-}
-</code></pre>
-`},
     CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
 
 import (
@@ -921,27 +927,6 @@ func (n *Navigation) OnMount(ctx app.Context) {
 		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
 	}
 }
-</code></pre>
-`},
-    CodeDetails{Name:"main.go",Code:`<pre><code class="language-go">package main
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/demo&quot;
-)
-
-func main() {
-	demo.Routes()
-	app.RunWhenOnBrowser()
-	httpServer()
-}
-</code></pre>
-`},
-    CodeDetails{Name:"wasm_server.go",Code:`<pre><code class="language-go">//go:build wasm
-
-package main
-
-func httpServer() {}
 </code></pre>
 `},
     CodeDetails{Name:"server.go",Code:`<pre><code class="language-go">//go:build !wasm
@@ -978,6 +963,27 @@ func setupVersion(handler *app.Handler) *app.Handler {
 	}
 	return handler
 }
+</code></pre>
+`},
+    CodeDetails{Name:"main.go",Code:`<pre><code class="language-go">package main
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/demo&quot;
+)
+
+func main() {
+	demo.Routes()
+	app.RunWhenOnBrowser()
+	httpServer()
+}
+</code></pre>
+`},
+    CodeDetails{Name:"wasm_server.go",Code:`<pre><code class="language-go">//go:build wasm
+
+package main
+
+func httpServer() {}
 </code></pre>
 `},
 }
