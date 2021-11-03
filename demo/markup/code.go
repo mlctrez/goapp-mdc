@@ -1,10 +1,12 @@
 package markup
+
 type CodeDetails struct {
 	Name string
 	Code string
 }
+
 var Code = []CodeDetails{
-    CodeDetails{Name:"index.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "index.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -19,7 +21,7 @@ func (i *Index) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"banner.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "banner.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -116,7 +118,7 @@ func (c *BannerDemo) actionHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"button.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "button.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;time&quot;
@@ -173,7 +175,7 @@ func (d *ButtonDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"card.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "card.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -242,7 +244,7 @@ func GopherCard(title string) app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"checkbox.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "checkbox.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -298,7 +300,7 @@ func (d *CheckboxDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"dialog.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "dialog.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -343,7 +345,7 @@ func (d *DialogDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"drawer.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "drawer.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;log&quot;
@@ -386,7 +388,7 @@ func (d *DrawerDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"fab.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "fab.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -419,7 +421,7 @@ func (d *FabDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"form.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "form.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/mlctrez/goapp-mdc/pkg/helperline&quot;
@@ -468,7 +470,7 @@ func (e *FormDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"icon.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "icon.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -542,7 +544,7 @@ func (d *IconDemo) IconButtonClicked(button app.HTMLButton) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"list.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "list.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -613,7 +615,7 @@ func (d *ListDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"tab.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "tab.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -644,7 +646,7 @@ func (d *TabDemo) Render() app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"code.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "code.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -722,7 +724,7 @@ func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "routes.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -754,7 +756,7 @@ func Routes() {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"page.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "page.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -781,7 +783,7 @@ func FlexGrid(cells ...app.UI) app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"appupdate.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "appupdate.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -837,7 +839,7 @@ func (d *AppUpdateBanner) OnAppUpdate(ctx app.Context) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"handler.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "handler.go", Code: `<pre><code class="language-go">package demo
 
 import &quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
 
@@ -870,7 +872,7 @@ func BuildHandler() *app.Handler {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
+	CodeDetails{Name: "navigation.go", Code: `<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -903,7 +905,7 @@ func (n *Navigation) OnMount(ctx app.Context) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"main.go",Code:`<pre><code class="language-go">package main
+	CodeDetails{Name: "main.go", Code: `<pre><code class="language-go">package main
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -917,7 +919,7 @@ func main() {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"server.go",Code:`<pre><code class="language-go">//go:build !wasm
+	CodeDetails{Name: "server.go", Code: `<pre><code class="language-go">//go:build !wasm
 
 package main
 
@@ -953,7 +955,7 @@ func setupVersion(handler *app.Handler) *app.Handler {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"wasm_server.go",Code:`<pre><code class="language-go">//go:build wasm
+	CodeDetails{Name: "wasm_server.go", Code: `<pre><code class="language-go">//go:build wasm
 
 package main
 

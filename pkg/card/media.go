@@ -17,7 +17,6 @@ type Media struct {
 	Image  string
 }
 
-
 func (c *Media) Render() app.UI {
 
 	width := fmt.Sprintf("%dpx", c.Width)

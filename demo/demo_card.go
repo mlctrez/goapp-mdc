@@ -52,7 +52,6 @@ func (d CardDemo) Render() app.UI {
 	return PageBody(body)
 }
 
-
 func gopherAttribution() app.HTMLDiv {
 	return layout.CellModified("bottom", 12).Body(
 		app.Text("Gopher images courtesy of "),
