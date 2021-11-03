@@ -8,14 +8,13 @@ import (
 type TextField struct {
 	app.Compo
 	base.JsUtil
-	Id             string
-	Label          string
-	Placeholder    string
-	Outlined       bool
-	Value          string
-	Required       bool
-	onMount        func(ctx app.Context)
-	changeCallback func(string)
+	Id          string
+	Label       string
+	Placeholder string
+	Outlined    bool
+	Value       string
+	Required    bool
+	OnChange    func(string)
 }
 
 func (t *TextField) buildClasses() []string {
