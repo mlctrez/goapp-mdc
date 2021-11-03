@@ -199,32 +199,31 @@ func (d CardDemo) Render() app.UI {
 		}
 	}
 
-	body := layout.Grid().Body(
-		layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(
-			layout.Cell().Body(
-				&amp;card.Card{Id: uuid.New().String(), Padding: 16,
-					PrimaryAction: []app.UI{app.Div().Text(&quot;Primary action card no outline&quot;)}},
-			),
-			layout.Cell().Body(
-				&amp;card.Card{Id: uuid.New().String(), Width: 200, Height: 200, Outlined: true,
-					PrimaryAction: []app.UI{app.Div().Text(&quot;Primary action card 200x200px with outline&quot;)}},
-			),
-			layout.Cell().Body(
-				&amp;card.Card{Id: uuid.New().String(), Outlined: true, Padding: 16,
-					PrimaryAction: []app.UI{app.Div().Text(&quot;Primary action card card with buttons&quot;)},
-					ActionButtons: []app.UI{
-						&amp;button.Button{Id: uuid.New().String(), CardAction: true,
-							Label: &quot;Button One&quot;, Callback: buttonCallback(&quot;one&quot;)},
-						&amp;button.Button{Id: uuid.New().String(), CardAction: true,
-							Label: &quot;Button Two&quot;, Callback: buttonCallback(&quot;two&quot;)},
-					},
-				},
-			),
-			layout.Cell().Body(GopherCard(&quot;Media&quot;)),
-			layout.Cell().Body(GopherCard(&quot;&quot;)),
-			gopherAttribution(),
+	body := FlexGrid(
+		layout.Cell().Body(
+			&amp;card.Card{Id: uuid.New().String(), Padding: 16,
+				PrimaryAction: []app.UI{app.Div().Text(&quot;Primary action card no outline&quot;)}},
 		),
+		layout.Cell().Body(
+			&amp;card.Card{Id: uuid.New().String(), Width: 200, Height: 200, Outlined: true,
+				PrimaryAction: []app.UI{app.Div().Text(&quot;Primary action card 200x200px with outline&quot;)}},
+		),
+		layout.Cell().Body(
+			&amp;card.Card{Id: uuid.New().String(), Outlined: true, Padding: 16,
+				PrimaryAction: []app.UI{app.Div().Text(&quot;Primary action card card with buttons&quot;)},
+				ActionButtons: []app.UI{
+					&amp;button.Button{Id: uuid.New().String(), CardAction: true,
+						Label: &quot;Button One&quot;, Callback: buttonCallback(&quot;one&quot;)},
+					&amp;button.Button{Id: uuid.New().String(), CardAction: true,
+						Label: &quot;Button Two&quot;, Callback: buttonCallback(&quot;two&quot;)},
+				},
+			},
+		),
+		layout.Cell().Body(GopherCard(&quot;Media&quot;)),
+		layout.Cell().Body(GopherCard(&quot;&quot;)),
+		gopherAttribution(),
 	)
+
 	return PageBody(body)
 }
 
@@ -390,13 +389,9 @@ func (d *DrawerDemo) eventHandler(ctx app.Context, action app.Action) {
     CodeDetails{Name:"fab.go",Code:`<pre><code class="language-go">package demo
 
 import (
-	&quot;sort&quot;
-
-	&quot;github.com/mlctrez/goapp-mdc/pkg/fab&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/tab&quot;
-
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/fab&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
 )
 
 type FabDemo struct {
@@ -405,49 +400,28 @@ type FabDemo struct {
 }
 
 func (d *FabDemo) Render() app.UI {
-	var tabs []*tab.Tab
 
-	sortedGroupNames := sortedGroupNames()
-	for index, groupName := range sortedGroupNames {
-		newTab := tab.NewTab(groupName, index)
-		if d.activeIndex == index {
-			newTab.Active()
-		}
-		tabs = append(tabs, newTab)
-	}
+	return PageBody(FlexGrid(
+		layout.Grid().Body(
+			&amp;fab.Fab{Id: id(), Icon: &quot;favorite&quot;},
+			app.Text(&quot;regular&quot;),
+		),
+		layout.Grid().Body(
+			&amp;fab.Fab{Id: id(), Icon: &quot;favorite&quot;, Mini: true},
+			app.Text(&quot;mini&quot;),
+		),
+		layout.Grid().Body(
+			&amp;fab.Fab{Id: id(), Icon: &quot;favorite&quot;, Extended: true, Label: &quot;Favorite&quot;},
+			app.Text(&quot;extended&quot;),
+		),
+	))
 
-	bar := tab.NewBar(&quot;fabDemoTabBar&quot;, tabs)
-	bar.ActivateCallback(func(index int) {
-		d.activeIndex = index
-		d.Update()
-	})
-
-	var content []app.UI
-	content = append(content, bar)
-
-	groupName := sortedGroupNames[d.activeIndex]
-	iconNames := icon.AllGroupFunctions()[groupName]()
-	for _, n := range iconNames {
-		content = append(content, &amp;fab.Fab{Id: &quot;fab_&quot; + string(n), Icon: n})
-	}
-
-	return PageBody(app.Div().Body(content...))
-}
-
-func sortedGroupNames() []string {
-	var groupNamesSorted []string
-	for groupName := range icon.AllGroupFunctions() {
-		groupNamesSorted = append(groupNamesSorted, groupName)
-	}
-	sort.Strings(groupNamesSorted)
-	return groupNamesSorted
 }
 </code></pre>
 `},
     CodeDetails{Name:"form.go",Code:`<pre><code class="language-go">package demo
 
 import (
-	&quot;github.com/mlctrez/goapp-mdc/pkg/fab&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/helperline&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/textarea&quot;
@@ -465,56 +439,32 @@ func id() string {
 	return uuid.New().String()
 }
 
-func cell(name string, contents ...app.UI) app.UI {
-	return layout.CellModified(&quot;&quot;, 12).Body(app.H4().Text(name),
-		layout.Inner().Body(
-			func() []app.UI {
-				var result []app.UI
-				for _, content := range contents {
-					result = append(result, layout.Cell().Body(content))
-				}
-				return result
-			}()...,
-		),
-	)
-}
-
-func fabExamples() []app.UI {
-	return []app.UI{
-		&amp;fab.Fab{Id: id(), Icon: &quot;favorite&quot;},
-		&amp;fab.Fab{Id: id(), Icon: &quot;favorite&quot;, Mini: true},
-		&amp;fab.Fab{Id: id(), Icon: &quot;favorite&quot;, Extended: true, Label: &quot;Favorite&quot;},
-	}
-}
-
-func textFieldExamples() []app.UI {
-	return []app.UI{
-		&amp;textfield.TextField{Id: id(), Label: &quot;normal&quot;},
-		&amp;textfield.TextField{Id: id(), Label: &quot;required&quot;, Required: true},
-		&amp;textfield.TextField{Id: id(), Label: &quot;outlined&quot;, Outlined: true},
-		&amp;textfield.TextField{Id: id(), Label: &quot;outlined required&quot;, Outlined: true, Required: true},
-		&amp;textfield.TextField{Id: id(), Placeholder: &quot;placeholder&quot;},
-	}
-}
-
 func textAreaExample() []app.UI {
 	idOne := id()
-	taOne := textarea.New(idOne).Size(8, 40).Outlined(true).Label(&quot;outlined text area&quot;).MaxLength(240)
+	taOne := textarea.New(idOne).Size(8, 40).Outlined(true).
+		Label(&quot;outlined text area&quot;).MaxLength(240)
 	helpOne := helperline.New(idOne, &quot;textarea help text&quot;, &quot;0 / 240&quot;)
 
 	return []app.UI{app.Div().Style(&quot;display&quot;, &quot;inline-block&quot;).Body(taOne, helpOne)}
-
 }
 
 func (e *FormDemo) Render() app.UI {
-
-	body := layout.Grid().Body(layout.Inner().Body(
-		cell(&quot;Fab&quot;, fabExamples()...),
-		cell(&quot;Text Field&quot;, textFieldExamples()...),
-		cell(&quot;Text Area&quot;, textAreaExample()...),
+	body := layout.Grid().Body(layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(
+		layout.Cell().Body(layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(
+			layout.CellWide().Body(app.H4().Text(&quot;Text Area&quot;)),
+			layout.Cell().Body(&amp;textfield.TextField{Id: id(), Label: &quot;normal&quot;}),
+			layout.Cell().Body(&amp;textfield.TextField{Id: id(), Label: &quot;required&quot;, Required: true}),
+			layout.Cell().Body(&amp;textfield.TextField{Id: id(), Label: &quot;outlined&quot;, Outlined: true}),
+			layout.Cell().Body(&amp;textfield.TextField{Id: id(), Label: &quot;outlined required&quot;,
+				Outlined: true, Required: true}),
+			layout.Cell().Body(&amp;textfield.TextField{Id: id(), Placeholder: &quot;placeholder&quot;}),
+		)),
+		layout.Cell().Body(layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(
+			layout.CellWide().Body(app.H4().Text(&quot;Text Field&quot;)),
+			layout.Cell().Body(textAreaExample()...),
+		)),
 	))
 	return PageBody(body)
-
 }
 </code></pre>
 `},
@@ -522,19 +472,30 @@ func (e *FormDemo) Render() app.UI {
 
 import (
 	&quot;fmt&quot;
+	&quot;sort&quot;
 
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
 )
 
 type IconDemo struct {
 	app.Compo
 	base.JsUtil
-	counterOne *base.Counter
-	toggleOne  *icon.Button
-	toggleTwo  *icon.Button
+	counterOne    *base.Counter
+	toggleOne     *icon.Button
+	toggleTwo     *icon.Button
+	iconGroupList *list.List
+}
+
+func iconGroupNamesSorted() (result []string) {
+	for s := range icon.AllGroupFunctions() {
+		result = append(result, s)
+	}
+	sort.Strings(result)
+	return
 }
 
 func (d *IconDemo) Render() app.UI {
@@ -546,16 +507,29 @@ func (d *IconDemo) Render() app.UI {
 			IconOff: icon.MIFavoriteBorder, AriaOn: &quot;remove from favorites&quot;, AriaOff: &quot;add to favorites&quot;}
 		d.toggleOne.ButtonToggleChange = func(isOn bool) { d.toggleTwo.SetState(isOn) }
 		d.toggleTwo.ButtonToggleChange = func(isOn bool) { d.toggleOne.SetState(isOn) }
+
+		d.iconGroupList = &amp;list.List{Type: list.SingleSelection, Id: &quot;iconGroupList&quot;}
+		groups := list.Items{}
+		for _, g := range iconGroupNamesSorted() {
+			groups = append(groups, &amp;list.Item{Text: g})
+		}
+		d.iconGroupList.Items = groups.UIList()
+
 	}
 
 	body := layout.Grid().Body(
-		layout.Inner().Body(
+		layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(
 			layout.Cell().Body(
 				&amp;icon.Button{Id: d.UUID(), Icon: icon.MIBookmark,
 					AriaOff: &quot;bookmark this&quot;, Callback: d.IconButtonClicked}, d.counterOne),
 			layout.Cell().Body(d.toggleOne, d.toggleTwo),
 		),
+		layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(
+			layout.CellWide().Body(app.Text(&quot;Material Icon Groups&quot;)),
+			layout.Cell().Body(d.iconGroupList),
+		),
 	)
+
 	return PageBody(body)
 }
 
@@ -599,7 +573,8 @@ func (d *ListDemo) Render() app.UI {
 	singleSelectionList := list.Items{&amp;list.Item{Text: &quot;item one&quot;}, &amp;list.Item{Text: &quot;item two&quot;},
 		&amp;list.Item{Text: &quot;item three&quot;}, &amp;list.Item{Text: &quot;item four&quot;}}.Select(2)
 
-	dividedList := list.Items{&amp;list.Item{Text: &quot;item one&quot;}, &amp;list.Item{Text: &quot;item two before divider&quot;},
+	dividedList := list.Items{
+		&amp;list.Item{Text: &quot;item one&quot;}, &amp;list.Item{Text: &quot;item two before divider&quot;},
 		&amp;list.Item{Type: list.ItemTypeDivider},
 		&amp;list.Item{Text: &quot;item three after divider&quot;}, &amp;list.Item{Text: &quot;item four&quot;}}
 	dividedList.Select(0)
@@ -610,29 +585,29 @@ func (d *ListDemo) Render() app.UI {
 	}
 	checkboxGroupList.Select(-1)
 
-	body := layout.Grid().Body(
-		layout.Inner().Body(
-			layout.Cell().Body(
-				app.P().Text(&quot;regular&quot;), &amp;list.List{Id: &quot;regularList&quot;, Items: regularList.UIList()}),
-			layout.Cell().Body(
-				app.P().Text(&quot;two line&quot;), &amp;list.List{Id: &quot;twoLineList&quot;, TwoLine: true, Items: twoLineList.UIList()}),
-			layout.Cell().Body(
-				app.P().Text(&quot;grouped&quot;),
-				&amp;list.Group{Items: []*list.GroupItem{
-					{SubHeader: &quot;group 1&quot;, List: &amp;list.List{Id: &quot;groupedList1&quot;, Items: groupedListOne.UIList()}},
-					{SubHeader: &quot;group 2&quot;, List: &amp;list.List{Id: &quot;groupedList2&quot;, Items: groupedListTwo.UIList()}},
-				}},
-			),
-			layout.Cell().Body(app.P().Text(&quot;divided&quot;), &amp;list.List{Id: &quot;dividedList&quot;, Items: dividedList.UIList()}),
-			layout.Cell().Body(
-				app.P().Text(&quot;single select&quot;),
-				&amp;list.List{Id: &quot;singleSelectionList&quot;, Type: list.SingleSelection, Items: singleSelectionList.UIList()},
-			),
-			layout.Cell().Body(
-				app.P().Text(&quot;checkbox group&quot;),
-				&amp;list.List{Id: &quot;checkboxGroupList&quot;, Type: list.CheckBox, Items: checkboxGroupList.UIList()},
-			),
-		))
+	body := FlexGrid(
+		layout.Cell().Body(
+			app.P().Text(&quot;regular&quot;), &amp;list.List{Id: &quot;regularList&quot;, Items: regularList.UIList()}),
+		layout.Cell().Body(
+			app.P().Text(&quot;two line&quot;), &amp;list.List{Id: &quot;twoLineList&quot;, TwoLine: true, Items: twoLineList.UIList()}),
+		layout.Cell().Body(
+			app.P().Text(&quot;grouped&quot;),
+			&amp;list.Group{Items: []*list.GroupItem{
+				{SubHeader: &quot;group 1&quot;, List: &amp;list.List{Id: &quot;groupedList1&quot;, Items: groupedListOne.UIList()}},
+				{SubHeader: &quot;group 2&quot;, List: &amp;list.List{Id: &quot;groupedList2&quot;, Items: groupedListTwo.UIList()}},
+			}},
+		),
+		layout.Cell().Body(app.P().Text(&quot;divided&quot;), &amp;list.List{Id: &quot;dividedList&quot;, Items: dividedList.UIList()}),
+		layout.Cell().Body(
+			app.P().Text(&quot;single select&quot;),
+			&amp;list.List{Id: &quot;singleSelectionList&quot;, Type: list.SingleSelection, Items: singleSelectionList.UIList()},
+		),
+		layout.Cell().Body(
+			app.P().Text(&quot;checkbox group&quot;),
+			&amp;list.List{Id: &quot;checkboxGroupList&quot;, Type: list.CheckBox, Items: checkboxGroupList.UIList()},
+		),
+	)
+
 	return PageBody(body)
 
 }
@@ -747,10 +722,43 @@ func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
+    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
+)
+
+func addRoute(nav *list.Item, compo app.Composer) {
+	nav.Type = list.ItemTypeAnchor
+	NavigationItems = append(NavigationItems, nav)
+	app.Route(nav.Href, compo)
+}
+
+func Routes() {
+	addRoute(&amp;list.Item{Text: &quot;Home&quot;, Graphic: icon.MIHome, Href: &quot;/&quot;}, &amp;Index{})
+	addRoute(&amp;list.Item{Text: &quot;Banner&quot;, Graphic: icon.MIVoicemail, Href: &quot;/banner&quot;}, &amp;BannerDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Button&quot;, Graphic: icon.MISmartButton, Href: &quot;/button&quot;}, &amp;ButtonDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Card&quot;, Graphic: icon.MICreditCard, Href: &quot;/card&quot;}, &amp;CardDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Checkbox&quot;, Graphic: icon.MICheckBox, Href: &quot;/checkbox&quot;}, &amp;CheckboxDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Dialog&quot;, Graphic: icon.MISpeaker, Href: &quot;/dialog&quot;}, &amp;DialogDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Drawer&quot;, Graphic: icon.MIDashboard, Href: &quot;/drawer&quot;}, &amp;DrawerDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Fab&quot;, Graphic: icon.MIFavorite, Href: &quot;/fab&quot;}, &amp;FabDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Form&quot;, Graphic: icon.MIInput, Href: &quot;/form&quot;}, &amp;FormDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Icon&quot;, Graphic: icon.MIIcecream, Href: &quot;/icon&quot;}, &amp;IconDemo{})
+	addRoute(&amp;list.Item{Text: &quot;List&quot;, Graphic: icon.MIList, Href: &quot;/list&quot;}, &amp;ListDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Tab&quot;, Graphic: icon.MITab, Href: &quot;/tab&quot;}, &amp;TabDemo{})
+	NavigationItems = append(NavigationItems, &amp;list.Item{Type: list.ItemTypeDivider})
+	addRoute(&amp;list.Item{Text: &quot;Code&quot;, Graphic: icon.MICode, Href: &quot;/code&quot;}, &amp;CodeDemo{})
+}
+</code></pre>
+`},
     CodeDetails{Name:"page.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
 )
 
 // PageBody applies the navigation, update banner, and demo page layout to the provided pageContent.
@@ -763,6 +771,12 @@ func PageBody(pageContent ...app.UI) app.UI {
 		&amp;AppUpdateBanner{},
 
 		app.Div().Style(&quot;display&quot;, &quot;flex&quot;).Body(content...),
+	)
+}
+
+func FlexGrid(cells ...app.UI) app.UI {
+	return layout.Grid().Body(
+		layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(cells...),
 	)
 }
 </code></pre>
@@ -823,69 +837,6 @@ func (d *AppUpdateBanner) OnAppUpdate(ctx app.Context) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/drawer&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
-)
-
-var NavigationItems list.Items
-
-type Navigation struct {
-	app.Compo
-	base.JsUtil
-	items list.Items
-	list  *list.List
-}
-
-func (n *Navigation) Render() app.UI {
-	return &amp;drawer.Drawer{Type: drawer.Standard, Id: &quot;navigationDrawer&quot;, List: n.list}
-}
-
-func (n *Navigation) OnMount(ctx app.Context) {
-	if n.items == nil {
-		n.items = NavigationItems
-		n.items.SelectHref(ctx.Page().URL().Path)
-		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
-	}
-}
-</code></pre>
-`},
-    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
-)
-
-func addRoute(nav *list.Item, compo app.Composer) {
-	nav.Type = list.ItemTypeAnchor
-	NavigationItems = append(NavigationItems, nav)
-	app.Route(nav.Href, compo)
-}
-
-func Routes() {
-	addRoute(&amp;list.Item{Text: &quot;Home&quot;, Graphic: icon.MIHome, Href: &quot;/&quot;}, &amp;Index{})
-	addRoute(&amp;list.Item{Text: &quot;Banner&quot;, Graphic: icon.MIVoicemail, Href: &quot;/banner&quot;}, &amp;BannerDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Button&quot;, Graphic: icon.MISmartButton, Href: &quot;/button&quot;}, &amp;ButtonDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Card&quot;, Graphic: icon.MICreditCard, Href: &quot;/card&quot;}, &amp;CardDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Checkbox&quot;, Graphic: icon.MICheckBox, Href: &quot;/checkbox&quot;}, &amp;CheckboxDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Dialog&quot;, Graphic: icon.MISpeaker, Href: &quot;/dialog&quot;}, &amp;DialogDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Drawer&quot;, Graphic: icon.MIDashboard, Href: &quot;/drawer&quot;}, &amp;DrawerDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Fab&quot;, Graphic: icon.MIFavorite, Href: &quot;/fab&quot;}, &amp;FabDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Form&quot;, Graphic: icon.MIInput, Href: &quot;/form&quot;}, &amp;FormDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Icon&quot;, Graphic: icon.MIIcecream, Href: &quot;/icon&quot;}, &amp;IconDemo{})
-	addRoute(&amp;list.Item{Text: &quot;List&quot;, Graphic: icon.MIList, Href: &quot;/list&quot;}, &amp;ListDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Tab&quot;, Graphic: icon.MITab, Href: &quot;/tab&quot;}, &amp;TabDemo{})
-	NavigationItems = append(NavigationItems, &amp;list.Item{Type: list.ItemTypeDivider})
-	addRoute(&amp;list.Item{Text: &quot;Code&quot;, Graphic: icon.MICode, Href: &quot;/code&quot;}, &amp;CodeDemo{})
-}
-</code></pre>
-`},
     CodeDetails{Name:"handler.go",Code:`<pre><code class="language-go">package demo
 
 import &quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -901,6 +852,7 @@ func BuildHandler() *app.Handler {
 			&quot;https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js&quot;,
 			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js&quot;,
 			&quot;https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-go.min.js&quot;,
+			&quot;/web/app.js&quot;,
 		},
 		Env: map[string]string{
 			&quot;RECAPTCHA_SITE_KEY&quot;: &quot;6Ldt8sgcAAAAACwJjJMaRH3b31xDXBB6IYvBpLmc&quot;,
@@ -915,6 +867,39 @@ func BuildHandler() *app.Handler {
 		},
 		Title: &quot;Material Design Components for go-app&quot;,
 	}
+}
+</code></pre>
+`},
+    CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/drawer&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
+)
+
+// TODO: make this NavigationItems immutable
+
+var NavigationItems list.Items
+
+type Navigation struct {
+	app.Compo
+	base.JsUtil
+	items list.Items
+	list  *list.List
+}
+
+func (n *Navigation) Render() app.UI {
+	if n.items == nil {
+		n.items = NavigationItems
+		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
+	}
+	return &amp;drawer.Drawer{Type: drawer.Standard, Id: &quot;navigationDrawer&quot;, List: n.list}
+}
+
+func (n *Navigation) OnMount(ctx app.Context) {
+	n.items.SelectHref(ctx.Page().URL().Path)
 }
 </code></pre>
 `},

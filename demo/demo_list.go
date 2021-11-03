@@ -41,29 +41,29 @@ func (d *ListDemo) Render() app.UI {
 	}
 	checkboxGroupList.Select(-1)
 
-	body := layout.Grid().Body(
-		layout.Inner().Body(
-			layout.Cell().Body(
-				app.P().Text("regular"), &list.List{Id: "regularList", Items: regularList.UIList()}),
-			layout.Cell().Body(
-				app.P().Text("two line"), &list.List{Id: "twoLineList", TwoLine: true, Items: twoLineList.UIList()}),
-			layout.Cell().Body(
-				app.P().Text("grouped"),
-				&list.Group{Items: []*list.GroupItem{
-					{SubHeader: "group 1", List: &list.List{Id: "groupedList1", Items: groupedListOne.UIList()}},
-					{SubHeader: "group 2", List: &list.List{Id: "groupedList2", Items: groupedListTwo.UIList()}},
-				}},
-			),
-			layout.Cell().Body(app.P().Text("divided"), &list.List{Id: "dividedList", Items: dividedList.UIList()}),
-			layout.Cell().Body(
-				app.P().Text("single select"),
-				&list.List{Id: "singleSelectionList", Type: list.SingleSelection, Items: singleSelectionList.UIList()},
-			),
-			layout.Cell().Body(
-				app.P().Text("checkbox group"),
-				&list.List{Id: "checkboxGroupList", Type: list.CheckBox, Items: checkboxGroupList.UIList()},
-			),
-		))
+	body := FlexGrid(
+		layout.Cell().Body(
+			app.P().Text("regular"), &list.List{Id: "regularList", Items: regularList.UIList()}),
+		layout.Cell().Body(
+			app.P().Text("two line"), &list.List{Id: "twoLineList", TwoLine: true, Items: twoLineList.UIList()}),
+		layout.Cell().Body(
+			app.P().Text("grouped"),
+			&list.Group{Items: []*list.GroupItem{
+				{SubHeader: "group 1", List: &list.List{Id: "groupedList1", Items: groupedListOne.UIList()}},
+				{SubHeader: "group 2", List: &list.List{Id: "groupedList2", Items: groupedListTwo.UIList()}},
+			}},
+		),
+		layout.Cell().Body(app.P().Text("divided"), &list.List{Id: "dividedList", Items: dividedList.UIList()}),
+		layout.Cell().Body(
+			app.P().Text("single select"),
+			&list.List{Id: "singleSelectionList", Type: list.SingleSelection, Items: singleSelectionList.UIList()},
+		),
+		layout.Cell().Body(
+			app.P().Text("checkbox group"),
+			&list.List{Id: "checkboxGroupList", Type: list.CheckBox, Items: checkboxGroupList.UIList()},
+		),
+	)
+
 	return PageBody(body)
 
 }

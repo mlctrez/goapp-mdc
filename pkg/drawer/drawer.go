@@ -44,7 +44,7 @@ func (d *Drawer) Render() app.UI {
 	return aside
 }
 
-func (d *Drawer) OnMount(context app.Context) {
+func (d *Drawer) OnMount(ctx app.Context) {
 	e := app.Window().GetElementByID(d.Id)
 	switch d.Type {
 	case Dismissible, Modal:

@@ -24,34 +24,34 @@ func (d CardDemo) Render() app.UI {
 		}
 	}
 
-	body := layout.Grid().Body(
-		layout.Inner().Style("display", "flex").Body(
-			layout.Cell().Body(
-				&card.Card{Id: uuid.New().String(), Padding: 16,
-					PrimaryAction: []app.UI{app.Div().Text("Primary action card no outline")}},
-			),
-			layout.Cell().Body(
-				&card.Card{Id: uuid.New().String(), Width: 200, Height: 200, Outlined: true,
-					PrimaryAction: []app.UI{app.Div().Text("Primary action card 200x200px with outline")}},
-			),
-			layout.Cell().Body(
-				&card.Card{Id: uuid.New().String(), Outlined: true, Padding: 16,
-					PrimaryAction: []app.UI{app.Div().Text("Primary action card card with buttons")},
-					ActionButtons: []app.UI{
-						&button.Button{Id: uuid.New().String(), CardAction: true,
-							Label: "Button One", Callback: buttonCallback("one")},
-						&button.Button{Id: uuid.New().String(), CardAction: true,
-							Label: "Button Two", Callback: buttonCallback("two")},
-					},
-				},
-			),
-			layout.Cell().Body(GopherCard("Media")),
-			layout.Cell().Body(GopherCard("")),
-			gopherAttribution(),
+	body := FlexGrid(
+		layout.Cell().Body(
+			&card.Card{Id: uuid.New().String(), Padding: 16,
+				PrimaryAction: []app.UI{app.Div().Text("Primary action card no outline")}},
 		),
+		layout.Cell().Body(
+			&card.Card{Id: uuid.New().String(), Width: 200, Height: 200, Outlined: true,
+				PrimaryAction: []app.UI{app.Div().Text("Primary action card 200x200px with outline")}},
+		),
+		layout.Cell().Body(
+			&card.Card{Id: uuid.New().String(), Outlined: true, Padding: 16,
+				PrimaryAction: []app.UI{app.Div().Text("Primary action card card with buttons")},
+				ActionButtons: []app.UI{
+					&button.Button{Id: uuid.New().String(), CardAction: true,
+						Label: "Button One", Callback: buttonCallback("one")},
+					&button.Button{Id: uuid.New().String(), CardAction: true,
+						Label: "Button Two", Callback: buttonCallback("two")},
+				},
+			},
+		),
+		layout.Cell().Body(GopherCard("Media")),
+		layout.Cell().Body(GopherCard("")),
+		gopherAttribution(),
 	)
+
 	return PageBody(body)
 }
+
 
 func gopherAttribution() app.HTMLDiv {
 	return layout.CellModified("bottom", 12).Body(

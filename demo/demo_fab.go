@@ -1,13 +1,9 @@
 package demo
 
 import (
-	"sort"
-
-	"github.com/mlctrez/goapp-mdc/pkg/fab"
-	"github.com/mlctrez/goapp-mdc/pkg/icon"
-	"github.com/mlctrez/goapp-mdc/pkg/tab"
-
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/mlctrez/goapp-mdc/pkg/fab"
+	"github.com/mlctrez/goapp-mdc/pkg/layout"
 )
 
 type FabDemo struct {
@@ -16,40 +12,20 @@ type FabDemo struct {
 }
 
 func (d *FabDemo) Render() app.UI {
-	var tabs []*tab.Tab
 
-	sortedGroupNames := sortedGroupNames()
-	for index, groupName := range sortedGroupNames {
-		newTab := tab.NewTab(groupName, index)
-		if d.activeIndex == index {
-			newTab.Active()
-		}
-		tabs = append(tabs, newTab)
-	}
+	return PageBody(FlexGrid(
+		layout.Grid().Body(
+			&fab.Fab{Id: id(), Icon: "favorite"},
+			app.Text("regular"),
+		),
+		layout.Grid().Body(
+			&fab.Fab{Id: id(), Icon: "favorite", Mini: true},
+			app.Text("mini"),
+		),
+		layout.Grid().Body(
+			&fab.Fab{Id: id(), Icon: "favorite", Extended: true, Label: "Favorite"},
+			app.Text("extended"),
+		),
+	))
 
-	bar := tab.NewBar("fabDemoTabBar", tabs)
-	bar.ActivateCallback(func(index int) {
-		d.activeIndex = index
-		d.Update()
-	})
-
-	var content []app.UI
-	content = append(content, bar)
-
-	groupName := sortedGroupNames[d.activeIndex]
-	iconNames := icon.AllGroupFunctions()[groupName]()
-	for _, n := range iconNames {
-		content = append(content, &fab.Fab{Id: "fab_" + string(n), Icon: n})
-	}
-
-	return PageBody(app.Div().Body(content...))
-}
-
-func sortedGroupNames() []string {
-	var groupNamesSorted []string
-	for groupName := range icon.AllGroupFunctions() {
-		groupNamesSorted = append(groupNamesSorted, groupName)
-	}
-	sort.Strings(groupNamesSorted)
-	return groupNamesSorted
 }

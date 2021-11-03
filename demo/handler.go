@@ -13,6 +13,7 @@ func BuildHandler() *app.Handler {
 			"https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js",
 			"https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js",
 			"https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-go.min.js",
+			"/web/app.js",
 		},
 		Env: map[string]string{
 			"RECAPTCHA_SITE_KEY": "6Ldt8sgcAAAAACwJjJMaRH3b31xDXBB6IYvBpLmc",

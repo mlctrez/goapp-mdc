@@ -17,6 +17,7 @@ type Media struct {
 	Image  string
 }
 
+
 func (c *Media) Render() app.UI {
 
 	width := fmt.Sprintf("%dpx", c.Width)
@@ -26,7 +27,7 @@ func (c *Media) Render() app.UI {
 	root.Class("mdc-card__media")
 	root.Style("width", width)
 	root.Style("height", height)
-	root.Style("background-image", fmt.Sprintf("url(%q)", c.Image))
+	root.Style("background-image", fmt.Sprintf("url('%s')", c.Image))
 	root.Style("background-size", fmt.Sprintf("%s %s", width, height))
 	if c.Title != "" {
 		root.Body(app.Div().Class("mdc-card__media-content").Text(c.Title))

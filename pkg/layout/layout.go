@@ -44,3 +44,8 @@ func CellModified(align string, span int) app.HTMLDiv {
 	}
 	return app.Div().Class(classes...)
 }
+
+// CellWide is equivalent to CellModified("middle", 12)
+func CellWide() app.HTMLDiv {
+	return CellModified("middle", 12)
+}
