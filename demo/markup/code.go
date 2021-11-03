@@ -1,12 +1,10 @@
 package markup
-
 type CodeDetails struct {
 	Name string
 	Code string
 }
-
 var Code = []CodeDetails{
-	CodeDetails{Name: "index.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"index.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -21,7 +19,7 @@ func (i *Index) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "banner.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"banner.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -118,7 +116,7 @@ func (c *BannerDemo) actionHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "button.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"button.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;time&quot;
@@ -175,7 +173,7 @@ func (d *ButtonDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "card.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"card.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -244,7 +242,7 @@ func GopherCard(title string) app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "checkbox.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"checkbox.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -300,7 +298,7 @@ func (d *CheckboxDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "dialog.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"dialog.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -345,7 +343,7 @@ func (d *DialogDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "drawer.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"drawer.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;log&quot;
@@ -388,7 +386,7 @@ func (d *DrawerDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "fab.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"fab.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -421,16 +419,15 @@ func (d *FabDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "form.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"form.go",Code:`<pre><code class="language-go">package demo
 
 import (
+	&quot;github.com/google/uuid&quot;
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/helperline&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/textarea&quot;
 	&quot;github.com/mlctrez/goapp-mdc/pkg/textfield&quot;
-
-	&quot;github.com/google/uuid&quot;
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
 )
 
 type FormDemo struct {
@@ -451,6 +448,12 @@ func textAreaExample() []app.UI {
 }
 
 func (e *FormDemo) Render() app.UI {
+
+	//body := app.Div().Style(&quot;display&quot;, &quot;block&quot;).Body(
+	//	app.Div().Text(&quot;test1&quot;),
+	//	app.Div().Text(&quot;test2&quot;),
+	//)
+
 	body := layout.Grid().Body(layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(
 		layout.Cell().Body(layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(
 			layout.CellWide().Body(app.H4().Text(&quot;Text Area&quot;)),
@@ -466,11 +469,13 @@ func (e *FormDemo) Render() app.UI {
 			layout.Cell().Body(textAreaExample()...),
 		)),
 	))
+
+	_ = body
 	return PageBody(body)
 }
 </code></pre>
 `},
-	CodeDetails{Name: "icon.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"icon.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -544,7 +549,7 @@ func (d *IconDemo) IconButtonClicked(button app.HTMLButton) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "list.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"list.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -615,7 +620,7 @@ func (d *ListDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "tab.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"tab.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -646,7 +651,7 @@ func (d *TabDemo) Render() app.UI {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "code.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"code.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;fmt&quot;
@@ -724,7 +729,7 @@ func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "routes.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -756,34 +761,7 @@ func Routes() {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "page.go", Code: `<pre><code class="language-go">package demo
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
-)
-
-// PageBody applies the navigation, update banner, and demo page layout to the provided pageContent.
-func PageBody(pageContent ...app.UI) app.UI {
-
-	content := []app.UI{&amp;Navigation{}}
-	content = append(content, pageContent...)
-
-	return app.Div().Body(
-		&amp;AppUpdateBanner{},
-
-		app.Div().Style(&quot;display&quot;, &quot;flex&quot;).Body(content...),
-	)
-}
-
-func FlexGrid(cells ...app.UI) app.UI {
-	return layout.Grid().Body(
-		layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(cells...),
-	)
-}
-</code></pre>
-`},
-	CodeDetails{Name: "appupdate.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"appupdate.go",Code:`<pre><code class="language-go">package demo
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -839,7 +817,67 @@ func (d *AppUpdateBanner) OnAppUpdate(ctx app.Context) {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "handler.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/drawer&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
+)
+
+// TODO: make this NavigationItems immutable
+
+var NavigationItems list.Items
+
+type Navigation struct {
+	app.Compo
+	base.JsUtil
+	items list.Items
+	list  *list.List
+}
+
+func (n *Navigation) Render() app.UI {
+	return &amp;drawer.Drawer{Type: drawer.Standard, Id: &quot;navigationDrawer&quot;, List: n.list}
+}
+
+func (n *Navigation) OnMount(ctx app.Context) {
+	if n.items == nil {
+		n.items = NavigationItems
+		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
+	}
+	n.items.SelectHref(ctx.Page().URL().Path)
+}
+</code></pre>
+`},
+    CodeDetails{Name:"page.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
+)
+
+// PageBody applies the navigation, update banner, and demo page layout to the provided pageContent.
+func PageBody(pageContent ...app.UI) app.UI {
+
+	content := []app.UI{&amp;Navigation{}}
+	content = append(content, pageContent...)
+
+	return app.Div().Body(
+		&amp;AppUpdateBanner{},
+
+		app.Div().Style(&quot;display&quot;, &quot;flex&quot;).Body(content...),
+	)
+}
+
+func FlexGrid(cells ...app.UI) app.UI {
+	return layout.Grid().Body(
+		layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(cells...),
+	)
+}
+</code></pre>
+`},
+    CodeDetails{Name:"handler.go",Code:`<pre><code class="language-go">package demo
 
 import &quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
 
@@ -872,40 +910,14 @@ func BuildHandler() *app.Handler {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "navigation.go", Code: `<pre><code class="language-go">package demo
+    CodeDetails{Name:"wasm_server.go",Code:`<pre><code class="language-go">//go:build wasm
 
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/drawer&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
-)
+package main
 
-// TODO: make this NavigationItems immutable
-
-var NavigationItems list.Items
-
-type Navigation struct {
-	app.Compo
-	base.JsUtil
-	items list.Items
-	list  *list.List
-}
-
-func (n *Navigation) Render() app.UI {
-	if n.items == nil {
-		n.items = NavigationItems
-		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
-	}
-	return &amp;drawer.Drawer{Type: drawer.Standard, Id: &quot;navigationDrawer&quot;, List: n.list}
-}
-
-func (n *Navigation) OnMount(ctx app.Context) {
-	n.items.SelectHref(ctx.Page().URL().Path)
-}
+func httpServer() {}
 </code></pre>
 `},
-	CodeDetails{Name: "main.go", Code: `<pre><code class="language-go">package main
+    CodeDetails{Name:"main.go",Code:`<pre><code class="language-go">package main
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -919,7 +931,7 @@ func main() {
 }
 </code></pre>
 `},
-	CodeDetails{Name: "server.go", Code: `<pre><code class="language-go">//go:build !wasm
+    CodeDetails{Name:"server.go",Code:`<pre><code class="language-go">//go:build !wasm
 
 package main
 
@@ -953,13 +965,6 @@ func setupVersion(handler *app.Handler) *app.Handler {
 	}
 	return handler
 }
-</code></pre>
-`},
-	CodeDetails{Name: "wasm_server.go", Code: `<pre><code class="language-go">//go:build wasm
-
-package main
-
-func httpServer() {}
 </code></pre>
 `},
 }
