@@ -17,14 +17,15 @@ type CodeDetails struct {
 // 11 demo/demo_slider.go
 // 12 demo/demo_tab.go
 // 13 demo/demo_code.go
-// 14 demo/handler.go
-// 15 demo/page.go
+// 14 demo/demo_progress.go
+// 15 demo/navigation.go
 // 16 demo/appupdate.go
-// 17 demo/navigation.go
-// 18 demo/routes.go
-// 19 server.go
-// 20 main.go
-// 21 wasm_server.go
+// 17 demo/handler.go
+// 18 demo/page.go
+// 19 demo/routes.go
+// 20 server.go
+// 21 main.go
+// 22 wasm_server.go
 var Code = []CodeDetails{
     CodeDetails{Name:"index.go",Code:`<pre><code class="language-go">package demo
 
@@ -784,6 +785,175 @@ func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
+    CodeDetails{Name:"progress.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;fmt&quot;
+	&quot;reflect&quot;
+	&quot;time&quot;
+
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/button&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/progress&quot;
+)
+
+type ProgressDemo struct {
+	app.Compo
+	base.JsUtil
+	circular       *progress.Circular
+	circularInd    *progress.Circular
+	circularColors *progress.Circular
+	linear         *progress.Linear
+	linearInd      *progress.Linear
+}
+
+func (d *ProgressDemo) Render() app.UI {
+
+	if d.circular == nil {
+		d.circular = progress.NewCircular(&quot;circularProgress&quot;, 48).Label(&quot;wait for it&quot;)
+		d.circularInd = progress.NewCircular(&quot;circularProgressInd&quot;, 48).Label(&quot;wait for it ind&quot;)
+		d.circularColors = progress.NewCircular(&quot;circularProgressColors&quot;, 48).Label(&quot;wait for it color&quot;)
+		d.circularColors.Colors([4]string{&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;, &quot;cyan&quot;})
+		d.linear = progress.NewLinear(&quot;linearProgress&quot;).Label(&quot;wait for it pt 2&quot;)
+		d.linearInd = progress.NewLinear(&quot;linearProgressInd&quot;).Label(&quot;wait for it pt 2 ind&quot;)
+	}
+
+	body := layout.Grid().Body(
+		row(&quot;Circular&quot;, d.circular, d.showButton(d.circular, true)),
+		row(&quot;Circular Indeterminate&quot;, d.circularInd, d.showButton(d.circularInd, false)),
+		row(&quot;Circular Colors&quot;, d.circularColors, d.showButton(d.circularColors, false)),
+		row(&quot;Linear Progress&quot;, d.linear, d.showButton(d.linear, true)),
+		row(&quot;Linear Indeterminate&quot;, d.linearInd, d.showButton(d.linearInd, false)),
+	)
+
+	return PageBody(body)
+}
+
+func row(text string, component app.UI, button app.UI) app.UI {
+	return layout.Inner().Body(
+		layout.CellModified(&quot;middle&quot;, 4).Body(app.Text(text)),
+		layout.CellModified(&quot;bottom&quot;, 4).Style(&quot;height&quot;,&quot;50px&quot;).Body(component),
+		layout.CellModified(&quot;middle&quot;, 4).Body(button),
+	)
+}
+
+func (d *ProgressDemo) showButton(c progress.Api, determinate bool) app.UI {
+	buttonId := fmt.Sprintf(&quot;button_%s_%t&quot;, reflect.TypeOf(c).Name(), determinate)
+	return &amp;button.Button{Id: buttonId, Label: &quot;Show&quot;,
+		Callback: func(button app.HTMLButton) {
+			button.OnClick(func(ctx app.Context, e app.Event) {
+				button.JSValue().Call(&quot;blur&quot;)
+				go func() {
+					c.Determinate(determinate)
+					c.Open()
+					for i := 0; i &lt; 100; i++ {
+						if determinate {
+							c.SetProgress(float64(i) / float64(100))
+						}
+						time.Sleep(50 * time.Millisecond)
+					}
+					c.Close()
+					time.Sleep(500 * time.Millisecond)
+					if determinate {
+						c.SetProgress(0)
+					}
+				}()
+			})
+		}}
+}
+</code></pre>
+`},
+    CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/drawer&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
+)
+
+// TODO: make this NavigationItems immutable - this appears to be an issue with &quot;already mounted&quot;
+
+var NavigationItems list.Items
+
+type Navigation struct {
+	app.Compo
+	base.JsUtil
+	items list.Items
+	list  *list.List
+}
+
+func (n *Navigation) Render() app.UI {
+	return &amp;drawer.Drawer{Type: drawer.Standard, Id: &quot;navigationDrawer&quot;, List: n.list}
+}
+
+func (n *Navigation) OnMount(ctx app.Context) {
+	if n.items == nil {
+		n.items = NavigationItems
+		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
+	}
+	n.items.SelectHref(ctx.Page().URL().Path)
+}
+</code></pre>
+`},
+    CodeDetails{Name:"appupdate.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/banner&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/button&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
+)
+
+// AppUpdateBanner demonstrates how to wrap banner.Banner to handle go-app OnAppUpdate.
+type AppUpdateBanner struct {
+	app.Compo
+	base.JsUtil
+	bnr *banner.Banner
+}
+
+func (d *AppUpdateBanner) Render() app.UI {
+	if d.bnr == nil {
+		d.bnr = &amp;banner.Banner{
+			Id: &quot;appUpdateBanner&quot;, Fixed: true, Centered: true,
+			Text: &quot;A new version is available, would you like to install?&quot;,
+		}
+		d.bnr.Buttons = d.bannerButtons()
+	}
+	return d.bnr
+}
+
+func (d *AppUpdateBanner) bannerButtons() []app.UI {
+	primary := &amp;button.Button{Id: &quot;updateBannerYes&quot;, Label: &quot;yes&quot;,
+		Icon: string(icon.MIUpdate), Banner: true, BannerAction: &quot;primary&quot;}
+	secondary := &amp;button.Button{Id: &quot;updateBannerNo&quot;, Label: &quot;later&quot;,
+		Icon: string(icon.MIWatchLater), Banner: true, BannerAction: &quot;secondary&quot;}
+	return []app.UI{primary, secondary}
+}
+
+func (d *AppUpdateBanner) onBannerClose(ctx app.Context, reason string) {
+	switch reason {
+	case &quot;primary&quot;: // Yes button
+		ctx.Reload()
+	case &quot;secondary&quot;: // Later button
+		// This could SetState for a future time to ask
+	}
+}
+
+func (d *AppUpdateBanner) OnMount(ctx app.Context) {
+	d.bnr.ActionClose(ctx, d.onBannerClose)
+}
+
+func (d *AppUpdateBanner) OnAppUpdate(ctx app.Context) {
+	if ctx.AppUpdateAvailable() {
+		d.bnr.ActionOpen(ctx)
+	}
+}
+</code></pre>
+`},
     CodeDetails{Name:"handler.go",Code:`<pre><code class="language-go">package demo
 
 import &quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
@@ -844,95 +1014,6 @@ func FlexGrid(cells ...app.UI) app.UI {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"appupdate.go",Code:`<pre><code class="language-go">package demo
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/banner&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/button&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
-)
-
-// AppUpdateBanner demonstrates how to wrap banner.Banner to handle go-app OnAppUpdate.
-type AppUpdateBanner struct {
-	app.Compo
-	base.JsUtil
-	bnr *banner.Banner
-}
-
-func (d *AppUpdateBanner) Render() app.UI {
-	if d.bnr == nil {
-		d.bnr = &amp;banner.Banner{
-			Id: &quot;appUpdateBanner&quot;, Fixed: true, Centered: true,
-			Text: &quot;A new version is available, would you like to install?&quot;,
-		}
-		d.bnr.Buttons = d.bannerButtons()
-	}
-	return d.bnr
-}
-
-func (d *AppUpdateBanner) bannerButtons() []app.UI {
-	primary := &amp;button.Button{Id: &quot;updateBannerYes&quot;, Label: &quot;yes&quot;,
-		Icon: string(icon.MIUpdate), Banner: true, BannerAction: &quot;primary&quot;}
-	secondary := &amp;button.Button{Id: &quot;updateBannerNo&quot;, Label: &quot;later&quot;,
-		Icon: string(icon.MIWatchLater), Banner: true, BannerAction: &quot;secondary&quot;}
-	return []app.UI{primary, secondary}
-}
-
-func (d *AppUpdateBanner) onBannerClose(ctx app.Context, reason string) {
-	switch reason {
-	case &quot;primary&quot;: // Yes button
-		ctx.Reload()
-	case &quot;secondary&quot;: // Later button
-		// This could SetState for a future time to ask
-	}
-}
-
-func (d *AppUpdateBanner) OnMount(ctx app.Context) {
-	d.bnr.ActionClose(ctx, d.onBannerClose)
-}
-
-func (d *AppUpdateBanner) OnAppUpdate(ctx app.Context) {
-	if ctx.AppUpdateAvailable() {
-		d.bnr.ActionOpen(ctx)
-	}
-}
-</code></pre>
-`},
-    CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/drawer&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
-)
-
-// TODO: make this NavigationItems immutable - this appears to be an issue with &quot;already mounted&quot;
-
-var NavigationItems list.Items
-
-type Navigation struct {
-	app.Compo
-	base.JsUtil
-	items list.Items
-	list  *list.List
-}
-
-func (n *Navigation) Render() app.UI {
-	return &amp;drawer.Drawer{Type: drawer.Standard, Id: &quot;navigationDrawer&quot;, List: n.list}
-}
-
-func (n *Navigation) OnMount(ctx app.Context) {
-	if n.items == nil {
-		n.items = NavigationItems
-		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
-	}
-	n.items.SelectHref(ctx.Page().URL().Path)
-}
-</code></pre>
-`},
     CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
 
 import (
@@ -959,6 +1040,7 @@ func Routes() {
 	addRoute(&amp;list.Item{Text: &quot;Form&quot;, Graphic: icon.MIInput, Href: &quot;/form&quot;}, &amp;FormDemo{})
 	addRoute(&amp;list.Item{Text: &quot;Icon&quot;, Graphic: icon.MIIcecream, Href: &quot;/icon&quot;}, &amp;IconDemo{})
 	addRoute(&amp;list.Item{Text: &quot;List&quot;, Graphic: icon.MIList, Href: &quot;/list&quot;}, &amp;ListDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Progress&quot;, Graphic: icon.MIWatch, Href: &quot;/progress&quot;}, &amp;ProgressDemo{})
 	addRoute(&amp;list.Item{Text: &quot;Slider&quot;, Graphic: icon.MIDoorSliding, Href: &quot;/slider&quot;}, &amp;SliderDemo{})
 	addRoute(&amp;list.Item{Text: &quot;Tab&quot;, Graphic: icon.MITab, Href: &quot;/tab&quot;}, &amp;TabDemo{})
 	NavigationItems = append(NavigationItems, &amp;list.Item{Type: list.ItemTypeDivider})

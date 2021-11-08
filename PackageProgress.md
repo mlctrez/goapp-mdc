@@ -43,7 +43,7 @@
 | [mdc-segmented-button](https://github.com/material-components/material-components-web/tree/master/packages/mdc-segmented-button) | investigate | - |
 | [mdc-select](https://github.com/material-components/material-components-web/tree/master/packages/mdc-select) | pgk/select | TODO |
 | [mdc-shape](https://github.com/material-components/material-components-web/tree/master/packages/mdc-shape) | investigate | - |
-| [mdc-slider](https://github.com/material-components/material-components-web/tree/master/packages/mdc-slider) | pkg/slider | TODO |
+| [mdc-slider](https://github.com/material-components/material-components-web/tree/master/packages/mdc-slider) | [slider](pkg/slider) | Mostly done, Needs testing and api events |
 | [mdc-snackbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-snackbar) | pkg/snakbar | TODO |
 | [mdc-switch](https://github.com/material-components/material-components-web/tree/master/packages/mdc-switch) | pkg/switch | TODO |
 | [mdc-tab](https://github.com/material-components/material-components-web/tree/master/packages/mdc-tab) | [tab](pkg/tab) | tab.go |
