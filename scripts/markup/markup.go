@@ -7,6 +7,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/gomarkdown/markdown"
@@ -84,6 +85,7 @@ func main() {
 	for k := range paths {
 		mainPackage = append(mainPackage, k)
 	}
+	sort.Strings(mainPackage)
 	orderedPaths = append(orderedPaths, mainPackage...)
 
 	open, err := os.Create(output)

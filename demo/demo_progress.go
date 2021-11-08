@@ -1,8 +1,6 @@
 package demo
 
 import (
-	"fmt"
-	"reflect"
 	"time"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
@@ -53,8 +51,7 @@ func row(text string, component app.UI, button app.UI) app.UI {
 }
 
 func (d *ProgressDemo) showButton(c progress.Api, determinate bool) app.UI {
-	buttonId := fmt.Sprintf("button_%s_%t", reflect.TypeOf(c).Name(), determinate)
-	return &button.Button{Id: buttonId, Label: "Show",
+	return &button.Button{Id: d.UUID(), Label: "Show",
 		Callback: func(button app.HTMLButton) {
 			button.OnClick(func(ctx app.Context, e app.Event) {
 				button.JSValue().Call("blur")
