@@ -14,18 +14,18 @@ type CodeDetails struct {
 //  8 demo/demo_form.go
 //  9 demo/demo_icon.go
 // 10 demo/demo_list.go
-// 11 demo/demo_slider.go
-// 12 demo/demo_tab.go
-// 13 demo/demo_code.go
-// 14 demo/demo_progress.go
+// 11 demo/demo_progress.go
+// 12 demo/demo_slider.go
+// 13 demo/demo_tab.go
+// 14 demo/demo_code.go
 // 15 demo/navigation.go
-// 16 demo/appupdate.go
-// 17 demo/handler.go
-// 18 demo/page.go
-// 19 demo/routes.go
-// 20 server.go
+// 16 demo/page.go
+// 17 demo/routes.go
+// 18 demo/appupdate.go
+// 19 demo/handler.go
+// 20 wasm_server.go
 // 21 main.go
-// 22 wasm_server.go
+// 22 server.go
 var Code = []CodeDetails{
     CodeDetails{Name:"index.go",Code:`<pre><code class="language-go">package demo
 
@@ -622,6 +622,87 @@ func (d *ListDemo) Render() app.UI {
 }
 </code></pre>
 `},
+    CodeDetails{Name:"progress.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;fmt&quot;
+	&quot;reflect&quot;
+	&quot;time&quot;
+
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/button&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/progress&quot;
+)
+
+type ProgressDemo struct {
+	app.Compo
+	base.JsUtil
+	circular       *progress.Circular
+	circularInd    *progress.Circular
+	circularColors *progress.Circular
+	linear         *progress.Linear
+	linearInd      *progress.Linear
+}
+
+func (d *ProgressDemo) Render() app.UI {
+
+	if d.circular == nil {
+		d.circular = progress.NewCircular(&quot;circularProgress&quot;, 48).Label(&quot;wait for it&quot;)
+		d.circularInd = progress.NewCircular(&quot;circularProgressInd&quot;, 48).Label(&quot;wait for it ind&quot;)
+		d.circularColors = progress.NewCircular(&quot;circularProgressColors&quot;, 48).Label(&quot;wait for it color&quot;)
+		d.circularColors.Colors([4]string{&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;, &quot;cyan&quot;})
+		d.linear = progress.NewLinear(&quot;linearProgress&quot;).Label(&quot;wait for it pt 2&quot;)
+		d.linearInd = progress.NewLinear(&quot;linearProgressInd&quot;).Label(&quot;wait for it pt 2 ind&quot;)
+	}
+
+	body := layout.Grid().Body(
+		row(&quot;Circular&quot;, d.circular, d.showButton(d.circular, true)),
+		row(&quot;Circular Indeterminate&quot;, d.circularInd, d.showButton(d.circularInd, false)),
+		row(&quot;Circular Colors&quot;, d.circularColors, d.showButton(d.circularColors, false)),
+		row(&quot;Linear Progress&quot;, d.linear, d.showButton(d.linear, true)),
+		row(&quot;Linear Indeterminate&quot;, d.linearInd, d.showButton(d.linearInd, false)),
+	)
+
+	return PageBody(body)
+}
+
+func row(text string, component app.UI, button app.UI) app.UI {
+	return layout.Inner().Body(
+		layout.CellModified(&quot;middle&quot;, 4).Body(app.Text(text)),
+		layout.CellModified(&quot;bottom&quot;, 4).Style(&quot;height&quot;,&quot;50px&quot;).Body(component),
+		layout.CellModified(&quot;middle&quot;, 4).Body(button),
+	)
+}
+
+
+func (d *ProgressDemo) showButton(c progress.Api, determinate bool) app.UI {
+	buttonId := fmt.Sprintf(&quot;button_%s_%t&quot;, reflect.TypeOf(c).Name(), determinate)
+	return &amp;button.Button{Id: buttonId, Label: &quot;Show&quot;,
+		Callback: func(button app.HTMLButton) {
+			button.OnClick(func(ctx app.Context, e app.Event) {
+				button.JSValue().Call(&quot;blur&quot;)
+				go func() {
+					c.Determinate(determinate)
+					c.Open()
+					for i := 0; i &lt; 100; i++ {
+						if determinate {
+							c.SetProgress(float64(i) / float64(100))
+						}
+						time.Sleep(50 * time.Millisecond)
+					}
+					c.Close()
+					time.Sleep(500 * time.Millisecond)
+					if determinate {
+						c.SetProgress(0)
+					}
+				}()
+			})
+		}}
+}
+</code></pre>
+`},
     CodeDetails{Name:"slider.go",Code:`<pre><code class="language-go">package demo
 
 import (
@@ -785,86 +866,6 @@ func (d *CodeDemo) eventHandler(ctx app.Context, action app.Action) {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"progress.go",Code:`<pre><code class="language-go">package demo
-
-import (
-	&quot;fmt&quot;
-	&quot;reflect&quot;
-	&quot;time&quot;
-
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/base&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/button&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/progress&quot;
-)
-
-type ProgressDemo struct {
-	app.Compo
-	base.JsUtil
-	circular       *progress.Circular
-	circularInd    *progress.Circular
-	circularColors *progress.Circular
-	linear         *progress.Linear
-	linearInd      *progress.Linear
-}
-
-func (d *ProgressDemo) Render() app.UI {
-
-	if d.circular == nil {
-		d.circular = progress.NewCircular(&quot;circularProgress&quot;, 48).Label(&quot;wait for it&quot;)
-		d.circularInd = progress.NewCircular(&quot;circularProgressInd&quot;, 48).Label(&quot;wait for it ind&quot;)
-		d.circularColors = progress.NewCircular(&quot;circularProgressColors&quot;, 48).Label(&quot;wait for it color&quot;)
-		d.circularColors.Colors([4]string{&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;, &quot;cyan&quot;})
-		d.linear = progress.NewLinear(&quot;linearProgress&quot;).Label(&quot;wait for it pt 2&quot;)
-		d.linearInd = progress.NewLinear(&quot;linearProgressInd&quot;).Label(&quot;wait for it pt 2 ind&quot;)
-	}
-
-	body := layout.Grid().Body(
-		row(&quot;Circular&quot;, d.circular, d.showButton(d.circular, true)),
-		row(&quot;Circular Indeterminate&quot;, d.circularInd, d.showButton(d.circularInd, false)),
-		row(&quot;Circular Colors&quot;, d.circularColors, d.showButton(d.circularColors, false)),
-		row(&quot;Linear Progress&quot;, d.linear, d.showButton(d.linear, true)),
-		row(&quot;Linear Indeterminate&quot;, d.linearInd, d.showButton(d.linearInd, false)),
-	)
-
-	return PageBody(body)
-}
-
-func row(text string, component app.UI, button app.UI) app.UI {
-	return layout.Inner().Body(
-		layout.CellModified(&quot;middle&quot;, 4).Body(app.Text(text)),
-		layout.CellModified(&quot;bottom&quot;, 4).Style(&quot;height&quot;,&quot;50px&quot;).Body(component),
-		layout.CellModified(&quot;middle&quot;, 4).Body(button),
-	)
-}
-
-func (d *ProgressDemo) showButton(c progress.Api, determinate bool) app.UI {
-	buttonId := fmt.Sprintf(&quot;button_%s_%t&quot;, reflect.TypeOf(c).Name(), determinate)
-	return &amp;button.Button{Id: buttonId, Label: &quot;Show&quot;,
-		Callback: func(button app.HTMLButton) {
-			button.OnClick(func(ctx app.Context, e app.Event) {
-				button.JSValue().Call(&quot;blur&quot;)
-				go func() {
-					c.Determinate(determinate)
-					c.Open()
-					for i := 0; i &lt; 100; i++ {
-						if determinate {
-							c.SetProgress(float64(i) / float64(100))
-						}
-						time.Sleep(50 * time.Millisecond)
-					}
-					c.Close()
-					time.Sleep(500 * time.Millisecond)
-					if determinate {
-						c.SetProgress(0)
-					}
-				}()
-			})
-		}}
-}
-</code></pre>
-`},
     CodeDetails{Name:"navigation.go",Code:`<pre><code class="language-go">package demo
 
 import (
@@ -895,6 +896,67 @@ func (n *Navigation) OnMount(ctx app.Context) {
 		n.list = &amp;list.List{Type: list.Navigation, Id: &quot;navigationList&quot;, Items: n.items.UIList()}
 	}
 	n.items.SelectHref(ctx.Page().URL().Path)
+}
+</code></pre>
+`},
+    CodeDetails{Name:"page.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
+)
+
+// PageBody applies the navigation, update banner, and demo page layout to the provided pageContent.
+func PageBody(pageContent ...app.UI) app.UI {
+
+	content := []app.UI{&amp;Navigation{}}
+	content = append(content, pageContent...)
+
+	return app.Div().Body(
+		&amp;AppUpdateBanner{},
+
+		app.Div().Style(&quot;display&quot;, &quot;flex&quot;).Body(content...),
+	)
+}
+
+func FlexGrid(cells ...app.UI) app.UI {
+	return layout.Grid().Body(
+		layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(cells...),
+	)
+}
+</code></pre>
+`},
+    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
+
+import (
+	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
+	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
+)
+
+func addRoute(nav *list.Item, compo app.Composer) {
+	nav.Type = list.ItemTypeAnchor
+	NavigationItems = append(NavigationItems, nav)
+	app.Route(nav.Href, compo)
+}
+
+func Routes() {
+	addRoute(&amp;list.Item{Text: &quot;Home&quot;, Graphic: icon.MIHome, Href: &quot;/&quot;}, &amp;Index{})
+	addRoute(&amp;list.Item{Text: &quot;Banner&quot;, Graphic: icon.MIVoicemail, Href: &quot;/banner&quot;}, &amp;BannerDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Button&quot;, Graphic: icon.MISmartButton, Href: &quot;/button&quot;}, &amp;ButtonDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Card&quot;, Graphic: icon.MICreditCard, Href: &quot;/card&quot;}, &amp;CardDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Checkbox&quot;, Graphic: icon.MICheckBox, Href: &quot;/checkbox&quot;}, &amp;CheckboxDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Dialog&quot;, Graphic: icon.MISpeaker, Href: &quot;/dialog&quot;}, &amp;DialogDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Drawer&quot;, Graphic: icon.MIDashboard, Href: &quot;/drawer&quot;}, &amp;DrawerDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Fab&quot;, Graphic: icon.MIFavorite, Href: &quot;/fab&quot;}, &amp;FabDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Form&quot;, Graphic: icon.MIInput, Href: &quot;/form&quot;}, &amp;FormDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Icon&quot;, Graphic: icon.MIIcecream, Href: &quot;/icon&quot;}, &amp;IconDemo{})
+	addRoute(&amp;list.Item{Text: &quot;List&quot;, Graphic: icon.MIList, Href: &quot;/list&quot;}, &amp;ListDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Progress&quot;, Graphic: icon.MIWatch, Href: &quot;/progress&quot;}, &amp;ProgressDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Slider&quot;, Graphic: icon.MIDoorSliding, Href: &quot;/slider&quot;}, &amp;SliderDemo{})
+	addRoute(&amp;list.Item{Text: &quot;Tab&quot;, Graphic: icon.MITab, Href: &quot;/tab&quot;}, &amp;TabDemo{})
+	NavigationItems = append(NavigationItems, &amp;list.Item{Type: list.ItemTypeDivider})
+	addRoute(&amp;list.Item{Text: &quot;Code&quot;, Graphic: icon.MICode, Href: &quot;/code&quot;}, &amp;CodeDemo{})
 }
 </code></pre>
 `},
@@ -987,64 +1049,24 @@ func BuildHandler() *app.Handler {
 }
 </code></pre>
 `},
-    CodeDetails{Name:"page.go",Code:`<pre><code class="language-go">package demo
+    CodeDetails{Name:"wasm_server.go",Code:`<pre><code class="language-go">//go:build wasm
 
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/layout&quot;
-)
+package main
 
-// PageBody applies the navigation, update banner, and demo page layout to the provided pageContent.
-func PageBody(pageContent ...app.UI) app.UI {
-
-	content := []app.UI{&amp;Navigation{}}
-	content = append(content, pageContent...)
-
-	return app.Div().Body(
-		&amp;AppUpdateBanner{},
-
-		app.Div().Style(&quot;display&quot;, &quot;flex&quot;).Body(content...),
-	)
-}
-
-func FlexGrid(cells ...app.UI) app.UI {
-	return layout.Grid().Body(
-		layout.Inner().Style(&quot;display&quot;, &quot;flex&quot;).Body(cells...),
-	)
-}
+func httpServer() {}
 </code></pre>
 `},
-    CodeDetails{Name:"routes.go",Code:`<pre><code class="language-go">package demo
+    CodeDetails{Name:"main.go",Code:`<pre><code class="language-go">package main
 
 import (
 	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/icon&quot;
-	&quot;github.com/mlctrez/goapp-mdc/pkg/list&quot;
+	&quot;github.com/mlctrez/goapp-mdc/demo&quot;
 )
 
-func addRoute(nav *list.Item, compo app.Composer) {
-	nav.Type = list.ItemTypeAnchor
-	NavigationItems = append(NavigationItems, nav)
-	app.Route(nav.Href, compo)
-}
-
-func Routes() {
-	addRoute(&amp;list.Item{Text: &quot;Home&quot;, Graphic: icon.MIHome, Href: &quot;/&quot;}, &amp;Index{})
-	addRoute(&amp;list.Item{Text: &quot;Banner&quot;, Graphic: icon.MIVoicemail, Href: &quot;/banner&quot;}, &amp;BannerDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Button&quot;, Graphic: icon.MISmartButton, Href: &quot;/button&quot;}, &amp;ButtonDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Card&quot;, Graphic: icon.MICreditCard, Href: &quot;/card&quot;}, &amp;CardDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Checkbox&quot;, Graphic: icon.MICheckBox, Href: &quot;/checkbox&quot;}, &amp;CheckboxDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Dialog&quot;, Graphic: icon.MISpeaker, Href: &quot;/dialog&quot;}, &amp;DialogDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Drawer&quot;, Graphic: icon.MIDashboard, Href: &quot;/drawer&quot;}, &amp;DrawerDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Fab&quot;, Graphic: icon.MIFavorite, Href: &quot;/fab&quot;}, &amp;FabDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Form&quot;, Graphic: icon.MIInput, Href: &quot;/form&quot;}, &amp;FormDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Icon&quot;, Graphic: icon.MIIcecream, Href: &quot;/icon&quot;}, &amp;IconDemo{})
-	addRoute(&amp;list.Item{Text: &quot;List&quot;, Graphic: icon.MIList, Href: &quot;/list&quot;}, &amp;ListDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Progress&quot;, Graphic: icon.MIWatch, Href: &quot;/progress&quot;}, &amp;ProgressDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Slider&quot;, Graphic: icon.MIDoorSliding, Href: &quot;/slider&quot;}, &amp;SliderDemo{})
-	addRoute(&amp;list.Item{Text: &quot;Tab&quot;, Graphic: icon.MITab, Href: &quot;/tab&quot;}, &amp;TabDemo{})
-	NavigationItems = append(NavigationItems, &amp;list.Item{Type: list.ItemTypeDivider})
-	addRoute(&amp;list.Item{Text: &quot;Code&quot;, Graphic: icon.MICode, Href: &quot;/code&quot;}, &amp;CodeDemo{})
+func main() {
+	demo.Routes()
+	app.RunWhenOnBrowser()
+	httpServer()
 }
 </code></pre>
 `},
@@ -1082,27 +1104,6 @@ func setupVersion(handler *app.Handler) *app.Handler {
 	}
 	return handler
 }
-</code></pre>
-`},
-    CodeDetails{Name:"main.go",Code:`<pre><code class="language-go">package main
-
-import (
-	&quot;github.com/maxence-charriere/go-app/v9/pkg/app&quot;
-	&quot;github.com/mlctrez/goapp-mdc/demo&quot;
-)
-
-func main() {
-	demo.Routes()
-	app.RunWhenOnBrowser()
-	httpServer()
-}
-</code></pre>
-`},
-    CodeDetails{Name:"wasm_server.go",Code:`<pre><code class="language-go">//go:build wasm
-
-package main
-
-func httpServer() {}
 </code></pre>
 `},
 }
