@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.17.0
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gomarkdown/markdown v0.0.0-20210918233619-6c1113f12c4a
-	github.com/maxence-charriere/go-app/v9 v9.1.1
+	github.com/maxence-charriere/go-app/v9 v9.2.0
 	github.com/mlctrez/goapp-mdc v0.0.0-20211102190219-e2110f80de51
 )
 

@@ -21,7 +21,7 @@
 | [mdc-density](https://github.com/material-components/material-components-web/tree/master/packages/mdc-density) | LIB | - |
 | [mdc-dialog](https://github.com/material-components/material-components-web/tree/master/packages/mdc-dialog) | [dialog](pkg/dialog) | - |
 | [mdc-dom](https://github.com/material-components/material-components-web/tree/master/packages/mdc-dom) | LIB | - |
-| [mdc-drawer](https://github.com/material-components/material-components-web/tree/master/packages/mdc-drawer) | pkg/drawer | TODO |
+| [mdc-drawer](https://github.com/material-components/material-components-web/tree/master/packages/mdc-drawer) | [drawer](pkg/drawer) | TODO |
 | [mdc-elevation](https://github.com/material-components/material-components-web/tree/master/packages/mdc-elevation) | LIB | - |
 | [mdc-fab](https://github.com/material-components/material-components-web/tree/master/packages/mdc-fab) | [fab](pkg/fab) | - |
 | [mdc-feature-targeting](https://github.com/material-components/material-components-web/tree/master/packages/mdc-feature-targeting) | LIB | - |

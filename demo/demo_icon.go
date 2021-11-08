@@ -2,7 +2,6 @@ package demo
 
 import (
 	"fmt"
-	"sort"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
@@ -20,14 +19,6 @@ type IconDemo struct {
 	iconGroupList *list.List
 }
 
-func iconGroupNamesSorted() (result []string) {
-	for s := range icon.AllGroupFunctions() {
-		result = append(result, s)
-	}
-	sort.Strings(result)
-	return
-}
-
 func (d *IconDemo) Render() app.UI {
 	if d.counterOne == nil {
 		d.counterOne = &base.Counter{Label: "bookmark"}
@@ -37,14 +28,6 @@ func (d *IconDemo) Render() app.UI {
 			IconOff: icon.MIFavoriteBorder, AriaOn: "remove from favorites", AriaOff: "add to favorites"}
 		d.toggleOne.ButtonToggleChange = func(isOn bool) { d.toggleTwo.SetState(isOn) }
 		d.toggleTwo.ButtonToggleChange = func(isOn bool) { d.toggleOne.SetState(isOn) }
-
-		d.iconGroupList = &list.List{Type: list.SingleSelection, Id: "iconGroupList"}
-		groups := list.Items{}
-		for _, g := range iconGroupNamesSorted() {
-			groups = append(groups, &list.Item{Text: g})
-		}
-		d.iconGroupList.Items = groups.UIList()
-
 	}
 
 	body := layout.Grid().Body(
@@ -53,10 +36,6 @@ func (d *IconDemo) Render() app.UI {
 				&icon.Button{Id: d.UUID(), Icon: icon.MIBookmark,
 					AriaOff: "bookmark this", Callback: d.IconButtonClicked}, d.counterOne),
 			layout.Cell().Body(d.toggleOne, d.toggleTwo),
-		),
-		layout.Inner().Style("display", "flex").Body(
-			layout.CellWide().Body(app.Text("Material Icon Groups")),
-			layout.Cell().Body(d.iconGroupList),
 		),
 	)
 

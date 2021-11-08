@@ -56,7 +56,6 @@ func main() {
 		panic(err)
 	}
 
-
 	var orderedPaths []string
 
 	demo.Routes()
@@ -95,11 +94,14 @@ func main() {
 	buff := bytes.Buffer{}
 	buff.WriteString("package markup\n")
 
-
 	buff.WriteString("type CodeDetails struct {\n")
 	buff.WriteString("	Name string\n")
 	buff.WriteString("	Code string\n")
 	buff.WriteString("}\n")
+
+	for i, path := range orderedPaths {
+		buff.WriteString(fmt.Sprintf("// %2d %s\n", i, path))
+	}
 
 	buff.WriteString("var Code = []CodeDetails{\n")
 

@@ -2,11 +2,11 @@ module github.com/mlctrez/goapp-mdc
 
 go 1.17
 
-// replace github.com/maxence-charriere/go-app/v9 => /home/mattman/goland/go-app
+//replace github.com/maxence-charriere/go-app/v9 => /home/mattman/goland/go-app
 
 require (
 	github.com/google/uuid v1.3.0
-	github.com/maxence-charriere/go-app/v9 v9.1.1
+	github.com/maxence-charriere/go-app/v9 v9.2.0
 )
 
 require (
