@@ -33,7 +33,7 @@ func (d *BarDemo) Render() app.UI {
 
 	return app.Div().Style("display", "flex").Body(
 		&AppUpdateBanner{}, &Navigation{},
-		)
+	)
 
 	//return app.Div().Body(
 	//	topBar,

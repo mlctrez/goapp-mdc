@@ -45,7 +45,7 @@ func (d *ProgressDemo) Render() app.UI {
 func row(text string, component app.UI, button app.UI) app.UI {
 	return layout.Inner().Body(
 		layout.CellModified("middle", 4).Body(app.Text(text)),
-		layout.CellModified("bottom", 4).Style("height","50px").Body(component),
+		layout.CellModified("bottom", 4).Style("height", "50px").Body(component),
 		layout.CellModified("middle", 4).Body(button),
 	)
 }

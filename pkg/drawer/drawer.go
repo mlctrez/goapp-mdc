@@ -55,7 +55,6 @@ const Close EventType = "MDCDrawer:close"
 const Closed EventType = "MDCDrawer:closed"
 const Toggle EventType = "MDCDrawer:toggle"
 
-
 func (d *Drawer) OnMount(ctx app.Context) {
 	switch d.Type {
 	case Modal, Dismissible:

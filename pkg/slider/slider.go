@@ -1,6 +1,10 @@
 package slider
 
 import (
+	"fmt"
+	"log"
+	"strconv"
+
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
 )
@@ -57,8 +61,35 @@ func sliderTrack() app.HTMLDiv {
 	)
 }
 
-func (c *Continuous) OnMount(_ app.Context) {
+func (c *Continuous) OnMount(ctx app.Context) {
 	c.api = c.JsNewAtPath(MDCSliderApi, c.JSValue())
+	c.JSValue().Call("addEventListener", string(MDCSliderChange), app.FuncOf(c.event(ctx, MDCSliderChange)))
+	ctx.Handle(string(MDCSliderValue), handleValue(c, c.api))
+}
+
+func (c *Continuous) ActionValue(ctx app.Context, value float64) {
+	ctx.NewActionWithValue(string(MDCSliderChange), c,
+		app.T("value", value),
+		app.T("thumb", "2"),
+	)
+}
+
+func (c *Continuous) event(ctx app.Context, change EventType) func(this app.Value, args []app.Value) interface{} {
+	return func(this app.Value, args []app.Value) interface{} {
+		newChangeAction(ctx, c, args)
+		return nil
+	}
+}
+
+func newChangeAction(ctx app.Context, source interface{}, args []app.Value) {
+	if len(args) > 0 && args[0].Get("detail").Truthy() {
+		value := args[0].Get("detail").Get("value").Float()
+		thumb := args[0].Get("detail").Get("value").Int()
+		ctx.NewActionWithValue(string(MDCSliderChange), source,
+			app.Tag{Name: "value", Value: fmt.Sprintf("%f", value)},
+			app.Tag{Name: "thumb", Value: fmt.Sprintf("%d", thumb)},
+		)
+	}
 }
 
 type ContinuousRange struct {
@@ -83,6 +114,49 @@ func (cr *ContinuousRange) Render() app.UI {
 	)
 }
 
-func (cr *ContinuousRange) OnMount(_ app.Context) {
+func (cr *ContinuousRange) OnMount(ctx app.Context) {
 	cr.api = cr.JsNewAtPath(MDCSliderApi, cr.JSValue())
+	cr.JSValue().Call("addEventListener", string(MDCSliderChange), app.FuncOf(cr.event(ctx, MDCSliderChange)))
+	ctx.Handle(string(MDCSliderValue), handleValue(cr, cr.api))
 }
+
+func (cr *ContinuousRange) ActionValue(ctx app.Context, thumb string, value float64) {
+	ctx.NewActionWithValue(string(MDCSliderChange), cr,
+		app.T("value", value),
+		app.T("thumb", thumb),
+	)
+}
+
+func (cr *ContinuousRange) event(ctx app.Context, change EventType) func(this app.Value, args []app.Value) interface{} {
+	return func(this app.Value, args []app.Value) interface{} {
+		newChangeAction(ctx, cr, args)
+		return nil
+	}
+}
+
+func handleValue(compo interface{}, api app.Value) func(context app.Context, action app.Action) {
+	return func(context app.Context, action app.Action) {
+		if !api.Truthy() {
+			log.Println("unable to handle event, no api set")
+			return
+		}
+		if action.Name == string(MDCSliderValue) && action.Value == compo {
+			value, err := strconv.ParseFloat(action.Tags.Get("value"), 64)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			switch action.Tags.Get("thumb") {
+			case "1":
+				api.Call("setValueStart", value)
+			case "2":
+				api.Call("setValueEnd", value)
+			}
+		}
+	}
+}
+
+type EventType string
+
+const MDCSliderChange EventType = "MDCSlider:change"
+const MDCSliderValue EventType = "MDCSlider:value"
