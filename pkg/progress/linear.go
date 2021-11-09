@@ -84,24 +84,3 @@ func (b *Linear) Close() {
 		b.target.Call("close")
 	}
 }
-
-/*
-
-
-	bar := progress.NewLinear("progress")
-	bar.WithOnMount(func(ctx app.Context) {
-		ctx.Async(func() {
-			bar.Open()
-			bar.Determinate(false)
-			var p float64
-			for p = 0; p < 1; p += 0.01 {
-				//bar.SetProgress(p)
-				time.Sleep(40 * time.Millisecond)
-			}
-			bar.Close()
-		})
-	})
-
-
-
-*/

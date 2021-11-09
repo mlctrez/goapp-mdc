@@ -7,25 +7,39 @@ import (
 	"github.com/mlctrez/goapp-mdc/pkg/list"
 )
 
-// TODO: make this NavigationItems immutable - this appears to be an issue with "already mounted"
-
-var NavigationItems list.Items
+var NavigationItems []*list.Item
 
 type Navigation struct {
 	app.Compo
 	base.JsUtil
-	items list.Items
-	list  *list.List
+	Type   drawer.Type
+	drawer *drawer.Drawer
+	items  list.Items
+	//list  *list.List
 }
 
 func (n *Navigation) Render() app.UI {
-	return &drawer.Drawer{Type: drawer.Standard, Id: "navigationDrawer", List: n.list}
+	if n.items == nil {
+		n.items = make(list.Items, len(NavigationItems))
+		for i, item := range NavigationItems {
+			n.items[i] = &list.Item{
+				Type:      item.Type,
+				Graphic:   item.Graphic,
+				Text:      item.Text,
+				Secondary: item.Secondary,
+				Href:      item.Href,
+			}
+		}
+		n.drawer = &drawer.Drawer{
+			Type: n.Type, Id: "navigationDrawer",
+			List: &list.List{Type: list.Navigation,
+				Id: "navigationList", Items: n.items.UIList(),
+			},
+		}
+	}
+	return n.drawer
 }
 
 func (n *Navigation) OnMount(ctx app.Context) {
-	if n.items == nil {
-		n.items = NavigationItems
-		n.list = &list.List{Type: list.Navigation, Id: "navigationList", Items: n.items.UIList()}
-	}
 	n.items.SelectHref(ctx.Page().URL().Path)
 }

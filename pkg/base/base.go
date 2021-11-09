@@ -78,3 +78,15 @@ func (j *JsUtil) LogWithP(o interface{}, msg string) {
 func (j *JsUtil) LogWithPf(o interface{}, msg string, args ...interface{}) {
 	j.LogWithP(o, fmt.Sprintf(msg, args))
 }
+
+func (j *JsUtil) ConsoleLog(args ...interface{}) {
+	app.Window().Get("console").Call("log", args...)
+}
+
+func HTMLButtonUpdate(buttons []app.HTMLButton, modify func(button app.HTMLButton)) (result []app.UI) {
+	for _, button := range buttons {
+		modify(button)
+		result = append(result, button)
+	}
+	return
+}

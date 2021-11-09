@@ -1,6 +1,5 @@
 
 GIT_COMMIT := $(shell git describe --long --always 2> /dev/null)
-SCR := scripts
 PROG := bin/goappmdc
 GOFILES := $(shell find . -name "*.go" -print)
 
@@ -44,20 +43,20 @@ fmt:
 bin:
 	mkdir -p bin
 
-bin/material: $(SCR)/material/*.go
-	cd $(SCR) && go build -o ../$@ ../$<
+bin/material: scripts/material/*.go
+	go build -o $@ $<
 
-bin/newpkg: $(SCR)/newpkg/*.go
-	cd $(SCR) && go build -o ../$@ ../$<
+bin/newpkg: scripts/newpkg/*.go
+	go build -o $@ $<
 
-bin/upload: $(SCR)/upload/*.go
-	cd $(SCR) && go build -o ../$@ ../$<
+bin/upload: scripts/upload/*.go
+	go build -o $@ $<
 
-bin/genstatic: $(SCR)/genstatic/*.go $(GOFILES)
-	cd $(SCR) && go build -o ../$@ ../$<
+bin/genstatic: scripts/genstatic/*.go $(GOFILES)
+	go build -o $@ $<
 
-bin/markup: $(SCR)/markup/*.go
-	cd $(SCR) && go build -o ../$@ ../$<
+bin/markup: scripts/markup/*.go
+	go build -o $@ $<
 
-bin/dynserver: $(SCR)/dynserver/*.go
-	cd $(SCR) && go build -o ../$@ ../$<
+bin/dynserver: scripts/dynserver/*.go
+	go build -o $@ $<

@@ -54,6 +54,6 @@
 | [mdc-theme](https://github.com/material-components/material-components-web/tree/master/packages/mdc-theme) | investigate | - |
 | [mdc-tokens](https://github.com/material-components/material-components-web/tree/master/packages/mdc-tokens) | investigate | - |
 | [mdc-tooltip](https://github.com/material-components/material-components-web/tree/master/packages/mdc-tooltip) | pkg/tooltip | TODO |
-| [mdc-top-app-bar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-top-app-bar) | pkg/topappbar? | TODO |
+| [mdc-top-app-bar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-top-app-bar) | [bar](pkg/bar) | In Progress |
 | [mdc-touch-target](https://github.com/material-components/material-components-web/tree/master/packages/mdc-touch-target) | investigate | - |
 | [mdc-typography](https://github.com/material-components/material-components-web/tree/master/packages/mdc-typography) | investigate | - |

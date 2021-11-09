@@ -15,6 +15,7 @@ func addRoute(nav *list.Item, compo app.Composer) {
 func Routes() {
 	addRoute(&list.Item{Text: "Home", Graphic: icon.MIHome, Href: "/"}, &Index{})
 	addRoute(&list.Item{Text: "Banner", Graphic: icon.MIVoicemail, Href: "/banner"}, &BannerDemo{})
+	//addRoute(&list.Item{Text: "Bar", Graphic: icon.MIMenu, Href: "/bar"}, &BarDemo{})
 	addRoute(&list.Item{Text: "Button", Graphic: icon.MISmartButton, Href: "/button"}, &ButtonDemo{})
 	addRoute(&list.Item{Text: "Card", Graphic: icon.MICreditCard, Href: "/card"}, &CardDemo{})
 	addRoute(&list.Item{Text: "Checkbox", Graphic: icon.MICheckBox, Href: "/checkbox"}, &CheckboxDemo{})

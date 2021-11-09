@@ -3,6 +3,7 @@ package icon
 import "github.com/maxence-charriere/go-app/v9/pkg/app"
 
 const MaterialIconsClass = "material-icons"
+const MaterialIconButton = "mdc-icon-button"
 
 func (m MaterialIcon) Span() app.HTMLSpan {
 	return app.Span().Class(MaterialIconsClass).Text(m)
@@ -14,6 +15,14 @@ func (m MaterialIcon) I() app.HTMLI {
 
 func (m MaterialIcon) IClasses(classes ...string) app.HTMLI {
 	return app.I().Class(classes...).Text(m)
+}
+
+func (m MaterialIcon) Button() app.HTMLButton {
+	return m.ButtonClasses(MaterialIconsClass, MaterialIconButton)
+}
+
+func (m MaterialIcon) ButtonClasses(classes ...string) app.HTMLButton {
+	return app.Button().Class(classes...).Text(m)
 }
 
 func (m MaterialIcon) IItemGraphic() app.HTMLI {
