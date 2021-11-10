@@ -56,8 +56,6 @@ func (i *Item) Render() app.UI {
 		if cbId == "" {
 			cbId = i.UUID()
 		}
-		// TODO: some refactoring of the checkbox package to allow use here?
-		// Maybe not since the ripple span is located differently
 		content = append(content, app.Span().Class("mdc-deprecated-list-item__ripple"))
 		content = append(content, app.Span().Class("mdc-deprecated-list-item__graphic").Body(
 			app.Div().Class("mdc-checkbox").Body(

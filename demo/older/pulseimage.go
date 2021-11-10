@@ -34,7 +34,6 @@ func (p *PulseImage) getBoundingRect() image.Rectangle {
 	return image.Rect(left, top, right, bottom)
 }
 
-// TODO: is using crypto/rand in wasm ok size and performance wise?
 func randomPointIn(rect image.Rectangle) image.Point {
 	center := image.Pt(rect.Min.X+rect.Dx()/2, rect.Min.Y+rect.Dy()/2)
 	rx, err := rand.Int(rand.Reader, big.NewInt(int64(rect.Dx())))

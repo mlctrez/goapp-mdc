@@ -7,6 +7,8 @@ import (
 	"github.com/mlctrez/goapp-mdc/pkg/base"
 )
 
+// TODO: this is a mess, simplify
+
 type Button struct {
 	app.Compo
 	base.JsUtil
@@ -26,6 +28,12 @@ type Button struct {
 	// button intended for use in card actions
 	CardAction bool
 	Callback   func(button app.HTMLButton)
+}
+
+func Click(click func(ctx app.Context, e app.Event)) func(button app.HTMLButton) {
+	return func(button app.HTMLButton) {
+		button.OnClick(click)
+	}
 }
 
 func (b *Button) Render() app.UI {
@@ -58,10 +66,7 @@ func (b *Button) Render() app.UI {
 }
 
 func (b *Button) OnMount(ctx app.Context) {
-	value := b.JsValueAtPath("mdc.ripple.MDCRipple")
-	if value.Truthy() {
-		value.Call("attachTo", app.Window().GetElementByID(b.Id))
-	}
+	b.MDCRippleVal(b.JSValue())
 }
 
 func (b *Button) buildClasses() []string {

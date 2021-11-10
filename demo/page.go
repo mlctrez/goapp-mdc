@@ -20,6 +20,10 @@ func PageBody(pageContent ...app.UI) app.UI {
 		nav.drawer.ActionToggle(ctx)
 	})}
 
+	reloadButton := icon.MIRefresh.Button().OnClick(func(ctx app.Context, e app.Event) {
+		ctx.Reload()
+	})
+
 	codeButton := icon.MICode.Button().OnClick(func(ctx app.Context, e app.Event) {
 		fragment := strings.TrimPrefix(ctx.Page().URL().Path, "/") + ".go"
 		ctx.Navigate(fmt.Sprintf("/code#%s", fragment))
@@ -30,7 +34,7 @@ func PageBody(pageContent ...app.UI) app.UI {
 		app.Window().Call("open", "https://github.com/mlctrez/goapp-mdc")
 	})
 
-	topBar.Actions = []app.HTMLButton{codeButton, githubButton}
+	topBar.Actions = []app.HTMLButton{reloadButton, codeButton, githubButton}
 
 	body := app.Div().Body(
 		nav,

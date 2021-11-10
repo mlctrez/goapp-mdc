@@ -1,9 +1,10 @@
 ## Package Mapping
 
 #### Legend to make sense of goapp-mdc package / status and Notes columns
+
 * TODO - There is no work done yet and there definitely needs to be.
 * investigate - There might be a goapp-mdc component that need to be created.
-* LIB - This is a mdc library / styling package that is used by other mdc packages. 
+* LIB - This is a mdc library / styling package that is used by other mdc packages.
 
 | [material-components-web](https://github.com/material-components/material-components-web) | [goapp-mdc](https://github.com/mlctrez/goapp-mdc/) package / status| Notes |
 | --- | --- | --- |
@@ -44,7 +45,7 @@
 | [mdc-select](https://github.com/material-components/material-components-web/tree/master/packages/mdc-select) | pgk/select | TODO |
 | [mdc-shape](https://github.com/material-components/material-components-web/tree/master/packages/mdc-shape) | investigate | - |
 | [mdc-slider](https://github.com/material-components/material-components-web/tree/master/packages/mdc-slider) | [slider](pkg/slider) | Mostly done, Needs testing and api events |
-| [mdc-snackbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-snackbar) | pkg/snakbar | TODO |
+| [mdc-snackbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-snackbar) | [snackbar](pkg/snackbar) | Mostly done |
 | [mdc-switch](https://github.com/material-components/material-components-web/tree/master/packages/mdc-switch) | pkg/switch | TODO |
 | [mdc-tab](https://github.com/material-components/material-components-web/tree/master/packages/mdc-tab) | [tab](pkg/tab) | tab.go |
 | [mdc-tab-bar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-tab-bar) | [tab](pkg/tab) | bar.go |
