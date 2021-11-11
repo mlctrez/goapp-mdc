@@ -9,7 +9,7 @@ type AutoInit struct{}
 // AutoInitComponent is short for MdcAutoInitWindow() and compo.get(name) .
 func (ai *AutoInit) AutoInitComponent(compo app.Value, name MDCName) app.Value {
 	ai.MdcAutoInitWindow()
-	return compo.Get(string(name))
+	return name.GetFrom(compo)
 }
 
 // MdcAutoInit calls the js function mdc.autoInit() with the provided value
