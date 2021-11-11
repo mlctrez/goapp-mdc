@@ -1,3 +1,4 @@
+//go:build ignore
 package main
 
 import (
@@ -151,8 +152,8 @@ func (sw *SourceWriter) WriteSource(path string) error {
 func main() {
 	var output string
 	var pkg string
-	flag.StringVar(&output, "output", "", "output file icon constants")
-	flag.StringVar(&pkg, "package", "", "output file package name")
+	flag.StringVar(&output, "output", "pkg/icon/material.go", "output file icon constants")
+	flag.StringVar(&pkg, "package", "icon", "output file package name")
 	flag.Parse()
 
 	sortedGroups, groupMap, err := prepareIconData()
@@ -193,6 +194,7 @@ func main() {
 	w.Println("}")
 	w.Println("")
 	w.Println("var _ = AllGroupFunctions")
+
 	err = w.WriteSource(output)
 	if err != nil {
 		panic(err)
