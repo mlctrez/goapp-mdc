@@ -6,8 +6,8 @@
     <a href="https://goreportcard.com/report/github.com/mlctrez/goapp-mdc"><img src="https://goreportcard.com/badge/github.com/mlctrez/goapp-mdc" alt="Go Report Card"></a>
 	<a href="https://GitHub.com/mlctrez/goapp-mdc/releases/"><img src="https://img.shields.io/github/release/mlctrez/goapp-mdc.svg" alt="GitHub release"></a>
 	<a href="https://pkg.go.dev/github.com/mlctrez/goapp-mdc"><img src="https://pkg.go.dev/badge/github.com/mlctrez/goapp-mdc.svg" alt="Go Reference"></a>
-    <img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/mlctrez/goapp-mdc">
-    <img alt="GitHub" src="https://img.shields.io/github/license/mlctrez/goapp-mdc">
+    <a href="https://github.com/mlctrez/goapp-mdc/blob/master/go.mod"><img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/mlctrez/goapp-mdc"></a>
+    <a href="https://github.com/mlctrez/goapp-mdc/blob/master/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/mlctrez/goapp-mdc"></a>
 </p>
 ## Goal
 
