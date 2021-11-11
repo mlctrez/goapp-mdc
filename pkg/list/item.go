@@ -12,6 +12,7 @@ type Item struct {
 	base.JsUtil
 	Type      ItemType
 	Graphic   icon.MaterialIcon
+	Value     string
 	Text      string
 	Secondary string
 	Href      string
@@ -29,6 +30,7 @@ const (
 	ItemTypeCheckbox
 	ItemTypeDivider
 	ItemTypeAnchor
+	ItemTypeOptionSelect
 )
 
 func (i *Item) Render() app.UI {
@@ -40,7 +42,9 @@ func (i *Item) Render() app.UI {
 		return app.Li().Attr("role", "separator").Class("mdc-deprecated-list-divider")
 	case ItemTypeNone, ItemTypeOption, ItemTypeAnchor:
 		if i.Secondary == "" {
-			content = append(content, app.Text(i.Text))
+			if i.Text != "" {
+				content = append(content, app.Text(i.Text))
+			}
 		} else {
 			content = append(content,
 				app.Span().Class("mdc-deprecated-list-item__primary-text").
@@ -88,6 +92,9 @@ func (i *Item) Render() app.UI {
 	switch i.Type {
 	case ItemTypeOption:
 		root.Attr("role", "option")
+		if i.Value != "" || i.Text == "" {
+			root.DataSet("value", i.Value)
+		}
 	case ItemTypeRadio:
 		root.Attr("role", "radio")
 	case ItemTypeCheckbox:
@@ -101,7 +108,9 @@ func (i *Item) Render() app.UI {
 		root.Body(
 			app.Span().Class("mdc-deprecated-list-item__ripple"),
 			app.If(i.Graphic != "", i.Graphic.IItemGraphic()).Else(),
-			app.Span().Class("mdc-deprecated-list-item__text").Body(content...),
+			app.If(len(content) > 0,
+				app.Span().Class("mdc-deprecated-list-item__text").Body(content...),
+			).Else(),
 		)
 	}
 

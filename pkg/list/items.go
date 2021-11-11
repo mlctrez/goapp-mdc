@@ -6,6 +6,18 @@ import "github.com/maxence-charriere/go-app/v9/pkg/app"
 // or pre-selected item and associated attributes of the items in the list.
 type Items []*Item
 
+// SelectedItemText returns the text of the currently selected item or empty if no selection made.
+//
+// This should be called after Select()
+func (items Items) SelectedItemText() (result string) {
+	for _, item := range items {
+		if item.state == ItemSelectStateSelected {
+			result = item.Text
+		}
+	}
+	return
+}
+
 func (items Items) UIList() (uis []app.UI) {
 	for _, item := range items {
 		uis = append(uis, item)

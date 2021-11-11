@@ -1,5 +1,8 @@
 body {
+    background-color: var(--mdc-theme-background);
+    color: var(--mdc-theme-text-primary-on-background);
     font-family: Roboto, monospace;
+    margin: 0;
 }
 
 pre,

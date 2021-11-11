@@ -6,6 +6,7 @@ import (
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/bar"
+	"github.com/mlctrez/goapp-mdc/pkg/colorpicker"
 	"github.com/mlctrez/goapp-mdc/pkg/drawer"
 	"github.com/mlctrez/goapp-mdc/pkg/icon"
 	"github.com/mlctrez/goapp-mdc/pkg/layout"
@@ -16,9 +17,10 @@ func PageBody(pageContent ...app.UI) app.UI {
 	nav := &Navigation{Type: drawer.Dismissible}
 	topBar := &bar.TopAppBar{Title: "go-app mdc", Fixed: false}
 
-	topBar.Navigation = []app.HTMLButton{icon.MIMenu.Button().OnClick(func(ctx app.Context, e app.Event) {
-		nav.drawer.ActionToggle(ctx)
-	})}
+	topBar.Navigation = []app.HTMLButton{
+		icon.MIMenu.Button().OnClick(func(ctx app.Context, e app.Event) { nav.drawer.ActionToggle(ctx) }),
+		icon.MIHome.Button().OnClick(func(ctx app.Context, e app.Event) { ctx.Navigate("/") }),
+	}
 
 	reloadButton := icon.MIRefresh.Button().OnClick(func(ctx app.Context, e app.Event) {
 		ctx.Reload()
@@ -47,6 +49,7 @@ func PageBody(pageContent ...app.UI) app.UI {
 				),
 			),
 		),
+		&colorpicker.CssColor{},
 	)
 
 	return body
@@ -55,5 +58,13 @@ func PageBody(pageContent ...app.UI) app.UI {
 func FlexGrid(cells ...app.UI) app.UI {
 	return layout.Grid().Body(
 		layout.Inner().Style("display", "flex").Body(cells...),
+	)
+}
+
+func GridRow(rowText string, component app.UI, actions ...app.UI) app.UI {
+	return layout.Inner().Body(
+		layout.CellModified("middle", 4).Body(app.Text(rowText)),
+		layout.CellModified("bottom", 4).Style("height", "80px").Body(component),
+		layout.CellModified("middle", 4).Body(actions...),
 	)
 }

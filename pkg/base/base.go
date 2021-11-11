@@ -75,9 +75,9 @@ func (j *JsUtil) LogWithP(o interface{}, msg string) {
 	log.Printf("%s(%d) %s\n", typ, ptr, msg)
 }
 
-func (j *JsUtil) LogWithPf(o interface{}, msg string, args ...interface{}) {
-	j.LogWithP(o, fmt.Sprintf(msg, args))
-}
+//func (j *JsUtil) LogWithPf(o interface{}, msg string, args ...interface{}) {
+//	j.LogWithP(o, fmt.Sprintf(msg, args))
+//}
 
 func (j *JsUtil) ConsoleLog(args ...interface{}) {
 	app.Window().Get("console").Call("log", args...)

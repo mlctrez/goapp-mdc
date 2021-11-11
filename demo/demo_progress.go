@@ -32,22 +32,14 @@ func (d *ProgressDemo) Render() app.UI {
 	}
 
 	body := layout.Grid().Body(
-		row("Circular", d.circular, d.showButton(d.circular, true)),
-		row("Circular Indeterminate", d.circularInd, d.showButton(d.circularInd, false)),
-		row("Circular Colors", d.circularColors, d.showButton(d.circularColors, false)),
-		row("Linear Progress", d.linear, d.showButton(d.linear, true)),
-		row("Linear Indeterminate", d.linearInd, d.showButton(d.linearInd, false)),
+		GridRow("Circular", d.circular, d.showButton(d.circular, true)),
+		GridRow("Circular Indeterminate", d.circularInd, d.showButton(d.circularInd, false)),
+		GridRow("Circular Colors", d.circularColors, d.showButton(d.circularColors, false)),
+		GridRow("Linear Progress", d.linear, d.showButton(d.linear, true)),
+		GridRow("Linear Indeterminate", d.linearInd, d.showButton(d.linearInd, false)),
 	)
 
 	return PageBody(body)
-}
-
-func row(text string, component app.UI, button app.UI) app.UI {
-	return layout.Inner().Body(
-		layout.CellModified("middle", 4).Body(app.Text(text)),
-		layout.CellModified("bottom", 4).Style("height", "50px").Body(component),
-		layout.CellModified("middle", 4).Body(button),
-	)
 }
 
 func (d *ProgressDemo) showButton(c progress.Api, determinate bool) app.UI {

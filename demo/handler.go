@@ -10,7 +10,7 @@ func BuildHandler() *app.Handler {
 		Name:            "MDC for go-app",
 		BackgroundColor: "#111",
 		Scripts: []string{
-			"https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.js",
+			"https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.js",
 			"https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js",
 			"https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-go.min.js",
 			"/web/app.js",
@@ -22,7 +22,8 @@ func BuildHandler() *app.Handler {
 		Styles: []string{
 			"https://fonts.googleapis.com/icon?family=Material+Icons",
 			"https://fonts.googleapis.com/css2?family=Roboto&display=swap",
-			"https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.min.css",
+			"https://cdnjs.cloudflare.com/ajax/libs/material-components-web/13.0.0/material-components-web.css",
+			//"/web/material-components-web.css",
 			"https://cdnjs.cloudflare.com/ajax/libs/prism-themes/1.9.0/prism-material-light.min.css",
 			"/web/style.css",
 		},
