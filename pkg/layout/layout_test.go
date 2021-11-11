@@ -58,7 +58,6 @@ func TestCellModified(t *testing.T) {
 	defer ct.Close()
 	ct.At(0).Match(app.Div().Class("mdc-layout-grid__cell"))
 
-
 }
 
 func TestWide(t *testing.T) {
