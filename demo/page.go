@@ -6,7 +6,6 @@ import (
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/bar"
-	"github.com/mlctrez/goapp-mdc/pkg/colorpicker"
 	"github.com/mlctrez/goapp-mdc/pkg/drawer"
 	"github.com/mlctrez/goapp-mdc/pkg/icon"
 	"github.com/mlctrez/goapp-mdc/pkg/layout"
@@ -49,7 +48,6 @@ func PageBody(pageContent ...app.UI) app.UI {
 				),
 			),
 		),
-		&colorpicker.CssColor{},
 	)
 
 	return body
