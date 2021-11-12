@@ -2,16 +2,19 @@ package bar
 
 import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/mlctrez/goapp-mdc/pkg/autoinit"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
 )
 
 type TopAppBar struct {
 	app.Compo
-	Title      string
-	Fixed      bool
-	Navigation []app.HTMLButton
-	Actions    []app.HTMLButton
-	api        app.Value
+	autoinit.AutoInit
+	Title        string
+	Fixed        bool
+	Navigation   []app.HTMLButton
+	Actions      []app.HTMLButton
+	ScrollTarget string
+	api          app.Value
 }
 
 var _ app.Mounter = (*TopAppBar)(nil)
@@ -51,6 +54,8 @@ func (c *TopAppBar) Main() app.HTMLMain {
 }
 
 func (c *TopAppBar) OnMount(_ app.Context) {
-	app.Window().Get("mdc").Call("autoInit", c.JSValue())
-	c.api = c.JSValue().Get("MDCTopAppBar")
+	c.api = c.AutoInitComponent(c.JSValue(), autoinit.MDCTopAppBar)
+	if c.ScrollTarget != "" {
+		c.api.Call("setScrollTarget", app.Window().GetElementByID(c.ScrollTarget))
+	}
 }

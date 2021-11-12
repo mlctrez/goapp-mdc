@@ -46,7 +46,7 @@
 | [mdc-shape](https://github.com/material-components/material-components-web/tree/master/packages/mdc-shape) | investigate | - |
 | [mdc-slider](https://github.com/material-components/material-components-web/tree/master/packages/mdc-slider) | [slider](pkg/slider) | Mostly done, Needs testing and api events |
 | [mdc-snackbar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-snackbar) | [snackbar](pkg/snackbar) | Mostly done |
-| [mdc-switch](https://github.com/material-components/material-components-web/tree/master/packages/mdc-switch) | pkg/switch | TODO |
+| [mdc-switch](https://github.com/material-components/material-components-web/tree/master/packages/mdc-switch) | [switchm](pkg/switchm) | TODO |
 | [mdc-tab](https://github.com/material-components/material-components-web/tree/master/packages/mdc-tab) | [tab](pkg/tab) | tab.go |
 | [mdc-tab-bar](https://github.com/material-components/material-components-web/tree/master/packages/mdc-tab-bar) | [tab](pkg/tab) | bar.go |
 | [mdc-tab-indicator](https://github.com/material-components/material-components-web/tree/master/packages/mdc-tab-indicator) | investigate | - |

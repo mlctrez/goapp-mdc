@@ -1,12 +1,16 @@
+// Package autoinit allows interaction between go-app components and mdc.autoInit().
+//
+// See https://github.com/material-components/material-components-web/tree/master/packages/mdc-auto-init for full details
+//
 package autoinit
 
 import "github.com/maxence-charriere/go-app/v9/pkg/app"
 
 type AutoInit struct{}
 
-// TODO: validate that mdc javascript has initialized
+// TODO: more work to make sure that mdc is available when these are invoked.
 
-// AutoInitComponent is short for MdcAutoInitWindow() and compo.get(name) .
+// AutoInitComponent is short for MdcAutoInitWindow() and return name.GetFrom(compo).
 func (ai *AutoInit) AutoInitComponent(compo app.Value, name MDCName) app.Value {
 	ai.MdcAutoInitWindow()
 	return name.GetFrom(compo)
@@ -22,38 +26,10 @@ func (ai *AutoInit) MdcAutoInitWindow() {
 	ai.MdcAutoInit(app.Window().Get("document"))
 }
 
-type MDCName string
+
 
 // GetFrom calls value.Get(string(MDCName))
 func (n MDCName) GetFrom(value app.Value) app.Value {
 	return value.Get(string(n))
 }
 
-const MDCBanner MDCName = "MDCBanner"
-const MDCCheckbox MDCName = "MDCCheckbox"
-const MDCChip MDCName = "MDCChip"
-const MDCChipSet MDCName = "MDCChipSet"
-const MDCCircularProgress MDCName = "MDCCircularProgress"
-const MDCDataTable MDCName = "MDCDataTable"
-const MDCDialog MDCName = "MDCDialog"
-const MDCDrawer MDCName = "MDCDrawer"
-const MDCFloatingLabel MDCName = "MDCFloatingLabel"
-const MDCFormField MDCName = "MDCFormField"
-const MDCIconButtonToggle MDCName = "MDCIconButtonToggle"
-const MDCLineRipple MDCName = "MDCLineRipple"
-const MDCLinearProgress MDCName = "MDCLinearProgress"
-const MDCList MDCName = "MDCList"
-const MDCMenu MDCName = "MDCMenu"
-const MDCMenuSurface MDCName = "MDCMenuSurface"
-const MDCNotchedOutline MDCName = "MDCNotchedOutline"
-const MDCRadio MDCName = "MDCRadio"
-const MDCRipple MDCName = "MDCRipple"
-const MDCSegmentedButton MDCName = "MDCSegmentedButton"
-const MDCSelect MDCName = "MDCSelect"
-const MDCSlider MDCName = "MDCSlider"
-const MDCSnackbar MDCName = "MDCSnackbar"
-const MDCSwitch MDCName = "MDCSwitch"
-const MDCTabBar MDCName = "MDCTabBar"
-const MDCTextField MDCName = "MDCTextField"
-const MDCTooltip MDCName = "MDCTooltip"
-const MDCTopAppBar MDCName = "MDCTopAppBar"
