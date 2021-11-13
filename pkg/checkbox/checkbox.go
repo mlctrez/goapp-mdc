@@ -2,61 +2,71 @@ package checkbox
 
 import (
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/mlctrez/goapp-mdc/pkg/autoinit"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
+	"github.com/mlctrez/goapp-mdc/pkg/formfield"
 )
 
 type Checkbox struct {
 	app.Compo
 	base.JsUtil
+	autoinit.AutoInit
 	Id            string
-	Label         string
 	Checked       bool
 	Disabled      bool
 	Indeterminate bool
 	Callback      func(input app.HTMLInput)
+	api           app.Value
 }
 
 func (c *Checkbox) Render() app.UI {
-
-	checkboxClass := "mdc-checkbox"
+	mdcCheckBox := app.Div().Class("mdc-checkbox")
+	Api.DataMdcAutoInitDiv(mdcCheckBox)
 	if c.Disabled {
-		checkboxClass = "mdc-checkbox mdc-checkbox--disabled"
+		mdcCheckBox.Class("mdc-checkbox mdc-checkbox--disabled")
 	}
+	input := c.buildInput()
 
-	input := app.Input().Type("checkbox").Class("mdc-checkbox__native-control").ID(c.Id + "-input").Disabled(c.Disabled)
-	if c.Callback != nil {
-		c.Callback(input)
+	mdcCheckBox.Body(
+		input,
+		Background(),
+		app.Div().Class("mdc-checkbox__ripple"),
+	)
+	return mdcCheckBox
+}
+
+func (c *Checkbox) buildInput() app.HTMLInput {
+	input := app.Input().Type("checkbox")
+	input.Class("mdc-checkbox__native-control")
+	input.ID(c.Id)
+	input.Checked(c.Checked)
+	if c.Disabled {
+		input.Disabled(c.Disabled)
 	}
 	if c.Indeterminate {
 		input.DataSet("indeterminate", "true")
 	}
-	input.Checked(c.Checked)
-
-	formField := app.Div().ID(c.Id + "-formField").Class("mdc-form-field")
-
-	return formField.Body(
-		app.Div().Class(checkboxClass).ID(c.Id).Body(
-			input,
-			MDCCheckboxBackground(),
-			app.Div().Class("mdc-checkbox__ripple"),
-		),
-		app.If(c.Label == "").Else(
-			app.Label().ID(c.Id+"-label").For(c.Id+"-input").Text(c.Label),
-		),
-	)
-}
-
-func MDCCheckboxBackground() app.HTMLDiv {
-	return app.Div().Class("mdc-checkbox__background").Body(
-		app.Raw(SVG), app.Div().Class("mdc-checkbox__mixedmark"))
+	if c.Callback != nil {
+		c.Callback(input)
+	}
+	return input
 }
 
 func (c *Checkbox) OnMount(ctx app.Context) {
-	checkbox := c.JsNewAtPath("mdc.checkbox.MDCCheckbox", app.Window().GetElementByID(c.Id))
-	formField := c.JsNewAtPath("mdc.formField.MDCFormField", app.Window().GetElementByID(c.Id+"-formField"))
-	formField.Set("input", checkbox)
+	c.api = c.AutoInitComponent(c.JSValue(), Api)
 }
 
-const SVG = `<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path>
-</svg>`
+func Background() app.HTMLDiv {
+	return app.Div().Class("mdc-checkbox__background").Body(
+		app.Raw(SVG),
+		app.Div().Class("mdc-checkbox__mixedmark"),
+	)
+}
+
+const SVG = `<svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">` +
+	`<path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"></path></svg>`
+
+var _ formfield.Component = (*Checkbox)(nil)
+var Api = autoinit.MDCCheckbox
+func (c *Checkbox) LabelID() string   { return c.Id }
+func (c *Checkbox) MdcAPI() app.Value { return c.api }

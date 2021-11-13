@@ -65,7 +65,7 @@ func TestItem_Render_Checkbox(t *testing.T) {
 	ct.At(0, 1).Match(app.Span().Class("mdc-deprecated-list-item__graphic"))
 	ct.At(0, 1, 0).Match(app.Div().Class("mdc-checkbox"))
 	ct.At(0, 1, 0, 0).Match(app.Input().Type("checkbox").Class("mdc-checkbox__native-control").ID(compo.id))
-	ct.At(0, 1, 0, 1).Match(checkbox.MDCCheckboxBackground())
+	ct.At(0, 1, 0, 1).Match(checkbox.Background())
 	ct.At(0, 2).Match(app.Label().Class("mdc-deprecated-list-item__text").For(compo.id).Text(compo.Text))
 
 }

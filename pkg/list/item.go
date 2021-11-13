@@ -5,6 +5,7 @@ import (
 	"github.com/mlctrez/goapp-mdc/pkg/base"
 	"github.com/mlctrez/goapp-mdc/pkg/checkbox"
 	"github.com/mlctrez/goapp-mdc/pkg/icon"
+	"github.com/mlctrez/goapp-mdc/pkg/radio"
 )
 
 type Item struct {
@@ -16,6 +17,7 @@ type Item struct {
 	Text      string
 	Secondary string
 	Href      string
+	Name      string
 	state     ItemSelectState
 	// for testing only
 	id string
@@ -30,7 +32,6 @@ const (
 	ItemTypeCheckbox
 	ItemTypeDivider
 	ItemTypeAnchor
-	ItemTypeOptionSelect
 )
 
 func (i *Item) Render() app.UI {
@@ -54,7 +55,16 @@ func (i *Item) Render() app.UI {
 					Text(i.Secondary))
 		}
 	case ItemTypeRadio:
-		panic("not implemented")
+		radId := i.id
+		if radId == "" {
+			radId = i.UUID()
+		}
+		content = append(content, app.Span().Class("mdc-deprecated-list-item__ripple"))
+		content = append(content, app.Span().Class("mdc-deprecated-list-item__graphic").Body(
+			&radio.Radio{Id: radId, Name: i.Name, Value: i.Value},
+		))
+		content = append(content, app.Label().Class("mdc-deprecated-list-item__text").For(radId).Text(i.Text))
+
 	case ItemTypeCheckbox:
 		cbId := i.id
 		if cbId == "" {
@@ -62,10 +72,7 @@ func (i *Item) Render() app.UI {
 		}
 		content = append(content, app.Span().Class("mdc-deprecated-list-item__ripple"))
 		content = append(content, app.Span().Class("mdc-deprecated-list-item__graphic").Body(
-			app.Div().Class("mdc-checkbox").Body(
-				app.Input().Type("checkbox").Class("mdc-checkbox__native-control").ID(cbId),
-				checkbox.MDCCheckboxBackground(),
-			),
+			&checkbox.Checkbox{Id: cbId},
 		))
 		content = append(content, app.Label().Class("mdc-deprecated-list-item__text").For(cbId).Text(i.Text))
 	}

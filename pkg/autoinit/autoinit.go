@@ -26,10 +26,13 @@ func (ai *AutoInit) MdcAutoInitWindow() {
 	ai.MdcAutoInit(app.Window().Get("document"))
 }
 
-
-
 // GetFrom calls value.Get(string(MDCName))
 func (n MDCName) GetFrom(value app.Value) app.Value {
 	return value.Get(string(n))
 }
 
+func (n MDCName) DataMdcAutoInitDiv(div app.HTMLDiv) app.HTMLDiv {
+	return div.DataSet(MdcAutoInitData, n)
+}
+
+const MdcAutoInitData = "mdc-auto-init"
