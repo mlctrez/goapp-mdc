@@ -59,7 +59,6 @@ func TestItem_Render_Checkbox(t *testing.T) {
 	compo := &Item{Text: "one", Type: ItemTypeCheckbox, id: "testing"}
 	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
 	defer ct.Close()
-
 	ct.At(0).Match(app.Li().Class("mdc-deprecated-list-item").Attr("role", "checkbox"))
 	ct.At(0, 0).Match(app.Span().Class("mdc-deprecated-list-item__ripple"))
 	ct.At(0, 1).Match(app.Span().Class("mdc-deprecated-list-item__graphic"))
@@ -67,7 +66,6 @@ func TestItem_Render_Checkbox(t *testing.T) {
 	ct.At(0, 1, 0, 0).Match(app.Input().Type("checkbox").Class("mdc-checkbox__native-control").ID(compo.id))
 	ct.At(0, 1, 0, 1).Match(checkbox.Background())
 	ct.At(0, 2).Match(app.Label().Class("mdc-deprecated-list-item__text").For(compo.id).Text(compo.Text))
-
 }
 
 func TestItem_Render_Anchor(t *testing.T) {

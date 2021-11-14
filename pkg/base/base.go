@@ -69,6 +69,15 @@ func (c *Counter) Render() app.UI {
 	return app.Span().Text(fmt.Sprintf("counter %q is currently %d", c.Label, c.Count))
 }
 
+type Message struct {
+	app.Compo
+	Text string
+}
+
+func (c *Message) Render() app.UI {
+	return app.Code().Text(c.Text)
+}
+
 func (j *JsUtil) LogWithP(o interface{}, msg string) {
 	ptr := reflect.ValueOf(o).Pointer()
 	typ := reflect.TypeOf(o)
