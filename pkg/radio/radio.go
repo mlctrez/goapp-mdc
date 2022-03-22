@@ -60,8 +60,6 @@ func Ripple() app.UI {
 	return app.Div().Class("mdc-radio__ripple")
 }
 
-var _ formfield.Component = (*Radio)(nil)
-
 const Api = autoinit.MDCRadio
 
 func (r *Radio) MdcAPI() app.Value {

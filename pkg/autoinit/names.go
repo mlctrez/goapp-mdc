@@ -1,5 +1,6 @@
 package autoinit
 
+// MDCName defines the constants for the keys registered using autoInit.register().
 type MDCName string
 
 const MDCBanner MDCName = "MDCBanner"

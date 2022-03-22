@@ -1,49 +1,54 @@
 package tab
 
 import (
-	"fmt"
-
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/mlctrez/goapp-mdc/pkg/icon"
 )
 
 type Tab struct {
 	app.Compo
-	index  int
-	active bool
-	label  string
-	icon   string
+	Index  int
+	Active bool
+	Label  string
+	Icon   icon.MaterialIcon
 }
 
-func NewTab(label string, index int) *Tab {
-	return &Tab{label: label, index: index}
+type Tabs []*Tab
+
+func (ts Tabs) Select(index int) {
+	for i, tab := range ts {
+		tab.Index = i
+		if index == i {
+			tab.Active = true
+		}
+	}
 }
 
-func (t *Tab) Active() *Tab {
-	t.active = true
-	return t
-}
-func (t *Tab) Icon(text string) *Tab {
-	t.icon = text
-	return t
+func (ts Tabs) UIList() (body []app.UI) {
+	for _, tab := range ts {
+		body = append(body, tab)
+	}
+	return
 }
 
 func (t *Tab) iconUI() app.UI {
-	return app.If(t.icon != "",
-		app.Span().Class("mdc-tab__icon material-icons").Aria(
-			"hidden", "true").Text(t.icon),
-	)
+	var icon app.HTMLSpan
+	if t.Icon != "" {
+		icon = t.Icon.Span()
+		icon.Class("mdc-tab__icon")
+		icon.Aria("hidden", "true")
+	}
+	return icon
 }
 
 func (t *Tab) labelUI() app.UI {
-	return app.Span().Class("mdc-tab__text-label").Text(t.label)
+	return app.Span().Class("mdc-tab__text-label").Text(t.Label)
 }
 
 func (t *Tab) indicatorUI() app.UI {
-	root := app.Span()
-	if t.active {
-		root.Class("mdc-tab-indicator mdc-tab-indicator--active")
-	} else {
-		root.Class("mdc-tab-indicator")
+	root := app.Span().Class("mdc-tab-indicator")
+	if t.Active {
+		root.Class("mdc-tab-indicator--active")
 	}
 	indicator := app.Span()
 	indicator.Class("mdc-tab-indicator__content mdc-tab-indicator__content--underline")
@@ -51,14 +56,15 @@ func (t *Tab) indicatorUI() app.UI {
 }
 
 func (t *Tab) Render() app.UI {
-
 	root := app.Button().Attr("role", "tab")
-	if t.active {
-		root.Class("mdc-tab mdc-tab--active").Aria("selected", "true")
+	root.Class("mdc-tab")
+
+	if t.Active {
+		root.Class("mdc-tab--active").Aria("selected", "true")
+		root.Attr("tabindex", "0")
 	} else {
-		root.Class("mdc-tab")
+		root.Attr("tabindex", "-1")
 	}
-	root.Attr("tabindex", fmt.Sprintf("%d", t.index))
 
 	root.Body(
 		app.Span().Class("mdc-tab__content").Body(t.iconUI(), t.labelUI()),
@@ -67,29 +73,3 @@ func (t *Tab) Render() app.UI {
 	)
 	return root
 }
-
-/*
-
-   <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0" id="mdc-tab-0">
-       <span class="mdc-tab__content">
-           <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
-           <span class="mdc-tab__text-label">Favorites</span>
-       </span>
-       <span class="mdc-tab-indicator mdc-tab-indicator--active">
-           <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-       </span>
-       <span class="mdc-tab__ripple"></span>
-   </button>
-   <button class="mdc-tab" role="tab" tabindex="1" id="mdc-tab-1">
-       <span class="mdc-tab__content">
-           <span class="mdc-tab__icon material-icons" aria-hidden="true">bookmark</span>
-           <span class="mdc-tab__text-label">Bookmark</span>
-       </span>
-       <span class="mdc-tab-indicator">
-           <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
-       </span>
-       <span class="mdc-tab__ripple"></span>
-   </button>
-
-
-*/

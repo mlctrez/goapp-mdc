@@ -15,6 +15,7 @@ type Drawer struct {
 	base.JsUtil
 	Id   string
 	List *list.List
+	Open bool
 	Type Type
 	api  app.Value
 }
@@ -31,6 +32,9 @@ const (
 func (d *Drawer) Render() app.UI {
 	content := app.Div().Class("mdc-drawer__content").Body(d.List)
 	aside := app.Aside().ID(d.Id).Class("mdc-drawer").Body(content)
+	if d.Open {
+		aside.Class("mdc-drawer--open")
+	}
 
 	switch d.Type {
 	case Modal:
@@ -77,7 +81,7 @@ func (d *Drawer) event(ctx app.Context, event EventType) func(this app.Value, ar
 	}
 }
 
-func (d *Drawer) handle(context app.Context, action app.Action) {
+func (d *Drawer) handle(ctx app.Context, action app.Action) {
 	if d == action.Value && d.api != nil {
 		switch EventType(action.Name) {
 		case Open:

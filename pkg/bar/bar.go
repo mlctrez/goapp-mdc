@@ -1,3 +1,7 @@
+// Package bar implements the mdc-top-app-bar component.
+//
+// https://github.com/material-components/material-components-web/tree/master/packages/mdc-top-app-bar
+//
 package bar
 
 import (
@@ -6,6 +10,7 @@ import (
 	"github.com/mlctrez/goapp-mdc/pkg/base"
 )
 
+// TopAppBar is the go-app component for mdc-top-app-bar.
 type TopAppBar struct {
 	app.Compo
 	autoinit.AutoInit
@@ -17,15 +22,14 @@ type TopAppBar struct {
 	api          app.Value
 }
 
-var _ app.Mounter = (*TopAppBar)(nil)
-
+// Render returns the mdc-top-app-bar header configured with the required classes and child elements.
 func (c *TopAppBar) Render() app.UI {
 	header := app.Header().Class("mdc-top-app-bar")
+	API.DataMdcAutoInitHeader(header)
+
 	if c.Fixed {
 		header.Class("mdc-top-app-bar--fixed")
 	}
-
-	header.DataSet("mdc-auto-init", "MDCTopAppBar")
 
 	navBody := base.HTMLButtonUpdate(c.Navigation, func(button app.HTMLButton) {
 		button.Class("mdc-top-app-bar__navigation-icon")
@@ -53,8 +57,12 @@ func (c *TopAppBar) Main() app.HTMLMain {
 	return app.Main().Class("mdc-top-app-bar--fixed-adjust")
 }
 
+// API is the auto init data value for this component.
+const API = autoinit.MDCTopAppBar
+
+// OnMount sets up the component's js api and the scroll target if present.
 func (c *TopAppBar) OnMount(_ app.Context) {
-	c.api = c.AutoInitComponent(c.JSValue(), autoinit.MDCTopAppBar)
+	c.api = c.AutoInitComponent(c.JSValue(), API)
 	if c.ScrollTarget != "" {
 		c.api.Call("setScrollTarget", app.Window().GetElementByID(c.ScrollTarget))
 	}

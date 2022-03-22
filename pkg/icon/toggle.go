@@ -69,9 +69,9 @@ func (b *Toggle) event(ctx app.Context, change Event) func(this app.Value, args 
 			return nil
 		}
 		b.State = isOnJs.Bool()
-		state := "off"
-		if b.State == true {
-			state = "on"
+		state := OFF
+		if b.State {
+			state = ON
 		}
 		ctx.NewActionWithValue(string(ToggleChange), b, app.T("state", state))
 		return nil
@@ -85,10 +85,13 @@ func (b *Toggle) handleValueChange(ctx app.Context, action app.Action) {
 		}
 		state := action.Tags.Get("state")
 		switch state {
-		case "on":
-			b.api.Set("on", true)
-		case "off":
-			b.api.Set("on", false)
+		case ON:
+			b.api.Set(ON, true)
+		case OFF:
+			b.api.Set(ON, false)
 		}
 	}
 }
+
+const ON = "on"
+const OFF = "off"

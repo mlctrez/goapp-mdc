@@ -13,7 +13,7 @@ func TestBanner_Render(t *testing.T) {
 	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
 	defer ct.Close()
 
-	ct.At(0).Match(app.Div().Class("mdc-banner").ID(compo.Id))
+	ct.At(0).Match(API.DataMdcAutoInitDiv(app.Div().Class("mdc-banner").ID(compo.Id)))
 	ct.At(0, 0).Match(app.Div().Class("mdc-banner__content").
 		Attr("role", "alertdialog").Aria("live", "assertlive"))
 	ct.At(0, 0, 0).Match(app.Div().Class("mdc-banner__graphic-text-wrapper"))
@@ -27,7 +27,7 @@ func TestBanner_Center(t *testing.T) {
 	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
 	defer ct.Close()
 
-	ct.At(0).Match(app.Div().Class("mdc-banner mdc-banner--centered").ID(compo.Id))
+	ct.At(0).Match(API.DataMdcAutoInitDiv(app.Div().Class("mdc-banner mdc-banner--centered").ID(compo.Id)))
 	ct.At(0, 0).Match(app.Div().Class("mdc-banner__content").
 		Attr("role", "alertdialog").Aria("live", "assertlive"))
 	ct.At(0, 0, 0).Match(app.Div().Class("mdc-banner__graphic-text-wrapper"))
@@ -41,7 +41,7 @@ func TestBanner_Fixed(t *testing.T) {
 	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
 	defer ct.Close()
 
-	ct.At(0).Match(app.Div().Class("mdc-banner").ID(compo.Id))
+	ct.At(0).Match(API.DataMdcAutoInitDiv(app.Div().Class("mdc-banner").ID(compo.Id)))
 	ct.At(0, 0).Match(app.Div().Class("mdc-banner__fixed"))
 	ct.At(0, 0, 0).Match(app.Div().Class("mdc-banner__content").
 		Attr("role", "alertdialog").Aria("live", "assertlive"))

@@ -6,7 +6,11 @@ const MaterialIconsClass = "material-icons"
 const MaterialIconButton = "mdc-icon-button"
 
 func (m MaterialIcon) Span() app.HTMLSpan {
-	return app.Span().Class(MaterialIconsClass).Text(m)
+	return m.SpanClasses(MaterialIconsClass)
+}
+
+func (m MaterialIcon) SpanClasses(classes ...string) app.HTMLSpan {
+	return app.Span().Class(classes...).Text(m)
 }
 
 func (m MaterialIcon) I() app.HTMLI {

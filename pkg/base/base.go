@@ -84,14 +84,12 @@ func (j *JsUtil) LogWithP(o interface{}, msg string) {
 	log.Printf("%s(%d) %s\n", typ, ptr, msg)
 }
 
-//func (j *JsUtil) LogWithPf(o interface{}, msg string, args ...interface{}) {
-//	j.LogWithP(o, fmt.Sprintf(msg, args))
-//}
-
 func (j *JsUtil) ConsoleLog(args ...interface{}) {
 	app.Window().Get("console").Call("log", args...)
 }
 
+// HTMLButtonUpdate is a convenience method for applying additional operations on buttons that are used in nav
+// bars or other locations.
 func HTMLButtonUpdate(buttons []app.HTMLButton, modify func(button app.HTMLButton)) (result []app.UI) {
 	for _, button := range buttons {
 		modify(button)
@@ -99,3 +97,5 @@ func HTMLButtonUpdate(buttons []app.HTMLButton, modify func(button app.HTMLButto
 	}
 	return
 }
+
+const AddEventListener = "addEventListener"
