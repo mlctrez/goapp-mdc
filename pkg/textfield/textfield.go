@@ -40,7 +40,7 @@ func (t *TextField) Render() app.UI {
 	var labelSpan app.HTMLSpan
 
 	input := app.Input().Class("mdc-text-field__input").
-		Type("text").ID(t.Id + "-input").Value(t.Value)
+		Type("text").ID(t.Id + "-input").Value(t.Value).OnChange(t.ValueTo(&t.Value))
 
 	if t.Required {
 		input.Required(t.Required)
