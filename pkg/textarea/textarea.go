@@ -12,7 +12,7 @@ type TextArea struct {
 	label       string
 	placeholder string
 	outlined    bool
-	value       string
+	Value       string
 	resizable   bool
 	rows        int
 	cols        int
@@ -40,10 +40,11 @@ func (t *TextArea) Outlined(outlined bool) *TextArea {
 	return t
 }
 
-func (t *TextArea) Value(val string) *TextArea {
-	t.value = val
-	return t
-}
+//
+//func (t *TextArea) Value(val string) *TextArea {
+//	t.value = val
+//	return t
+//}
 
 func (t *TextArea) Resizeable(r bool) *TextArea {
 	t.resizable = r
@@ -83,7 +84,7 @@ func (t *TextArea) buildClasses() []string {
 	if t.label == "" {
 		classes = append(classes, "mdc-text-field--no-label")
 	} else {
-		if t.value != "" {
+		if t.Value != "" {
 			classes = append(classes, "mdc-text-field--label-floating")
 		}
 	}
@@ -96,16 +97,16 @@ func (t *TextArea) Render() app.UI {
 	var input app.HTMLTextarea
 	var labelSpan app.HTMLSpan
 
-	input = app.Textarea().Class("mdc-text-field__input").ID(t.id + "-input").Text(t.value)
+	input = app.Textarea().Class("mdc-text-field__input").ID(t.id + "-input").Text(t.Value)
 	input.MaxLength(t.maxlength).Rows(t.rows).Cols(t.cols)
 	if t.label == "" {
 		if t.placeholder != "" {
-			input.Placeholder(t.placeholder).Aria("label", "Label").Text(t.value)
+			input.Placeholder(t.placeholder).Aria("label", "Label").Text(t.Value)
 		}
 	} else {
 		labelId := t.id + "-label"
 		labelSpan = app.Span().Class("mdc-floating-label").ID(labelId).Text(t.label)
-		if t.value != "" {
+		if t.Value != "" {
 			labelSpan.Class("mdc-floating-label", "mdc-floating-label--float-above")
 		}
 		input.Aria("labelledby", labelId).ID(t.id + "-input")
