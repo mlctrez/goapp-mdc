@@ -92,8 +92,10 @@ func (j *JsUtil) ConsoleLog(args ...interface{}) {
 // bars or other locations.
 func HTMLButtonUpdate(buttons []app.HTMLButton, modify func(button app.HTMLButton)) (result []app.UI) {
 	for _, button := range buttons {
-		modify(button)
-		result = append(result, button)
+		if button != nil {
+			modify(button)
+			result = append(result, button)
+		}
 	}
 	return
 }
