@@ -3,6 +3,7 @@ package dialog
 import (
 	"testing"
 
+	"github.com/mlctrez/goapp-mdc/pkg/autoinit"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
 	"github.com/mlctrez/goapp-mdc/pkg/button"
 
@@ -16,7 +17,7 @@ func TestDialog_Render(t *testing.T) {
 	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
 	defer ct.Close()
 
-	ct.At(0).Match(app.Div().Class("mdc-dialog").ID(compo.Id))
+	ct.At(0).Match(app.Div().Class("mdc-dialog").DataSet(autoinit.MdcAutoInitData, API).ID(compo.Id))
 	ct.At(0, 0).Match(app.Div().Class("mdc-dialog__container"))
 	ct.At(0, 0, 0).Match(app.Div().Class("mdc-dialog__surface").
 		Attr("role", "alertdialog").Aria("modal", "true"))
@@ -35,7 +36,7 @@ func TestDialog_Render_Button(t *testing.T) {
 	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
 	defer ct.Close()
 
-	ct.At(0).Match(app.Div().Class("mdc-dialog").ID(compo.Id))
+	ct.At(0).Match(app.Div().Class("mdc-dialog").DataSet(autoinit.MdcAutoInitData, API).ID(compo.Id))
 	ct.At(0, 0).Match(app.Div().Class("mdc-dialog__container"))
 	ct.At(0, 0, 0).Match(app.Div().Class("mdc-dialog__surface").
 		Attr("role", "alertdialog").Aria("modal", "true"))
@@ -58,7 +59,7 @@ func TestDialog_Render_Button_And_Content(t *testing.T) {
 	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
 	defer ct.Close()
 
-	ct.At(0).Match(app.Div().Class("mdc-dialog").ID(compo.Id))
+	ct.At(0).Match(app.Div().Class("mdc-dialog").DataSet(autoinit.MdcAutoInitData, API).ID(compo.Id))
 	ct.At(0, 0).Match(app.Div().Class("mdc-dialog__container"))
 	ct.At(0, 0, 0).Match(
 		app.Div().Class("mdc-dialog__surface").Attr("role", "alertdialog").
@@ -87,7 +88,7 @@ func TestDialog_Render_All(t *testing.T) {
 	ct := base.ComponentTest{T: t, Compo: compo, Dispatcher: app.NewServerTester(compo)}
 	defer ct.Close()
 
-	ct.At(0).Match(app.Div().Class("mdc-dialog").ID(compo.Id))
+	ct.At(0).Match(app.Div().Class("mdc-dialog").DataSet(autoinit.MdcAutoInitData, API).ID(compo.Id))
 	ct.At(0, 0).Match(app.Div().Class("mdc-dialog__container"))
 	ct.At(0, 0, 0).Match(
 		app.Div().Class("mdc-dialog__surface").Attr("role", "alertdialog").
