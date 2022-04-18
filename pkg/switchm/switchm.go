@@ -1,6 +1,8 @@
 package switchm
 
 import (
+	"time"
+
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-mdc/pkg/autoinit"
 	"github.com/mlctrez/goapp-mdc/pkg/base"
@@ -12,11 +14,20 @@ type MDCSwitch struct {
 	autoinit.AutoInit
 	Selected bool
 	Disabled bool
+	Callback func(ctx app.Context, mdcSwitch app.Value)
 	api      app.Value
 }
 
 func (s *MDCSwitch) Render() app.UI {
 	button := app.Button().Class("mdc-switch")
+	if s.Callback != nil {
+		button.OnClick(func(ctx app.Context, e app.Event) {
+			// 50ms delay is to allow s.api to reflect the correct value of the switch
+			ctx.After(50*time.Millisecond, func(context app.Context) {
+				s.Callback(context, s.api)
+			})
+		})
+	}
 	button.Type("button").Role("switch")
 	button.DataSet("mdc-auto-init", string(autoinit.MDCSwitch))
 	if s.Disabled {
@@ -53,7 +64,7 @@ func addBody(button app.HTMLButton) app.HTMLButton {
 
 var _ app.Mounter = (*MDCSwitch)(nil)
 
-func (s MDCSwitch) OnMount(ctx app.Context) {
+func (s *MDCSwitch) OnMount(ctx app.Context) {
 	s.api = s.AutoInitComponent(s.JSValue(), autoinit.MDCSwitch)
 }
 
